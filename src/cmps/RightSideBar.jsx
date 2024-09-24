@@ -33,7 +33,7 @@ export const RightSideBar = () => {
                 </div>
                 <div>
                   <div className="fullname">
-                    <p>{users[num]?.fullname}</p>
+                    <p>{users[num]?.name}</p>
                   </div>
                   <div className="profession">
                     <p>{users[num]?.profession}</p>

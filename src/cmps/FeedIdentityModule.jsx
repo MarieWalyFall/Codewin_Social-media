@@ -18,7 +18,7 @@ export const FeedIdentityModule = (props) => {
   if (!loggedInUser)
     return <section className="feed-identity-module">Loading</section>
 
-  const { fullname, imgUrl, profession } = loggedInUser
+  const { name, imgUrl, profession } = loggedInUser
 
   return (
     <section className="feed-identity-module">
@@ -33,7 +33,7 @@ export const FeedIdentityModule = (props) => {
         </div>
 
         <div className="profile-name">
-          <h1>{fullname}</h1>
+          <h1>{name}</h1>
           <p className="professional">{profession}</p>
         </div>
 

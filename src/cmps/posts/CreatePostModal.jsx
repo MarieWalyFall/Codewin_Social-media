@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useState } from 'react';
 
-import { uploadImg, uploadVid } from '../../services/imgUpload.service'
-import LoadingGif from '../../assets/imgs/loading-gif.gif'
+import { uploadImg, uploadVid } from '../../services/imgUpload.service';
+import LoadingGif from '../../assets/imgs/loading-gif.gif';
 
 export const CreatePostModal = ({
   toggleShowCreatePost,
@@ -19,87 +19,82 @@ export const CreatePostModal = ({
     style: {
       textAlign: 'ltr',
     },
-  }
+  };
 
-  const [newPost, setNewPost] = useState(initPost)
-  const [isUploding, setIsUploding] = useState(false)
+  const [newPost, setNewPost] = useState(initPost);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleChange = async (e) => {
-    const field = e.target.name
-    let value =
-      e.target.type === 'number' ? +e.target.value || '' : e.target.value
-    setNewPost((prevCred) => ({
-      ...prevCred,
+    const field = e.target.name;
+    let value = e.target.type === 'number' ? +e.target.value || '' : e.target.value;
+    setNewPost((prevPost) => ({
+      ...prevPost,
       [field]: value,
-    }))
-  }
+    }));
+  };
 
   useEffect(() => {
     return () => {
-      setNewPost(null)
-    }
-  }, [])
+      setNewPost(initPost);
+    };
+  }, []);
 
   const doSubmit = () => {
-    onAddPost(newPost)
-  }
+    if (newPost.body.trim() || newPost.imgBodyUrl || newPost.videoBodyUrl) {
+      onAddPost(newPost);
+    }
+  };
 
   const inputRef = (elInput) => {
-    if (elInput) elInput.focus()
-  }
+    if (elInput) elInput.focus();
+  };
 
   const onUploadImg = async (ev) => {
     try {
-      setIsUploding(true)
-      const res = await uploadImg(ev)
-      setIsUploding(false)
-      setNewPost((prev) => {
-        return {
-          ...prev,
-          imgBodyUrl: res.url,
-        }
-      })
+      setIsUploading(true);
+      const res = await uploadImg(ev);
+      setIsUploading(false);
+      setNewPost((prev) => ({
+        ...prev,
+        imgBodyUrl: res.url,
+      }));
     } catch (err) {
-      setIsUploding(false)
-      console.log(err)
+      setIsUploading(false);
+      console.error(err);
     }
-  }
+  };
 
   const onUploadVideo = async (ev) => {
     try {
-      setIsUploding(true)
-      const res = await uploadVid(ev)
-      setIsUploding(false)
-      setNewPost((prev) => {
-        return {
-          ...prev,
-          videoBodyUrl: res.url,
-        }
-      })
+      setIsUploading(true);
+      const res = await uploadVid(ev);
+      setIsUploading(false);
+      setNewPost((prev) => ({
+        ...prev,
+        videoBodyUrl: res.url,
+      }));
     } catch (err) {
-      setIsUploding(false)
-      console.log(err)
+      setIsUploading(false);
+      console.error(err);
     }
-  }
+  };
 
   return (
     <section
-      className={
-        isShowCreatePost ? ' create-post-modal' : 'hide create-post-modal'
-      }
+      className={isShowCreatePost ? 'create-post-modal' : 'hide create-post-modal'}
       onClick={(ev) => {
-        ev.stopPropagation()
-        toggleShowCreatePost()
+        ev.stopPropagation();
+        toggleShowCreatePost();
       }}
     >
       <form
         className="container"
         onSubmit={(ev) => {
-          ev.preventDefault()
-          doSubmit()
+          ev.preventDefault();
+          doSubmit();
         }}
         onClick={(ev) => {
-          ev.stopPropagation()
+          ev.stopPropagation();
         }}
       >
         <div className="title">
@@ -126,7 +121,7 @@ export const CreatePostModal = ({
             type="text"
             id="body"
             name="body"
-            value={newPost.txt}
+            value={newPost.body} // Fixed to use body instead of txt
             placeholder="What do you want to talk about?"
           ></textarea>
         </div>
@@ -143,13 +138,11 @@ export const CreatePostModal = ({
         </div>
 
         <div className="is-loading-container">
-          <p>
-            {isUploding && (
-              <span>
-                <img src={LoadingGif} alt="" />
-              </span>
-            )}
-          </p>
+          {isUploading && (
+            <span>
+              <img src={LoadingGif} alt="Loading" />
+            </span>
+          )}
         </div>
 
         <div className="container-video-body">
@@ -174,21 +167,13 @@ export const CreatePostModal = ({
           <div
             className="cancel-btn btn"
             onClick={() => {
-              setNewPost({
-                body: '',
-                imgBodyUrl: null,
-                videoBodyUrl: null,
-                title: '',
-                style: {
-                  textAlign: 'ltr',
-                },
-              })
-
-              toggleShowCreatePost()
+              setNewPost(initPost);
+              toggleShowCreatePost();
             }}
           >
             Cancel
           </div>
+
           {!newPost.videoBodyUrl && (
             <div className="add-video-btn btn">
               <label htmlFor="videoUrl" className="add-video-container">
@@ -221,9 +206,11 @@ export const CreatePostModal = ({
             </div>
           )}
 
-          <button className="post-btn btn">Done</button>
+          <button className="post-btn btn" type="submit" disabled={isUploading}>
+            {isUploading ? 'Uploading...' : 'Done'}
+          </button>
         </div>
       </form>
     </section>
-  )
-}
+  );
+};

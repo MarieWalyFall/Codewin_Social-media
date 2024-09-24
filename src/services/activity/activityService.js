@@ -1,4 +1,4 @@
-import { httpService } from '../httpService'
+import { mockHttpService } from '../mock/mockHttpService'
 
 const ENDPOINT = 'activity'
 
@@ -11,17 +11,17 @@ export const activityService = {
 const activitiesCash = {}
 
 async function query(filterBy = {}) {
-  const activities = await httpService.get(ENDPOINT, filterBy)
+  const activities = await mockHttpService.get(ENDPOINT, filterBy)
 
   return activities
 }
 
 async function save(activity) {
   return activity._id
-    ? await httpService.put(`${ENDPOINT}/${activity._id}`, activity)
-    : await httpService.post(ENDPOINT, activity)
+    ? await mockHttpService.put(`${ENDPOINT}/${activity._id}`, activity)
+    : await mockHttpService.post(ENDPOINT, activity)
 }
 
 async function getActivitiesLength(filterBy = {}) {
-  return await httpService.get(ENDPOINT + '/length', filterBy)
+  return await mockHttpService.get(ENDPOINT + '/length', filterBy)
 }

@@ -1,4 +1,4 @@
-import { httpService } from '../httpService'
+import { mockHttpService } from '../mock/mockHttpService'
 
 const ENDPOINT = 'chat'
 
@@ -10,21 +10,21 @@ export const chatService = {
 }
 
 async function query(filterBy = {}) {
-  return await httpService.get(ENDPOINT, filterBy)
+  return await mockHttpService.get(ENDPOINT, filterBy)
 }
 
 // async function getById(id) {
-//   return await httpService.get(`${ENDPOINT}/${id}`)
+//   return await mockHttpService.get(`${ENDPOINT}/${id}`)
 // }
 
 // async function remove(id) {
-//   return await httpService.delete(`${ENDPOINT}/${id}`)
+//   return await mockHttpService.delete(`${ENDPOINT}/${id}`)
 // }
 
 async function save(chat) {
   return chat._id
-    ? await httpService.put(`${ENDPOINT}/${chat._id}`, chat)
-    : await httpService.post(ENDPOINT, chat)
+    ? await mockHttpService.put(`${ENDPOINT}/${chat._id}`, chat)
+    : await mockHttpService.post(ENDPOINT, chat)
 }
 
 // ;(async () => {

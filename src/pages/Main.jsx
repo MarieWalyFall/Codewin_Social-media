@@ -1,23 +1,25 @@
-import { lazy, Suspense } from 'react'
-import { Header } from '../cmps/header/Header'
-import { Switch } from 'react-router-dom'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { lazy, Suspense, useEffect } from 'react';
+import { Switch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { socketService } from '../services/socket.service'
+import { socketService } from '../services/socket.service';
+import { Header } from '../cmps/header/Header';
+import PrivateRoute from '../cmps/PrivateRoute';
+
 import {
   addConnectedUserForSocket,
   addConnectedUsersForSocket,
-} from '../store/actions/userActions'
+} from '../store/actions/userActions';
 import {
   addChatForSocket,
   updateChatForSocket,
-} from '../store/actions/chatActions'
+} from '../store/actions/chatActions';
 import {
   loadActivities,
   setFilterByActivities,
   setUnreadActivitiesIds,
-} from '../store/actions/activityAction'
+} from '../store/actions/activityAction';
 import {
   addCommentForSocket,
   addPostForSocket,
@@ -25,111 +27,120 @@ import {
   removePostForSocket,
   updateCommentForSocket,
   updatePostForSocket,
-} from '../store/actions/postActions'
+} from '../store/actions/postActions';
 
-import PrivateRoute from '../cmps/PrivateRoute'
-
-const Feed = lazy(() => import('../pages/Feed'))
-const SpecificPost = lazy(() => import('./SpecificPost'))
-const Profile = lazy(() => import('./Profile'))
-const MyNetwork = lazy(() => import('./MyNetwork'))
-const Map = lazy(() => import('./Map'))
-const Message = lazy(() => import('./Message'))
-const Notifications = lazy(() => import('./Notifications'))
-const Connections = lazy(() => import('./Connections'))
+const Feed = lazy(() => import('../pages/Feed'));
+const SpecificPost = lazy(() => import('./SpecificPost'));
+const Profile = lazy(() => import('./Profile'));
+const MyNetwork = lazy(() => import('./MyNetwork'));
+const Message = lazy(() => import('./Message'));
+const Notifications = lazy(() => import('./Notifications'));
+const Connections = lazy(() => import('./Connections'));
 
 export function Main() {
-  const dispatch = useDispatch()
-
-  const { loggedInUser } = useSelector((state) => state.userModule)
-  const { activities } = useSelector((state) => state.activityModule)
+  const dispatch = useDispatch();
+  const { loggedInUser } = useSelector((state) => state.userModule);
+  const { activities } = useSelector((state) => state.activityModule);
 
   useEffect(() => {
     if (loggedInUser?._id) {
-      const filterBy = {
-        userId: loggedInUser._id,
-      }
-      dispatch(setFilterByActivities(filterBy))
-      dispatch(loadActivities())
-    } else {
+      // Initialize socket connection when the user logs in
+      socketService.setup();
+
+      const filterBy = { userId: loggedInUser._id };
+      dispatch(setFilterByActivities(filterBy));
+      dispatch(loadActivities());
+
+      // Register socket event listeners
+      socketService.on('add-post', handleAddPost);
+      socketService.on('update-post', handleUpdatePost);
+      socketService.on('remove-post', handleRemovePost);
+
+      socketService.on('add-chat', handleAddChat);
+      socketService.on('update-chat', handleUpdateChat);
+
+      socketService.on('add-connected-users', handleAddConnectedUsers);
+      socketService.on('add-connected-user', handleAddConnectedUser);
+
+      socketService.on('update-comment', handleUpdateComment);
+      socketService.on('add-comment', handleAddComment);
+      socketService.on('remove-comment', handleRemoveComment);
+
+      // Cleanup listeners when component unmounts or when user logs out
+      return () => {
+        socketService.off('add-post', handleAddPost);
+        socketService.off('update-post', handleUpdatePost);
+        socketService.off('remove-post', handleRemovePost);
+
+        socketService.off('add-chat', handleAddChat);
+        socketService.off('update-chat', handleUpdateChat);
+
+        socketService.off('add-connected-users', handleAddConnectedUsers);
+        socketService.off('add-connected-user', handleAddConnectedUser);
+
+        socketService.off('update-comment', handleUpdateComment);
+        socketService.off('add-comment', handleAddComment);
+        socketService.off('remove-comment', handleRemoveComment);
+
+        socketService.terminate(); // Clean up the socket connection
+      };
     }
-  }, [dispatch, loggedInUser?._id])
+  }, [loggedInUser?._id, dispatch]);
 
   useEffect(() => {
-    dispatch(setUnreadActivitiesIds())
-    return () => {
-      dispatch(setUnreadActivitiesIds())
+    if (activities) {
+      dispatch(setUnreadActivitiesIds());
     }
-  }, [activities, dispatch])
-
-  useEffect(() => {
-    socketService.on('add-post', addPost)
-    socketService.on('update-post', updatePost)
-    socketService.on('remove-post', removePost)
-
-    socketService.on('add-chat', addChat)
-    socketService.on('update-chat', updateChat)
-
-    socketService.on('add-connected-users', addConnectedUsers)
-    socketService.on('add-connected-user', addConnectedUser)
-
-    socketService.on('update-comment', updateComment)
-    socketService.on('add-comment', addComment)
-    socketService.on('remove-comment', removeComment)
 
     return () => {
-      socketService.off('add-post', addPost)
-      socketService.off('update-post', updatePost)
-      socketService.off('remove-post', removeComment)
+      dispatch(setUnreadActivitiesIds());
+    };
+  }, [activities, dispatch]);
 
-      socketService.off('add-chat', addChat)
-      socketService.off('update-chat', updateChat)
+  // Event Handlers
+  const handleAddPost = (post) => {
+    dispatch(addPostForSocket(post));
+  };
 
-      socketService.off('add-connected-users', addConnectedUsers)
-      socketService.off('add-connected-user', addConnectedUser)
+  const handleUpdatePost = (post) => {
+    dispatch(updatePostForSocket(post));
+    dispatch(loadActivities()); // Reload activities after post update
+  };
 
-      socketService.off('update-comment', updateComment)
-      socketService.off('add-comment', addComment)
-      socketService.off('remove-comment', removeComment)
-    }
-  }, [])
+  const handleRemovePost = (postId) => {
+    dispatch(removePostForSocket(postId));
+  };
 
-  const addPost = (post) => {
-    dispatch(addPostForSocket(post))
-  }
-  const updatePost = (post) => {
-    dispatch(updatePostForSocket(post))
-    dispatch(loadActivities())
-  }
-  const removePost = (postId) => {
-    dispatch(removePostForSocket(postId))
-  }
+  const handleAddChat = (chat) => {
+    dispatch(addChatForSocket(chat));
+  };
 
-  const addChat = (chat) => {
-    dispatch(addChatForSocket(chat))
-  }
-  const updateChat = (chat) => {
-    dispatch(updateChatForSocket(chat))
-    dispatch(loadActivities())
-  }
-  const addConnectedUsers = (connectedUsers) => {
-    dispatch(addConnectedUsersForSocket(connectedUsers))
-  }
-  const addConnectedUser = (connectedUser) => {
-    dispatch(addConnectedUserForSocket(connectedUser))
-  }
+  const handleUpdateChat = (chat) => {
+    dispatch(updateChatForSocket(chat));
+    dispatch(loadActivities()); // Reload activities after chat update
+  };
 
-  const addComment = (comment) => {
-    dispatch(addCommentForSocket(comment))
-    dispatch(loadActivities())
-  }
-  const updateComment = (comment) => {
-    dispatch(updateCommentForSocket(comment))
-    dispatch(loadActivities())
-  }
-  const removeComment = (comment) => {
-    dispatch(removeCommentForSocket(comment))
-  }
+  const handleAddConnectedUsers = (connectedUsers) => {
+    dispatch(addConnectedUsersForSocket(connectedUsers));
+  };
+
+  const handleAddConnectedUser = (connectedUser) => {
+    dispatch(addConnectedUserForSocket(connectedUser));
+  };
+
+  const handleAddComment = (comment) => {
+    dispatch(addCommentForSocket(comment));
+    dispatch(loadActivities()); // Reload activities after comment update
+  };
+
+  const handleUpdateComment = (comment) => {
+    dispatch(updateCommentForSocket(comment));
+    dispatch(loadActivities()); // Reload activities after comment update
+  };
+
+  const handleRemoveComment = (commentId) => {
+    dispatch(removeCommentForSocket(commentId));
+  };
 
   return (
     <div className="main-page container">
@@ -150,5 +161,5 @@ export function Main() {
         </Switch>
       </Suspense>
     </div>
-  )
+  );
 }

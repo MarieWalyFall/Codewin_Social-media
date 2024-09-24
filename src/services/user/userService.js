@@ -1,6 +1,6 @@
-import { httpService } from '../httpService'
-// import { socketService } from '../socket.service'
-const STORAGE_KEY_LOGGEDIN_USER = 'user'
+import { mockHttpService } from '../mock/mockHttpService'; // Import the mock service
+
+const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser';
 
 export const userService = {
   login,
@@ -11,53 +11,51 @@ export const userService = {
   getById,
   remove,
   update,
-}
+};
 
-const usersCash = {}
+const usersCache = {};
 
-async function getUsers(filterBy) {
-  return await httpService.get(`user`, filterBy)
+async function getUsers(filterBy = null) {
+  return await mockHttpService.get('user', filterBy); // Use mock service
 }
 
 async function getById(userId) {
-  if (usersCash[userId]) return usersCash[userId]
-  else {
-    const user = await httpService.get(`user/${userId}`)
-    usersCash[userId] = user
-    return user
-  }
+  if (usersCache[userId]) return usersCache[userId];
+  const user = await mockHttpService.get(`user/${userId}`); // Use mock service
+  usersCache[userId] = user;
+  return user;
 }
+
 function remove(userId) {
-  return httpService.delete(`user/${userId}`)
+  return mockHttpService.delete(`user/${userId}`); // Use mock service
 }
 
 async function update(user) {
-  const savedUser = await httpService.put(`user/${user._id}`, user)
-  // Handle case in which admin updates other user's details
-  if (getLoggedinUser()._id === savedUser._id) _saveLocalUser(savedUser)
-  return savedUser
+  const savedUser = await mockHttpService.put(`user/${user._id}`, user); // Use mock service
+  if (getLoggedinUser()?._id === savedUser._id) _saveLocalUser(savedUser);
+  return savedUser;
 }
 
 async function login(userCred) {
-  const user = await httpService.post('auth/login', userCred)
-  if (user) return _saveLocalUser(user)
+  const user = await mockHttpService.post('auth/login', userCred); // Use mock service
+  return _saveLocalUser(user);
 }
+
 async function signup(userCred) {
-  const user = await httpService.post('auth/signup', userCred)
-
-  return _saveLocalUser(user)
+  const user = await mockHttpService.post('auth/signup', userCred); // Use mock service
+  return _saveLocalUser(user);
 }
+
 async function logout() {
-  sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
-
-  return await httpService.post('auth/logout')
-}
-
-function _saveLocalUser(user) {
-  sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
-  return user
+  sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER);
+  return await mockHttpService.post('auth/logout'); // Use mock service
 }
 
 function getLoggedinUser() {
-  return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER) || 'null')
+  return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER) || 'null');
+}
+
+function _saveLocalUser(user) {
+  sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user));
+  return user;
 }

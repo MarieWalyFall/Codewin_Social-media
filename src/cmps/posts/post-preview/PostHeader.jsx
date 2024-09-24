@@ -13,7 +13,7 @@ export const PostHeader = ({ post, userPost }) => {
       </section>
     )
 
-  const { imgUrl, profession, fullname } = userPost
+  const { imgUrl, profession, name } = userPost
   return (
     <section className="post-header">
       <div
@@ -26,7 +26,7 @@ export const PostHeader = ({ post, userPost }) => {
       <div className="details">
         <Link to={`/main/profile/${userPost?._id}`}>
           <div className="name">
-            <h3>{fullname}</h3>
+            <h3>{name}</h3>
           </div>
         </Link>
         <div
