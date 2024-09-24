@@ -26,7 +26,8 @@ export const FeedIdentityModule = (props) => {
         <div className="bg">
           <div
             className="profile-container"
-            onClick={() => history.push(`profile/${loggedInUser._id}`)}
+            // onClick={() => history.push(`profile/${loggedInUser._id}`)}
+            onClick={() => history.push(`profile/${loggedInUser.id}`)}
           >
             <img src={imgUrl} alt="" className="img" />
           </div>

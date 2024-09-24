@@ -105,8 +105,8 @@ function Message() {
     const chatToUpdate = { ...chats[chatIdx] }
     chatToUpdate.messages.push(newMsg)
     chatToUpdate.users = [
-      loggedInUser?.fullname,
-      theNotLoggedUserChat?.fullname,
+      loggedInUser?.name,
+      theNotLoggedUserChat?.name,
     ]
     if (isNewChat) {
       dispatch(removeTempChat(chatToUpdate._id))
@@ -193,7 +193,7 @@ function Message() {
         onSendMsg={onSendMsg}
       />
       <div className="right-side-message">
-        <p>This ad could be yours</p>
+        <p></p>
       </div>
     </section>
   )

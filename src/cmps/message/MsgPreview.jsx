@@ -79,7 +79,7 @@ export function MsgPreview({
         </div>
         <div className="details">
           <div className="fullname">
-            <h1>{theNotLoggedUserChat?.fullname}</h1>
+            <h1>{theNotLoggedUserChat?.name}</h1>
 
             <span title={dateToShow}>
               <ReactSnip lines={1} method={'css'}>

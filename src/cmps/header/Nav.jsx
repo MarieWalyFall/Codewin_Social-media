@@ -95,7 +95,7 @@ export const Nav = () => {
             'me-btn' + ' ' + (currPage === 'profile' ? 'current-btn' : '')
           }
         >
-          <Link to={`/main/profile/${loggedInUser?._id}`}>
+          <Link to={`/main/profile/${loggedInUser?.id}`}>
             <p>
               <span>
                 <img
@@ -108,7 +108,7 @@ export const Nav = () => {
             </p>
           </Link>
         </li>
-        <li className="volunteering-btn">
+        {/* <li className="volunteering-btn">
           <p>
             <FontAwesomeIcon
               className={
@@ -133,7 +133,7 @@ export const Nav = () => {
             />
             more
           </p>
-        </li>
+        </li> */}
       </ul>
     </nav>
   )

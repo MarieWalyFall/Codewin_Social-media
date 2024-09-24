@@ -32,7 +32,7 @@ export function MessageThread({
           >
             <img src={chatWith?.imgUrl} alt="" className="img" />
           </div>
-          <div className="fullname">{chatWith?.fullname}</div>
+          <div className="fullname">{chatWith?.name}</div>
         </div>
         <div className="container-logo">
           <span className="logo-menu">

@@ -27,7 +27,7 @@ function Connections() {
     const regex = new RegExp(txt, 'i')
     const filteredCnnections = [...loggedInUser?.connections].filter(
       (connection) => {
-        return regex.test(connection.fullname)
+        return regex.test(connection.name)
       }
     )
     setConnections(filteredCnnections)
@@ -51,7 +51,7 @@ function Connections() {
                 onChange={handleChange}
                 id="fullname"
                 name="fullname"
-                value={field.fullname}
+                value={field.name}
                 placeholder="Search by name"
                 className="connections-input"
               />
@@ -61,7 +61,6 @@ function Connections() {
           <div className="my-connection-list">
             {connections?.map((connection) => (
               <MyConnectionPreview
-                key={connection.userId}
                 connection={connection}
               />
             ))}

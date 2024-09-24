@@ -10,7 +10,7 @@ export function MyConnectionPreview({ connection }) {
   const history = useHistory()
 
   const loadUser = async () => {
-    const user = await userService.getById(connection.userId)
+    const user = await userService.getById(connection.id)
     setUser(() => user)
   }
 
@@ -28,7 +28,7 @@ export function MyConnectionPreview({ connection }) {
         </div>
         <div className="fullname">
           <Link to={`/main/profile/${user._id}`}>
-            <h3>{user.fullname}</h3>
+            <h3>{user.name}</h3>
             <p>{user.profession || ' '}</p>
             {connection?.connected && (
               <p>

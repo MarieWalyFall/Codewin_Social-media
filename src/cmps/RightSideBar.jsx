@@ -26,7 +26,7 @@ export const RightSideBar = () => {
               <div
                 key={users[num]?._id || idx}
                 className="preview"
-                onClick={() => history.push(`profile/${users[num]?._id}`)}
+                onClick={() => history.push(`profile/${users[num]?.id}`)}
               >
                 <div className="img-container">
                   <img src={users[num]?.imgUrl} className="img" alt="" />

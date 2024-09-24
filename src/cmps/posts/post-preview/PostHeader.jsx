@@ -24,7 +24,7 @@ export const PostHeader = ({ post, userPost }) => {
       </div>
 
       <div className="details">
-        <Link to={`/main/profile/${userPost?._id}`}>
+        <Link to={`/main/profile/${userPost?.id}`}>
           <div className="name">
             <h3>{name}</h3>
           </div>
