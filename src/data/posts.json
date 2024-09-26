@@ -1,0 +1,63 @@
+[
+    {
+      "id": "p1",
+      "body": "Excited to announce our new product launch! Stay tuned for more updates.",
+      "imgBodyUrl": "https://via.placeholder.com/600x400",
+      "videoBodyUrl": null,
+      "link": "https://companywebsite.com",
+      "title": "New Product Launch!",
+      "createdAt": "2024-01-15T12:45:00.000Z",
+      "userId": "u1",
+      "fullname": "John Doe",
+      "userProfilePic": "https://via.placeholder.com/150"
+    },
+    {
+      "id": "p2",
+      "body": "Attending an amazing tech conference! Learning so much about the future of AI and machine learning.",
+      "imgBodyUrl": null,
+      "videoBodyUrl": "https://sample-videos.com/video123/mp4/480/asdasdas.mp4",
+      "link": "",
+      "title": "Tech Conference 2024",
+      "createdAt": "2023-01-14T09:30:00.000Z",
+      "userId": "u2",
+      "fullname": "Jane Smith",
+      "userProfilePic": "https://via.placeholder.com/150"
+    },
+    {
+      "id": "p3",
+      "body": "Here's a quick update on our recent project. Things are going smoothly, and we're excited to share more soon.",
+      "imgBodyUrl": "https://via.placeholder.com/500x300",
+      "videoBodyUrl": null,
+      "link": "https://projectupdate.com",
+      "title": "Project Update",
+      "createdAt": "2024-02-13T16:00:00.000Z",
+      "userId": "u3",
+      "fullname": "Alice Cooper",
+      "userProfilePic": "https://via.placeholder.com/150"
+    },
+    {
+      "id": "p4",
+      "body": "Just wrapped up a great meeting with our team. Collaboration is the key to success!",
+      "imgBodyUrl": "https://via.placeholder.com/600x400",
+      "videoBodyUrl": null,
+      "link": "",
+      "title": "Team Meeting",
+      "createdAt": "2024-01-12T14:45:00.000Z",
+      "userId": "u4",
+      "fullname": "Bob Johnson",
+      "userProfilePic": "https://via.placeholder.com/150"
+    },
+    {
+      "id": "p5",
+      "body": "Check out this amazing article I found about digital transformation in the financial industry. A must-read!",
+      "imgBodyUrl": null,
+      "videoBodyUrl": null,
+      "link": "https://financearticle.com",
+      "title": "Digital Transformation in Finance",
+      "createdAt": "2024-04-11T11:15:00.000Z",
+      "userId": "u5",
+      "fullname": "Emily Davis",
+      "userProfilePic": "https://via.placeholder.com/150"
+    }
+  ]
+  

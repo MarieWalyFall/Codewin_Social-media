@@ -1,0 +1,81 @@
+[
+  {
+    "id": "u0",
+    "username": "guest123",
+    "password": "1234",
+    "name": "Guest User",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "Visitor",
+    "location": "Senegal, SN",
+    "connections": [
+      { "id": "u1", "name": "John Doe" },
+      { "id": "u2", "name": "Jane Smith" },
+      { "id": "u3", "name": "Bob Johnson" }
+    ],    
+    "posts": []
+  },
+  {
+    "id": "u1",
+    "username": "johndoe",
+    "password": "password1",
+    "name": "John Doe",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "Software Engineer",
+    "location": "San Francisco, CA",
+    "connections": [
+      { "id": "u2", "name": "Jane Smith" },
+      { "id": "u3", "name": "Bob Johnson" }
+    ],
+    "posts": [
+      { "id": "p1", "title": "My First Post" },
+      { "id": "p2", "title": "React vs Angular" }
+    ]
+  },
+  {
+    "id": "u2",
+    "username": "janesmith",
+    "password": "password2",
+    "name": "Jane Smith",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "Product Manager",
+    "location": "New York, NY",
+    "connections": [
+      { "id": "u1", "name": "John Doe" },
+      { "id": "u3", "name": "Bob Johnson" }
+    ],
+    "posts": [
+      { "id": "p3", "title": "Product Management Best Practices" }
+    ]
+  },
+  {
+    "id": "u3",
+    "username": "bobjohnson",
+    "password": "password3",
+    "name": "Bob Johnson",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "UX Designer",
+    "location": "Los Angeles, CA",
+    "connections": [
+      { "id": "u1", "name": "John Doe" },
+      { "id": "u2", "name": "Jane Smith" }
+    ],
+    "posts": []
+  },
+  {
+    "id": "u4",
+    "username": "alicecooper",
+    "password": "password4",
+    "name": "Alice Cooper",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "Data Scientist",
+    "location": "Boston, MA",
+    "connections": [
+      { "id": "u1", "name": "John Doe" },
+      { "id": "u3", "name": "Bob Johnson" }
+    ],
+    "posts": [
+      { "id": "p4", "title": "AI in Healthcare" },
+      { "id": "p5", "title": "The Future of Machine Learning" }
+    ]
+  }
+]
