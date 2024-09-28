@@ -42,7 +42,7 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
   const onClickChat = () => {
     setMessagesToShow(chat.messages);
     setChatWith(theNotLoggedUserChat);
-    setChooseenChatId(chat.id);
+    setChooseenChatId(chat.id?? "");
   };
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
 
   useEffect(() => {
     setMessagesToShow(chat.messages);
-    setChooseenChatId(chat.id);
+    setChooseenChatId(chat.id?? "");
     return () => {};
   }, [chat, chats]);
 

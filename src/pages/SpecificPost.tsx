@@ -1,31 +1,32 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { PostPreview } from '../components/posts/post-preview/PostPreview';
 import {
   getPostsLength,
   loadPosts,
-  setCurrPage,
+  setCurrPageAction as setCurrPage,
   setFilterByPosts,
 } from 'store/actions/postActions';
-import { Post } from 'types';
+import { FilterByPosts, Post } from 'types';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 
 const SpecificPost: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const params = useParams<{ postId: string }>(); // Type params
   const { posts } = useSelector((state: any) => state.postModule); // Adjust to your state type
 
   useEffect(() => {
-    dispatch(setCurrPage(null));
-    const filterBy = {
-      id: params.postId,
+    dispatch(setCurrPage('feed'));
+    const filterBy: FilterByPosts = {
+      authorId: params.postId,
     };
     dispatch(setFilterByPosts(filterBy));
-    dispatch(loadPosts());
+    dispatch(loadPosts(filterBy));
     dispatch(getPostsLength());
 
     return () => {
-      dispatch(setFilterByPosts(null));
+      dispatch(setFilterByPosts({}));
     };
   }, [dispatch, params.postId]);
 

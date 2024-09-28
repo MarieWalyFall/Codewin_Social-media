@@ -11,7 +11,7 @@
       { "id": "u1", "name": "John Doe" },
       { "id": "u2", "name": "Jane Smith" },
       { "id": "u3", "name": "Bob Johnson" }
-    ],    
+    ],
     "posts": []
   },
   {
@@ -27,8 +27,8 @@
       { "id": "u3", "name": "Bob Johnson" }
     ],
     "posts": [
-      { "id": "p1", "title": "My First Post" },
-      { "id": "p2", "title": "React vs Angular" }
+      { "id": "p1", "title": "Lancement de nouveau produit !" },
+      { "id": "p2", "title": "Conférence Technologique 2024" }
     ]
   },
   {
@@ -43,9 +43,7 @@
       { "id": "u1", "name": "John Doe" },
       { "id": "u3", "name": "Bob Johnson" }
     ],
-    "posts": [
-      { "id": "p3", "title": "Product Management Best Practices" }
-    ]
+    "posts": [{ "id": "p3", "title": "Mise à jour du projet" }]
   },
   {
     "id": "u3",
@@ -59,7 +57,7 @@
       { "id": "u1", "name": "John Doe" },
       { "id": "u2", "name": "Jane Smith" }
     ],
-    "posts": []
+    "posts": [{ "id": "p4", "title": "Réunion d'équipe" }]
   },
   {
     "id": "u4",
@@ -74,8 +72,109 @@
       { "id": "u3", "name": "Bob Johnson" }
     ],
     "posts": [
-      { "id": "p4", "title": "AI in Healthcare" },
-      { "id": "p5", "title": "The Future of Machine Learning" }
+      { "id": "p5", "title": "Transformation numérique dans la finance" },
+      { "id": "p6", "title": "Conception pour l'accessibilité" }
+    ]
+  },
+  {
+    "id": "u5",
+    "username": "charliebrown",
+    "password": "password5",
+    "name": "Charlie Brown",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "Graphic Designer",
+    "location": "Chicago, IL",
+    "connections": [
+      { "id": "u6", "name": "Emma Watson" },
+      { "id": "u7", "name": "Michael Scott" }
+    ],
+    "posts": [
+      { "id": "p7", "title": "Comprendre la théorie des couleurs" },
+      { "id": "p8", "title": "Atelier sur le design réactif" }
+    ]
+  },
+  {
+    "id": "u6",
+    "username": "emmawatson",
+    "password": "password6",
+    "name": "Emma Watson",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "Web Developer",
+    "location": "Austin, TX",
+    "connections": [
+      { "id": "u5", "name": "Charlie Brown" },
+      { "id": "u7", "name": "Michael Scott" }
+    ],
+    "posts": [
+      { "id": "p9", "title": "Comprendre la visualisation des données" }
+    ]
+  },
+  {
+    "id": "u7",
+    "username": "michaelscott",
+    "password": "password7",
+    "name": "Michael Scott",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "Sales Manager",
+    "location": "Scranton, PA",
+    "connections": [
+      { "id": "u5", "name": "Charlie Brown" },
+      { "id": "u6", "name": "Emma Watson" }
+    ],
+    "posts": [
+      { "id": "p10", "title": "Techniques de vente" },
+      { "id": "p11", "title": "Relations avec les clients" }
+    ]
+  },
+  {
+    "id": "u8",
+    "username": "davidbecker",
+    "password": "password8",
+    "name": "David Becker",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "Data Analyst",
+    "location": "Seattle, WA",
+    "connections": [
+      { "id": "u1", "name": "John Doe" },
+      { "id": "u4", "name": "Alice Cooper" }
+    ],
+    "posts": [
+      { "id": "p12", "title": "Data Visualization Techniques" },
+      { "id": "p13", "title": "Understanding Big Data" }
+    ]
+  },
+  {
+    "id": "u9",
+    "username": "sarahconnor",
+    "password": "password9",
+    "name": "Sarah Connor",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "Cybersecurity Expert",
+    "location": "Detroit, MI",
+    "connections": [
+      { "id": "u2", "name": "Jane Smith" },
+      { "id": "u3", "name": "Bob Johnson" }
+    ],
+    "posts": [
+      { "id": "p14", "title": "L'avenir de la cybersécurité" },
+      { "id": "p15", "title": "Protéger votre identité numérique" }
+    ]
+  },
+  {
+    "id": "u10",
+    "username": "tonystark",
+    "password": "password10",
+    "name": "Tony Stark",
+    "imgUrl": "https://via.placeholder.com/150",
+    "profession": "Industrial Designer",
+    "location": "New York, NY",
+    "connections": [
+      { "id": "u1", "name": "John Doe" },
+      { "id": "u8", "name": "David Becker" }
+    ],
+    "posts": [
+      { "id": "p16", "title": "Innovations dans la technologie" },
+      { "id": "p17", "title": "L'impact de l'IA sur le design" }
     ]
   }
 ]

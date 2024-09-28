@@ -1,10 +1,8 @@
 import React, { lazy, Suspense, useEffect } from 'react';
-import { Routes } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 
 import { socketService } from '../services/socket.service';
 import { Header } from '../components/header/Header';
-import PrivateRoute from '../components/PrivateRoute';
 
 import {
   addConnectedUserForSocket,
@@ -28,6 +26,8 @@ import {
   updatePostForSocket,
 } from '../store/actions/postActions';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { Routes, Route } from 'react-router-dom';
 
 const Feed = lazy(() => import('./Feed'));
 const SpecificPost = lazy(() => import('./SpecificPost'));
@@ -38,15 +38,15 @@ const Notifications = lazy(() => import('./Notifications'));
 const Connections = lazy(() => import('./Connections/Connections'));
 
 export function Main() {
-  const dispatch = useDispatch();
-  const { loggedInUser } = useSelector((state) => state.userModule);
-  const { activities } = useSelector((state) => state.activityModule);
+  const dispatch = useAppDispatch();
+  const { loggedInUser } = useSelector((state : any) => state.userModule);
+  const { activities } = useSelector((state : any) => state.activityModule);
 
   useEffect(() => {
     if (loggedInUser?.id) {
       // Initialize socket connection when the user logs in
-      socketService.setup();
-
+      // socketService.setup();
+      console.log('Connect');
       const filterBy = { userId: loggedInUser.id };
       dispatch(setFilterByActivities(filterBy));
       dispatch(loadActivities());
@@ -139,22 +139,20 @@ export function Main() {
   };
 
   const handleRemoveComment = (commentId: string) => {
-    dispatch(removeCommentForSocket(commentId));
+    dispatch(removeCommentForSocket({id: commentId}));
   };
 
   return (
     <div className="main-page container">
       <Header />
       <Suspense fallback={<LoadingIndicator/>}>
-        <Routes>
-          <PrivateRoute path="/main/feed" component={Feed} />
-          <PrivateRoute path="/main/post/:userId/:postId" component={SpecificPost} />
-          <PrivateRoute path="/main/profile/:userId" component={Profile} />
-          <PrivateRoute path="/main/mynetwork" component={MyNetwork} />
-          <PrivateRoute path="/main/message/:userId?" component={Message} />
-          <PrivateRoute path="/main/notifications" component={Notifications} />
-          <PrivateRoute path="/main/connections" component={Connections} />
-        </Routes>
+      <Routes>
+          <Route path="/main/feed" element={<Feed />} />
+          <Route path="/main/profile/:id" element={<Profile />} />
+          <Route path="/main/mynetwork" element={<MyNetwork />} />
+          <Route path="/main/message" element={<Message />} />
+          <Route path="/main/notifications" element={<Notifications />} />
+     </Routes>
       </Suspense>
     </div>
   );

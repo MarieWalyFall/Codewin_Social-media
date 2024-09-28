@@ -1,7 +1,6 @@
 import { User } from 'types';
-import users from '../../data/users.json'; // Import user data
 
-let usersData: User[] = [...users]; // In-memory database for users
+const API_URL = 'http://localhost:3030/users'; // Adjust the port if necessary
 
 export const mockUserService = {
   getUsers,
@@ -13,49 +12,85 @@ export const mockUserService = {
 };
 
 // Get all users
-function getUsers(): Promise<User[]> {
-  return Promise.resolve(usersData);
+async function getUsers(): Promise<User[]> {
+  const response = await fetch(API_URL);
+  if (!response.ok) {
+    throw new Error('Failed to fetch users');
+  }
+  return response.json();
 }
 
 // Get a single user by ID
-function getUserById(userId: string): Promise<User> {
-  const user = usersData.find((u) => u.id === userId);
-  return user ? Promise.resolve(user) : Promise.reject('User not found');
+async function getUserById(userId: string): Promise<User> {
+  const response = await fetch(`${API_URL}/${userId}`);
+  if (!response.ok) {
+    throw new Error('User not found');
+  }
+  return response.json();
 }
 
 // Create a new user
-function createUser(user: Omit<User, 'id'>): Promise<User> {
-  const newUser: User = {
-    ...user,
-    id: 'u' + (usersData.length + 1), // Generate new ID
-  };
-  usersData.push(newUser);
-  return Promise.resolve(newUser);
+async function createUser(user: Omit<User, 'id'>): Promise<User> {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user), // No need to generate an ID here
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to create user');
+  }
+
+  return response.json();
 }
 
 // Update an existing user
-function updateUser(userId: string, user: Partial<Omit<User, 'id' | 'createdAt'>>): Promise<User> {
-  const index = usersData.findIndex((u) => u.id === userId);
-  if (index === -1) return Promise.reject('User not found');
+async function updateUser(
+  userId: string,
+  user: Partial<Omit<User, 'id' | 'createdAt'>>
+): Promise<User> {
+  const response = await fetch(`${API_URL}/${userId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
+  });
 
-  // Update user data and set updatedAt
-  usersData[index] = { ...usersData[index], ...user, updatedAt: new Date().toISOString() };
-  return Promise.resolve(usersData[index]);
+  if (!response.ok) {
+    throw new Error('User not found or failed to update');
+  }
+
+  return response.json();
 }
 
 // Delete a user
-function deleteUser(userId: string): Promise<void> {
-  const index = usersData.findIndex((u) => u.id === userId);
-  if (index === -1) return Promise.reject('User not found');
+async function deleteUser(userId: string): Promise<void> {
+  const response = await fetch(`${API_URL}/${userId}`, {
+    method: 'DELETE',
+  });
 
-  usersData.splice(index, 1);
-  return Promise.resolve();
+  if (!response.ok) {
+    throw new Error('User not found or failed to delete');
+  }
 }
 
 // Login a user
-function loginUser(credentials: { email: string; password: string }): Promise<User> {
-  const user = usersData.find(
+async function loginUser(credentials: {
+  email: string;
+  password: string;
+}): Promise<User> {
+  const response = await fetch(API_URL);
+  if (!response.ok) {
+    throw new Error('Failed to fetch users for login');
+  }
+
+  const users: User[] = await response.json();
+  const user = users.find(
     (u) => u.email === credentials.email && u.password === credentials.password
   );
+
   return user ? Promise.resolve(user) : Promise.reject('Invalid credentials');
 }

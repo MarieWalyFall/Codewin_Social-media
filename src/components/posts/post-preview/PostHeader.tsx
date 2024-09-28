@@ -1,21 +1,14 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TimeAgo from 'react-timeago';
 import { Link, useNavigate } from 'react-router-dom';
-import { Post } from 'types';
-
-
-
-interface UserPost {
-  id: string;
-  imgUrl: string;
-  profession: string;
-  name: string;
-}
+import { Post, User } from 'types';
+import { LoadingIndicator } from 'components/LoadingIndicator';
+import { FaLocationArrow } from 'react-icons/fa';
+import { FaLocationDot } from 'react-icons/fa6';
 
 interface PostHeaderProps {
   post: Partial<Post>;
-  userPost: UserPost | null;
+  userPost: Partial<User> | null;
 }
 
 export const PostHeader: React.FC<PostHeaderProps> = ({ post, userPost }) => {
@@ -24,7 +17,7 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ post, userPost }) => {
   if (!userPost)
     return (
       <section className="post-header">
-       Loading
+        <LoadingIndicator />
       </section>
     );
 
@@ -40,25 +33,23 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ post, userPost }) => {
       </div>
 
       <div className="details">
-        <Link to={`/main/profile/${userPost.id}`}>
+        <Link to={`/profile/${userPost.id}`}>
           <div className="name">
             <h3>{name}</h3>
           </div>
         </Link>
         <div
           className="time-and-description-container"
-          onClick={() => navigate(`/main/post/${post.userId}/${post.id}`)}
+          onClick={() => navigate(`/post/${post.userId}/${post.id}`)}
         >
           <div className="description">
             <p>{profession}</p>
           </div>
           <div className="time">
-            <span>
-             
-            </span>{' '}
+            <span></span>{' '}
             {post?.position?.lat && post?.position?.lng && (
               <span className="logo-location">
-               Icon
+                <FaLocationDot />
               </span>
             )}
           </div>

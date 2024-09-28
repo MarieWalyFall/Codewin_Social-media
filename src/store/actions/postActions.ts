@@ -2,43 +2,57 @@ import { Dispatch } from 'redux';
 import { postService } from 'services/posts/postService';
 import { commentService } from 'services/comment/commentService';
 import { socketService } from 'services/socket.service';
-import { Post, Comment, FilterByPosts, PostAction } from 'types'; 
+import {
+  Post,
+  Comment,
+  FilterByPosts,
+  PostAction,
+  CommentData,
+  SetCurrPageAction,
+} from 'types';
+import {
+  addFilterByPosts,
+  addPost,
+  setCurrPage,
+  setPosts,
+  updatePost,
+  setFilterByPosts as setFilterByPostsAction,
+} from 'store/reducers/postReducer';
 
-
-export function setCurrPage(page: number) {
-  return async (dispatch: Dispatch<PostAction>) => {
+export function setCurrPageAction(page: string) {
+  return async (dispatch: Dispatch) => {
     try {
-      dispatch({ type: 'SET_CURR_PAGE', page });
+      dispatch(setCurrPage(page));
     } catch (err) {
       console.log('err:', err);
     }
   };
 }
 
-export function addFilterByPosts(filterByPosts: FilterByPosts) {
-  return async (dispatch: Dispatch<PostAction>) => {
-    dispatch({ type: 'ADD_FILTER_BY_POSTS', filterByPosts });
+export function addFilterByPostsAction(filterByPosts: FilterByPosts) {
+  return async (dispatch: Dispatch) => {
+    dispatch(addFilterByPosts(filterByPosts));
   };
 }
 
 export function setFilterByPosts(filterByPosts: FilterByPosts) {
-  return async (dispatch: Dispatch<PostAction>) => {
-    dispatch({ type: 'SET_FILTER_BY_POSTS', filterByPosts });
+  return async (dispatch: Dispatch) => {
+    dispatch(setFilterByPostsAction(filterByPosts));
   };
 }
 
-export function setNextPage(number: number) {
+export function setNextPage(page: string) {
   return async (dispatch: Dispatch<PostAction>) => {
-    dispatch({ type: 'SET_NEXT_PAGE', page: number });
+    dispatch({ type: 'SET_NEXT_PAGE', payload: page });
   };
 }
 
 export function loadPosts() {
-  return async (dispatch: Dispatch<PostAction>, getState: () => any) => {
+  return async (dispatch: Dispatch, getState: () => any) => {
     try {
       const { filterByPosts } = getState().postModule;
       const posts = await postService.query(filterByPosts);
-      dispatch({ type: 'SET_POSTS', posts });
+      dispatch(setPosts(posts));
     } catch (err) {
       console.log('err:', err);
     }
@@ -50,7 +64,7 @@ export function getPostsLength() {
     try {
       const { filterByPosts } = getState().postModule;
       const postsLength = await postService.getPostsLength(filterByPosts);
-      dispatch({ type: 'SET_POSTS_LENGTH', postsLength });
+      dispatch({ type: 'SET_POSTS_LENGTH', payload: postsLength });
     } catch (err) {
       console.log('err:', err);
     }
@@ -67,23 +81,21 @@ export function addPosts() {
         page: pageNumber,
       };
 
-      dispatch({ type: 'SET_IS_POSTS_LOADING', isLoading: true });
+      dispatch({ type: 'SET_IS_POSTS_LOADING', payload: true });
       const posts = await postService.query(newFilterBy);
-      dispatch({ type: 'ADD_POSTS', posts });
-      dispatch({ type: 'SET_IS_POSTS_LOADING', isLoading: false });
+      dispatch({ type: 'ADD_POSTS', payload: posts });
+      dispatch({ type: 'SET_IS_POSTS_LOADING', payload: false });
     } catch (err) {
       console.log('err:', err);
     }
   };
 }
 
-export function savePost(post: Post) {
-  return async (dispatch: Dispatch<PostAction>) => {
+export function savePost(post: Partial<Post>) {
+  return async (dispatch: Dispatch) => {
     try {
       const addedPost = await postService.save(post);
-      post.id
-        ? dispatch({ type: 'UPDATE_POST', post: addedPost })
-        : dispatch({ type: 'ADD_POST', post: addedPost });
+      post.id ? dispatch(updatePost(addedPost)) : dispatch(addPost(addedPost));
 
       post.id
         ? socketService.emit('post-updated', addedPost)
@@ -101,20 +113,20 @@ export function removePost(postId: string) {
     try {
       await postService.remove(postId);
       socketService.emit('post-removed', postId);
-      dispatch({ type: 'REMOVE_POST', postId });
+      dispatch({ type: 'REMOVE_POST', payload: postId });
     } catch (err) {
       console.log('err:', err);
     }
   };
 }
 
-export function saveComment(comment: Comment) {
+export function saveComment(comment: CommentData) {
   return async (dispatch: Dispatch<PostAction>) => {
     try {
       const savedComment = await commentService.save(comment);
       comment.id
-        ? dispatch({ type: 'UPDATE_COMMENT', comment: savedComment })
-        : dispatch({ type: 'ADD_COMMENT', comment: savedComment });
+        ? dispatch({ type: 'UPDATE_COMMENT', payload: savedComment })
+        : dispatch({ type: 'ADD_COMMENT', payload: savedComment });
 
       comment.id
         ? socketService.emit('comment-updated', savedComment)
@@ -132,18 +144,19 @@ export function removeComment(comment: Comment) {
     try {
       await commentService.remove(comment.id); // Ensure this is async
       socketService.emit('comment-removed', comment); // Emit socket event
-      dispatch({ type: 'REMOVE_COMMENT', comment }); // Dispatch actual action
+      dispatch({ type: 'REMOVE_COMMENT', payload: comment }); // Dispatch actual action
     } catch (err) {
       console.error('Failed to remove comment:', err);
     }
   };
 }
+
 // HANDLE SOCKETS
 
 export function updatePostForSocket(post: Post) {
   return async (dispatch: Dispatch<PostAction>) => {
     try {
-      dispatch({ type: 'UPDATE_POST', post });
+      dispatch({ type: 'UPDATE_POST', payload: post });
       return post;
     } catch (err) {
       console.log('err:', err);
@@ -154,7 +167,7 @@ export function updatePostForSocket(post: Post) {
 export function addPostForSocket(post: Post) {
   return async (dispatch: Dispatch<PostAction>) => {
     try {
-      dispatch({ type: 'ADD_POST', post });
+      dispatch({ type: 'ADD_POST', payload: post });
       return post;
     } catch (err) {
       console.log('err:', err);
@@ -165,7 +178,7 @@ export function addPostForSocket(post: Post) {
 export function removePostForSocket(postId: string) {
   return async (dispatch: Dispatch<PostAction>) => {
     try {
-      dispatch({ type: 'REMOVE_POST', postId });
+      dispatch({ type: 'REMOVE_POST', payload: postId });
     } catch (err) {
       console.log('err:', err);
     }
@@ -175,7 +188,7 @@ export function removePostForSocket(postId: string) {
 export function updateCommentForSocket(comment: Comment) {
   return async (dispatch: Dispatch<PostAction>) => {
     try {
-      dispatch({ type: 'UPDATE_COMMENT', comment });
+      dispatch({ type: 'UPDATE_COMMENT', payload: comment });
       return comment;
     } catch (err) {
       console.log('err:', err);
@@ -186,7 +199,7 @@ export function updateCommentForSocket(comment: Comment) {
 export function addCommentForSocket(comment: Comment) {
   return async (dispatch: Dispatch<PostAction>) => {
     try {
-      dispatch({ type: 'ADD_COMMENT', comment });
+      dispatch({ type: 'ADD_COMMENT', payload: comment });
       return comment;
     } catch (err) {
       console.log('err:', err);
@@ -197,7 +210,7 @@ export function addCommentForSocket(comment: Comment) {
 export function removeCommentForSocket(comment: Comment) {
   return async (dispatch: Dispatch<PostAction>) => {
     try {
-      dispatch({ type: 'REMOVE_COMMENT', comment });
+      dispatch({ type: 'REMOVE_COMMENT', payload: comment });
     } catch (err) {
       console.log('err:', err);
     }

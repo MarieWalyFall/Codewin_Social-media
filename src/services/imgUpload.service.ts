@@ -1,4 +1,4 @@
-export const uploadImg = (ev) => {
+export const uploadImg = (ev : any) => {
   //Defining our variables
   const UPLOAD_PRESET = 'social_n_shlomi' //insert yours
   const CLOUD_NAME = 'duajg3ah1' //insert yours
@@ -20,7 +20,7 @@ export const uploadImg = (ev) => {
     })
 }
 
-export const uploadVid = (ev) => {
+export const uploadVid = (ev : any) => {
   //Defining our variables
   const UPLOAD_PRESET = 'social_n_shlomi' //insert yours
   const CLOUD_NAME = 'duajg3ah1' //insert yours

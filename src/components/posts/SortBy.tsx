@@ -1,7 +1,8 @@
 import React from 'react';
+import { SortByOptions } from 'types';
 
 interface SortByProps {
-  onSetSort: (value: string) => void;
+  onSetSort: (value: SortByOptions) => void;
 }
 
 export const SortBy: React.FC<SortByProps> = ({ onSetSort }) => {
@@ -15,11 +16,11 @@ export const SortBy: React.FC<SortByProps> = ({ onSetSort }) => {
             name="sortBy"
             id="opts"
             onChange={(e) => {
-              onSetSort(e.target.value);
+              onSetSort(e.target.value as SortByOptions);
             }}
           >
-            <option value="-1">Newest</option>
-            <option value="1">Oldest</option>
+            <option value="date-newest">Newest</option>
+            <option value="date-oldest">Oldest</option>
           </select>
         </label>
       </form>

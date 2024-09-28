@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaClipboard, FaTrash } from 'react-icons/fa';
 
 interface PostMenuProps {
   toggleMenu: () => void;
@@ -44,7 +44,7 @@ export const PostMenu: React.FC<PostMenuProps> = ({
               className="delete-container"
               onClick={() => setIsAskAgain((prev) => !prev)}
             >
-              Icon
+              <FaTrash />
               <p>Delete post</p>
             </button>
           </div>
@@ -71,7 +71,7 @@ export const PostMenu: React.FC<PostMenuProps> = ({
               copyToClipBoard();
             }}
           >
-            Icon
+            <FaClipboard />
             <p>Copy link to post</p>
           </button>
         </div>

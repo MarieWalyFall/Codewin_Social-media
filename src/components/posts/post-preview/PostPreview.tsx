@@ -5,27 +5,26 @@ import { PostActions } from './PostActions';
 import { PostBody } from './PostBody';
 import { PostHeader } from './PostHeader';
 import { SocialDetails } from './SocialDetails';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { userService } from 'services/user/userService';
 import { PostMenu } from './PostMenu';
 import { savePost, removePost } from 'store/actions/postActions';
 import { saveActivity } from 'store/actions/activityAction';
 import { ImgPreview } from 'components/profile/ImgPreview';
 import { useParams } from 'react-router-dom';
-import { Post, LoggedInUser } from 'types';
-
-interface PostPreviewProps  {
-  
-  post: Partial<Post> }
-
-interface RootState {
-  userModule: 
-    {loggedInUser: LoggedInUser}
-  ;
+import { Post, LoggedInUser, NewActivity } from 'types';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { TiThMenu } from 'react-icons/ti';
+interface PostPreviewProps {
+  post: Partial<Post>;
 }
 
-export const PostPreview: React.FC<PostPreviewProps> = ( {post} ) => {
-  const dispatch = useDispatch();
+interface RootState {
+  userModule: { loggedInUser: LoggedInUser };
+}
+
+export const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
+  const dispatch = useAppDispatch();
   const params = useParams<{ postId?: string }>();
 
   const [userPost, setUserPost] = useState<any | null>(null);
@@ -51,6 +50,7 @@ export const PostPreview: React.FC<PostPreviewProps> = ( {post} ) => {
   const loadUserPost = async (id: string) => {
     if (!post) return;
     const userPost = await userService.getById(id);
+    console.log(userPost);
     setUserPost(userPost);
   };
 
@@ -90,11 +90,12 @@ export const PostPreview: React.FC<PostPreviewProps> = ( {post} ) => {
 
     dispatch(savePost(post)).then((savedPost) => {
       if (savedPost?.id === post.id) {
-        const newActivity = {
+        const newActivity: NewActivity = {
           type: isAlreadyLike ? 'remove-like' : 'add-like',
           createdBy: loggedInUser.id,
           createdTo: post.userId,
-          postId: post.id,
+          postId: post.id ?? '',
+          createdAt: new Date(),
         };
         dispatch(saveActivity(newActivity));
       }
@@ -102,7 +103,7 @@ export const PostPreview: React.FC<PostPreviewProps> = ( {post} ) => {
   };
 
   const onRemovePost = () => {
-    dispatch(removePost(post.id));
+    if (post.id) dispatch(removePost(post.id));
   };
 
   const copyToClipBoard = () => {
@@ -115,7 +116,7 @@ export const PostPreview: React.FC<PostPreviewProps> = ( {post} ) => {
   return (
     <section className="post-preview">
       <div className="menu" onClick={toggleMenu}>
-        Icon
+        <TiThMenu />
       </div>
       <PostHeader post={post} userPost={userPost} />
       <PostBody
@@ -160,7 +161,7 @@ export const PostPreview: React.FC<PostPreviewProps> = ( {post} ) => {
       {isShowImgPreview && (
         <ImgPreview
           toggleShowImg={toggleShowImgPreview}
-          imgUrl={post.imgBodyUrl? post.imgBodyUrl: ''}
+          imgUrl={post.imgBodyUrl ? post.imgBodyUrl : ''}
           title="Image"
         />
       )}

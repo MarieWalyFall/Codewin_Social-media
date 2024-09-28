@@ -1,30 +1,27 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Posts } from 'components/posts/Posts';
 import { RightSideBar } from 'components/RightSideBar';
 import { LeftSideBar } from 'components/LeftSideBar';
-import { setCurrPage, setNextPage } from 'store/actions/postActions';
-import loadingGif from 'assets/imgs/loading-gif.gif';
+import {
+  setCurrPageAction as setCurrPage,
+  setNextPage,
+} from 'store/actions/postActions';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import Loader from './Loader';
+import { refreshSession } from 'store/actions/userActions';
 
 const Feed: React.FC = () => {
   const { loggedInUser } = useSelector((state: any) => state.userModule);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setCurrPage('home'));
-    dispatch(setNextPage(1));
+    dispatch(setCurrPage('feed'));
+    dispatch(setNextPage('mynetwork'));
   }, [dispatch]);
 
   if (!loggedInUser) {
-    return (
-      <section className="feed-load">
-        <div className="loading">
-          <span>
-            <img src={loadingGif} alt="Loading..." />
-          </span>
-        </div>
-      </section>
-    );
+    return <Loader />;
   }
 
   return (

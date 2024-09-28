@@ -1,4 +1,5 @@
-import { Post, FilterByPosts, Action } from "types";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Post, FilterByPosts, Comment } from 'types'; // Import the required types
 
 interface PostState {
   baseUrl: string;
@@ -10,12 +11,11 @@ interface PostState {
   postsLength: number | null;
 }
 
-
-
 // Initialize state
 const INITIAL_STATE: PostState = {
-  baseUrl: process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:3030/',
-  posts: null,
+  baseUrl:
+    process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:3030/',
+  posts: [],
   filterByPosts: null,
   currPage: null,
   pageNumber: 1,
@@ -23,110 +23,103 @@ const INITIAL_STATE: PostState = {
   postsLength: null,
 };
 
-// Reducer function
-export function postReducer(state: PostState = INITIAL_STATE, action: Action): PostState {
-  switch (action.type) {
-    case 'SET_CURR_PAGE':
-      return {
-        ...state,
-        currPage: action.page,
-      };
-    case 'SET_NEXT_PAGE':
-      return {
-        ...state,
-        pageNumber: action.page ? action.page : state.pageNumber + 1,
-      };
-    case 'SET_IS_POSTS_LOADING':
-      return {
-        ...state,
-        isPostsLoading: action.isLoading,
-      };
-    case 'SET_POSTS_LENGTH':
-      return {
-        ...state,
-        postsLength: action.postsLength,
-      };
-    case 'ADD_FILTER_BY_POSTS':
-      return {
-        ...state,
-        filterByPosts: { ...state.filterByPosts, ...action.filterByPosts },
-      };
-    case 'SET_FILTER_BY_POSTS':
-      return {
-        ...state,
-        filterByPosts: action.filterByPosts,
-      };
-    case 'SET_POSTS':
-      return {
-        ...state,
-        posts: [...action.posts],
-      };
-    case 'ADD_POST':
-      return {
-        ...state,
-        posts: [action.post, ...(state.posts || [])],
-      };
-    case 'ADD_POSTS':
-      return {
-        ...state,
-        posts: [...(state.posts || []), ...action.posts],
-      };
-    case 'UPDATE_POST':
-      return {
-        ...state,
-        posts: state.posts?.map((post) => {
-          return post.id === action.post.id ? action.post : post;
-        }) || null,
-      };
-    case 'REMOVE_POST':
-      return {
-        ...state,
-        posts: state.posts?.filter((post) => post.id !== action.postId) || null,
-      };
-    case 'ADD_COMMENT':
-      const { comment } = action;
-      return {
-        ...state,
-        posts: state.posts?.map((post) => {
+const postSlice = createSlice({
+  name: 'posts',
+  initialState: INITIAL_STATE,
+  reducers: {
+    setCurrPage: (state, action: PayloadAction<string | null>) => {
+      state.currPage = action.payload;
+    },
+    setNextPage: (state, action: PayloadAction<number | undefined>) => {
+      state.pageNumber = action.payload ?? state.pageNumber + 1;
+    },
+    setIsPostsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isPostsLoading = action.payload;
+    },
+    setPostsLength: (state, action: PayloadAction<number>) => {
+      state.postsLength = action.payload;
+    },
+    addFilterByPosts: (state, action: PayloadAction<FilterByPosts>) => {
+      state.filterByPosts = { ...state.filterByPosts, ...action.payload };
+    },
+    setFilterByPosts: (state, action: PayloadAction<FilterByPosts>) => {
+      state.filterByPosts = action.payload;
+    },
+    setPosts: (state, action: PayloadAction<Post[]>) => {
+      state.posts = [...action.payload];
+    },
+    addPost: (state, action: PayloadAction<Post>) => {
+      state.posts = [action.payload, ...(state.posts || [])];
+    },
+    addPosts: (state, action: PayloadAction<Post[]>) => {
+      state.posts = [...(state.posts || []), ...action.payload];
+    },
+    updatePost: (state, action: PayloadAction<Post>) => {
+      state.posts =
+        state.posts?.map((post) =>
+          post.id === action.payload.id ? action.payload : post
+        ) || null;
+    },
+    removePost: (state, action: PayloadAction<string>) => {
+      state.posts =
+        state.posts?.filter((post) => post.id !== action.payload) || null;
+    },
+    addComment: (state, action: PayloadAction<Comment>) => {
+      const comment = action.payload;
+      state.posts =
+        state.posts?.map((post) => {
           if (post.id === comment.postId) {
-            const postToReturn = { ...post };
-            postToReturn.comments.unshift(comment);
-            return postToReturn;
+            post.comments.unshift(comment);
+            return post;
           }
           return post;
-        }) || null,
-      };
-    case 'UPDATE_COMMENT':
-      return {
-        ...state,
-        posts: state.posts?.map((post) => {
-          if (post.id === action.comment.postId) {
+        }) || null;
+    },
+    updateComment: (state, action: PayloadAction<Comment>) => {
+      const updatedComment = action.payload;
+      state.posts =
+        state.posts?.map((post) => {
+          if (post.id === updatedComment.postId) {
             const idx = post.comments.findIndex(
-              (c) => c.id === action.comment.id
+              (c) => c.id === updatedComment.id
             );
-            post.comments[idx] = action.comment;
-            return post;
-          } else {
+            post.comments[idx] = updatedComment;
             return post;
           }
-        }) || null,
-      };
-    case 'REMOVE_COMMENT':
-      return {
-        ...state,
-        posts: state.posts?.map((post) => {
-          if (post.id === action.comment.postId) {
-            const idx = post.comments.findIndex(
-              (c) => c.id === action.comment.id
-            );
-            post.comments.splice(idx, 1);
-            return post;
-          } else {
+          return post;
+        }) || null;
+    },
+    removeComment: (state, action: PayloadAction<Comment>) => {
+      const comment = action.payload;
+      state.posts =
+        state.posts?.map((post) => {
+          if (post.id === comment.postId) {
+            post.comments = post.comments.filter((c) => c.id !== comment.id);
             return post;
           }
-        }) || null,
-      };
-    default:
-      return state;
-  }
-}
+          return post;
+        }) || null;
+    },
+  },
+});
+
+// Export actions generated by createSlice
+export const {
+  setCurrPage,
+  setNextPage,
+  setIsPostsLoading,
+  setPostsLength,
+  addFilterByPosts,
+  setFilterByPosts,
+  setPosts,
+  addPost,
+  addPosts,
+  updatePost,
+  removePost,
+  addComment,
+  updateComment,
+  removeComment,
+} = postSlice.actions;
+
+// Export the reducer to be used in the store setup
+export const postReducer = postSlice.reducer;

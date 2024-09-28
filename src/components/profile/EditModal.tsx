@@ -1,9 +1,9 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch } from 'react-redux';
 import { updateUser } from '../../store/actions/userActions';
-import { uploadImg } from '../../services/imgUpload.service';
+import { uploadImg } from 'services/imgUpload.service';
 import { User } from 'types';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 
 interface EditModalProps {
   toggleShowEditModal: () => void;
@@ -11,7 +11,7 @@ interface EditModalProps {
 }
 
 export const EditModal: React.FC<EditModalProps> = ({ toggleShowEditModal, user }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   
   const [userToUpdate, setUserToUpdate] = useState({
     age: user.age || '',

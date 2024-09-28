@@ -1,59 +1,69 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { login, signup, logout } from '../store/actions/userActions'
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { login, signup, logout } from '../store/actions/userActions';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { ReactComponent as Logo } from 'assets/imgs/Logo.svg';
+import styled from 'styled-components';
 
+const LogoStyle = styled(Logo)`
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+`;
 export const Signup = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const [signin, setIsSignin] = useState(true)
+  const [signin, setIsSignin] = useState(true);
   const [cred, setCred] = useState({
     username: '',
     password: '',
     fullname: '',
-  })
+  });
 
-  const { loggedInUser } = useSelector((state) => state.userModule)
+  const { loggedInUser } = useSelector((state: any) => state.userModule);
 
-  const handleChange = async ({ target }) => {
-    const field = target.name
-    let value = target.type === 'number' ? +target.value || '' : target.value
-    setCred((prevCred) => ({ ...prevCred, [field]: value }))
-  }
+  // Typing the event parameter
+  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { target } = event; // Destructuring target from the event
+    const field = target.name;
+    let value = target.type === 'number' ? +target.value || '' : target.value;
+    setCred((prevCred) => ({ ...prevCred, [field]: value }));
+  };
 
   const cleanFields = () =>
-    setCred(() => ({ username: '', password: '', fullname: '' }))
+    setCred(() => ({ username: '', password: '', fullname: '' }));
 
   const doLogin = async () => {
     dispatch(login(cred)).then((user) => {
-      if (user) navigate('/main/feed')
-    })
-    cleanFields()
-  }
+      if (user) navigate('/feed');
+    });
+    cleanFields();
+  };
 
   const doLogout = async () => {
-    dispatch(logout())
-    cleanFields()
-  }
+    dispatch(logout());
+    cleanFields();
+  };
 
   const doSignup = async () => {
     dispatch(signup(cred)).then((user) => {
-      if (user) navigate('/main/feed')
-    })
-    cleanFields()
-  }
+      if (user) navigate('/feed');
+    });
+    cleanFields();
+  };
 
   const doSubmit = () => {
-    if (signin) doLogin()
+    if (signin) doLogin();
     else {
-      doSignup()
+      doSignup();
     }
-  }
+  };
 
-  const tooggle = () => {
-    setIsSignin((prevVal) => !prevVal)
-  }
+  const toggle = () => {
+    setIsSignin((prevVal) => !prevVal);
+  };
 
   if (loggedInUser) {
     return (
@@ -66,19 +76,24 @@ export const Signup = () => {
           <button onClick={doLogout}>Logout</button>
         </div>
       </section>
-    )
+    );
   }
 
   return (
     <section className="sign-up-page">
-      <div className="logo-container" onClick={() => navigate(`/home`)}>
-        <p>T</p>
-      </div>
+      <header className="home-header">
+        <div>
+          <div className="home-logo">
+            <LogoStyle />
+          </div>
+        </div>
+      </header>
+
       <div className="form-container">
         <form
           onSubmit={(ev) => {
-            ev.preventDefault()
-            doSubmit()
+            ev.preventDefault();
+            doSubmit();
           }}
         >
           <h1>{signin ? 'Sign in' : 'Sign up'}</h1>
@@ -109,7 +124,7 @@ export const Signup = () => {
             id="password"
             name="password"
             value={cred.password}
-            placeholder="Passsword"
+            placeholder="Password"
             required
           />
           <a href=" ">Forgot password?</a>
@@ -123,8 +138,8 @@ export const Signup = () => {
             <a
               href=" "
               onClick={(ev) => {
-                ev.preventDefault()
-                tooggle()
+                ev.preventDefault();
+                toggle();
               }}
             >
               {signin
@@ -135,5 +150,5 @@ export const Signup = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};

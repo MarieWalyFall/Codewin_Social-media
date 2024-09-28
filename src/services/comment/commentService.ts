@@ -1,4 +1,4 @@
-import { Comment } from 'types'; 
+import { Comment, CommentData } from 'types'; 
 import { mockHttpService } from '../mock/mockHttpService';
 
 const ENDPOINT = 'comment';
@@ -23,7 +23,7 @@ async function remove(commentId: string): Promise<void> {
   return await mockHttpService.delete('comment', commentId);
 }
 
-async function save(comment: Comment): Promise<Comment> {
+async function save(comment: CommentData): Promise<Comment> {
   return comment.id
     ? await mockHttpService.put<Comment>(ENDPOINT, comment)
     : await mockHttpService.post<Comment>(ENDPOINT, comment);

@@ -1,9 +1,7 @@
-import { mockHttpService } from "services/mock/mockHttpService";// Import the mock service
+import { mockHttpService } from 'services/mock/mockHttpService'; // Import the mock service
 import { User, UserCredentials } from 'types';
 
-const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser';
-
-
+const STORAGE_KEY_LOGGEDIN_USER = 'loggedInUser';
 
 export const userService = {
   login,
@@ -30,10 +28,10 @@ async function getById(userId: string): Promise<User | null> {
 }
 
 function remove(userId: string): Promise<void> {
-  return mockHttpService.delete('user',userId); // Use mock service
+  return mockHttpService.delete('user', userId); // Use mock service
 }
 
-async function update(user: User): Promise<User> {
+async function update(user: Partial<User>): Promise<User> {
   const savedUser = await mockHttpService.put(`user/${user.id}`, user); // Use mock service
   if (getLoggedinUser()?.id === savedUser.id) _saveLocalUser(savedUser);
   return savedUser;
@@ -50,15 +48,14 @@ async function signup(userCred: UserCredentials): Promise<User> {
 }
 
 async function logout(): Promise<void> {
-  sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER);
-  // return await mockHttpService.post('auth/logout'); // Use mock service
+  localStorage.clear();
 }
 
 function getLoggedinUser(): User | null {
-  return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER) || 'null');
+  return JSON.parse(localStorage.getItem(STORAGE_KEY_LOGGEDIN_USER) || 'null');
 }
 
 function _saveLocalUser(user: User): User {
-  sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user));
+  localStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user));
   return user;
 }

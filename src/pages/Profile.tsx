@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
 import { userService } from '../services/user/userService';
-import { PostsList } from '../components/posts/PostsList';
+import { PostsList } from 'components/posts/PostsList';
 import { ImgPreview } from '../components/profile/ImgPreview';
-import { EditModal } from '../components/profile/EditModal';
+import { EditModal } from 'components/profile/EditModal';
 import {
   getPostsLength,
   loadPosts,
-  setCurrPage,
+  setCurrPageAction as setCurrPage,
   setFilterByPosts,
 } from '../store/actions/postActions';
 import { updateUser } from '../store/actions/userActions';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { FilterByPosts } from 'types';
+import { LoadingIndicator } from 'components/LoadingIndicator';
+import { FaConnectdevelop } from 'react-icons/fa';
+import { FaMessage } from 'react-icons/fa6';
 
 const Profile: React.FC = () => {
   const params = useParams<{ userId: string }>(); // specify parameter type
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [user, setUser] = useState<any>(null); // Adjust to your user type
   const [isShowImgProfile, setIsShowImgProfile] = useState<boolean>(false);
@@ -39,7 +43,7 @@ const Profile: React.FC = () => {
   }, [user]);
 
   const loadUser = async () => {
-    const fetchedUser = await userService.getById(params.userId);
+    const fetchedUser = await userService.getById(params.userId ?? '');
     setUser(fetchedUser);
   };
 
@@ -62,18 +66,21 @@ const Profile: React.FC = () => {
       const connectionToRemove = { ...user };
       const loggedInUserToUpdate = { ...loggedInUser };
 
-      loggedInUserToUpdate.connections = loggedInUserToUpdate.connections.filter(
-        (connection: { userId: string }) => connection.userId !== connectionToRemove.id
-      );
+      loggedInUserToUpdate.connections =
+        loggedInUserToUpdate.connections.filter(
+          (connection: { userId: string }) =>
+            connection.userId !== connectionToRemove.id
+        );
 
       connectionToRemove.connections = connectionToRemove.connections.filter(
-        (connection: { userId: string }) => connection.userId !== loggedInUserToUpdate.id
+        (connection: { userId: string }) =>
+          connection.userId !== loggedInUserToUpdate.id
       );
 
       dispatch(updateUser(loggedInUserToUpdate));
       dispatch(updateUser(connectionToRemove));
 
-      setUser((prev) => ({ ...prev, ...connectionToRemove }));
+      setUser((prev: any) => ({ ...prev, ...connectionToRemove }));
     } else if (isConnected === false) {
       // Add connection
       const connectionToAdd = { ...user };
@@ -96,21 +103,21 @@ const Profile: React.FC = () => {
   };
 
   const moveToChat = () => {
-    navigate.push(`/main/message/${user?.id}`);
+    navigate(`/main/message/${user?.id}`);
   };
 
   useEffect(() => {
-    const filterBy = {
+    const filterBy: FilterByPosts = {
       userId: params.userId,
     };
     dispatch(setCurrPage('profile'));
     dispatch(setFilterByPosts(filterBy));
     loadUser();
-    dispatch(loadPosts(filterBy));
+    dispatch(loadPosts());
     dispatch(getPostsLength());
 
     return () => {
-      dispatch(setFilterByPosts(null));
+      dispatch(setFilterByPosts({}));
     };
   }, [params.userId, loggedInUser]);
 
@@ -118,7 +125,7 @@ const Profile: React.FC = () => {
     return (
       <section className="feed-load">
         <span className="gif-container">
-          <img className="loading-gif" src={loadingGif} alt="Loading..." />
+          <LoadingIndicator />
         </span>
       </section>
     );
@@ -155,13 +162,13 @@ const Profile: React.FC = () => {
                 )}
                 {!isLoggedInUserProfile && (
                   <button className="connect" onClick={connectProfile}>
-                    Icon
+                    <FaConnectdevelop />
                     <p>{!isConnected ? 'Connect' : 'Disconnect'}</p>
                   </button>
                 )}
 
                 <button className="message" onClick={moveToChat}>
-                  Message
+                  <FaMessage />
                 </button>
               </div>
             </div>
@@ -169,11 +176,13 @@ const Profile: React.FC = () => {
         </div>
 
         <div className="user-posts">
-          {(posts?.length ? <PostsList posts={posts} /> : (
+          {posts?.length ? (
+            <PostsList postsList={posts} />
+          ) : (
             <div>
               <p>{user.fullname} has not published any posts yet.</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
       <div className="right">

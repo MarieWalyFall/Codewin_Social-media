@@ -9,9 +9,9 @@ export function CommunityPanel() {
       </div>
       <div>
         <p>
-          Explore topics you are interested in <br /> with Travelsdin
+          Explore topics you are interested in <br /> with Dorwar
         </p>
       </div>
     </section>
-  )
+  );
 }

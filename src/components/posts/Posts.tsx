@@ -1,32 +1,31 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AddPost } from './AddPost';
 import { PostsList } from './PostsList';
 import { SortBy } from './SortBy';
-import { loadPosts, addFilterByPosts, getPostsLength } from '../../store/actions/postActions';
+import {
+  loadPosts,
+  addFilterByPostsAction,
+  getPostsLength,
+} from '../../store/actions/postActions';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { Post } from 'types';
-
-
-interface RootState {
-  postModule: {
-    posts: Post[] | null; // Adjust the type as per your posts structure
-  };
-}
+import { FilterByPosts, Post, SortByOptions } from 'types';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 
 export const Posts: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const posts = useSelector((state: RootState) => state.postModule.posts);
-
+  const posts = useSelector((state: any) => state.postModule);
   useEffect(() => {
     dispatch(loadPosts()); // Fetch posts from the mock service
     dispatch(getPostsLength()); // Get the total number of posts
   }, [dispatch]);
 
-  const onSetSort = (value: string) => {
-    const filterBy = { sort: +value };
-    dispatch(addFilterByPosts(filterBy)); // Add filtering options
+  const onSetSort = (value: SortByOptions) => {
+    const filterBy: FilterByPosts = {
+      sortBy: value,
+    };
+    dispatch(addFilterByPostsAction(filterBy)); // Add filtering options
     dispatch(loadPosts());
     dispatch(getPostsLength());
   };
@@ -34,7 +33,7 @@ export const Posts: React.FC = () => {
   if (!posts)
     return (
       <section className="posts">
-       <LoadingIndicator/>
+        <LoadingIndicator />
       </section>
     );
 
@@ -42,7 +41,7 @@ export const Posts: React.FC = () => {
     <section className="posts">
       <AddPost />
       <SortBy onSetSort={onSetSort} />
-      <PostsList posts={posts} /> {/* Pass posts to PostsList if needed */}
+      <PostsList postsList={posts} />
     </section>
   );
 };

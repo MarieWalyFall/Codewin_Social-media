@@ -1,0 +1,563 @@
+{
+  "posts": [
+    {
+      "id": "p1",
+      "body": "Excité d'annoncer le lancement de notre nouveau produit ! Restez à l'écoute pour plus de mises à jour.",
+      "imgBodyUrl": "https://via.placeholder.com/600x400",
+      "videoBodyUrl": null,
+      "link": "https://companywebsite.com",
+      "title": "Lancement de nouveau produit !",
+      "createdAt": "2024-01-15T12:45:00.000Z",
+      "updatedAt": "2024-01-15T12:45:00.000Z",
+      "userId": "u1",
+      "fullname": "John Doe",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p2",
+      "body": "Assister à une incroyable conférence technologique ! J'apprends tellement sur l'avenir de l'IA et de l'apprentissage automatique.",
+      "imgBodyUrl": null,
+      "videoBodyUrl": "https://sample-videos.com/video123/mp4/480/asdasdas.mp4",
+      "link": "",
+      "title": "Conférence Technologique 2024",
+      "createdAt": "2023-01-14T09:30:00.000Z",
+      "updatedAt": "2023-01-14T09:30:00.000Z",
+      "userId": "u2",
+      "fullname": "Jane Smith",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p3",
+      "body": "Voici une mise à jour rapide sur notre projet récent. Les choses avancent bien, et nous sommes impatients de partager plus bientôt.",
+      "imgBodyUrl": "https://via.placeholder.com/500x300",
+      "videoBodyUrl": null,
+      "link": "https://projectupdate.com",
+      "title": "Mise à jour du projet",
+      "createdAt": "2024-02-13T16:00:00.000Z",
+      "updatedAt": "2024-02-13T16:00:00.000Z",
+      "userId": "u3",
+      "fullname": "Alice Cooper",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p4",
+      "body": "Je viens de terminer une excellente réunion avec notre équipe. La collaboration est la clé du succès !",
+      "imgBodyUrl": "https://via.placeholder.com/600x400",
+      "videoBodyUrl": null,
+      "link": "",
+      "title": "Réunion d'équipe",
+      "userId": "u1",
+      "createdAt": "2024-01-12T14:45:00.000Z",
+      "updatedAt": "2024-01-12T14:45:00.000Z",
+      "fullname": "Bob Johnson",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p5",
+      "body": "Découvrez cet incroyable article que j'ai trouvé sur la transformation numérique dans l'industrie financière. À lire absolument !",
+      "imgBodyUrl": null,
+      "videoBodyUrl": null,
+      "link": "https://financearticle.com",
+      "title": "Transformation numérique dans la finance",
+      "createdAt": "2024-04-11T11:15:00.000Z",
+      "updatedAt": "2024-04-11T11:15:00.000Z",
+      "userId": "u3",
+      "fullname": "Emily Davis",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p6",
+      "body": "Concevoir pour l'accessibilité est crucial dans le monde numérique d'aujourd'hui. Rendons-le facile pour tous !",
+      "imgBodyUrl": "https://via.placeholder.com/600x400",
+      "videoBodyUrl": null,
+      "link": "https://designforaccessibility.com",
+      "title": "Conception pour l'accessibilité",
+      "createdAt": "2024-02-25T10:00:00.000Z",
+      "updatedAt": "2024-02-25T10:00:00.000Z",
+      "userId": "u5",
+      "fullname": "Charlie Brown",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p7",
+      "body": "La théorie des couleurs joue un rôle central dans le design graphique. Découvrez mes réflexions sur le sujet !",
+      "imgBodyUrl": null,
+      "videoBodyUrl": null,
+      "link": "https://colortheory.com",
+      "title": "Comprendre la théorie des couleurs",
+      "createdAt": "2024-03-05T14:30:00.000Z",
+      "updatedAt": "2024-03-05T14:30:00.000Z",
+      "userId": "u5",
+      "fullname": "Charlie Brown",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p8",
+      "body": "Je viens de terminer un atelier sur le design réactif. Je suis impatient de mettre en œuvre ce que j'ai appris !",
+      "imgBodyUrl": "https://via.placeholder.com/600x400",
+      "videoBodyUrl": null,
+      "link": "",
+      "title": "Atelier sur le design réactif",
+      "createdAt": "2024-03-12T08:45:00.000Z",
+      "updatedAt": "2024-03-12T08:45:00.000Z",
+      "userId": "u6",
+      "fullname": "Emma Watson",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p9",
+      "body": "De grandes stratégies pour établir des relations avec les clients ont été discutées lors de la réunion d'aujourd'hui.",
+      "imgBodyUrl": null,
+      "videoBodyUrl": null,
+      "link": "https://customerrelations.com",
+      "title": "Relations avec les clients",
+      "createdAt": "2024-03-20T11:00:00.000Z",
+      "updatedAt": "2024-03-20T11:00:00.000Z",
+      "userId": "u7",
+      "fullname": "Michael Scott",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p10",
+      "body": "Aujourd'hui, j'ai exploré diverses techniques de vente qui peuvent considérablement améliorer les performances.",
+      "imgBodyUrl": "https://via.placeholder.com/600x400",
+      "videoBodyUrl": null,
+      "link": "",
+      "title": "Techniques de vente",
+      "createdAt": "2024-04-02T09:15:00.000Z",
+      "updatedAt": "2024-04-02T09:15:00.000Z",
+      "userId": "u7",
+      "fullname": "Michael Scott",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p11",
+      "body": "La visualisation des données est essentielle pour comprendre les grandes données. Je suis ravi de partager mes découvertes récentes !",
+      "imgBodyUrl": null,
+      "videoBodyUrl": "https://sample-videos.com/video123/mp4/480/data-visualization.mp4",
+      "link": "https://datavisualization.com",
+      "title": "Comprendre la visualisation des données",
+      "createdAt": "2024-04-05T15:00:00.000Z",
+      "updatedAt": "2024-04-05T15:00:00.000Z",
+      "userId": "u6",
+      "fullname": "Emma Watson",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "p12",
+      "body": "Je fais des progrès significatifs sur mon projet de développement personnel. Je suis motivé et prêt à aller de l'avant !",
+      "imgBodyUrl": "https://via.placeholder.com/600x400",
+      "videoBodyUrl": null,
+      "link": "",
+      "title": "Développement personnel",
+      "createdAt": "2024-04-08T10:30:00.000Z",
+      "updatedAt": "2024-04-08T10:30:00.000Z",
+      "userId": "u4",
+      "fullname": "Harry Potter",
+      "userProfilePic": "https://via.placeholder.com/150",
+      "reactions": [],
+      "position": {
+        "lat": "0",
+        "lng": "0"
+      },
+      "comments": []
+    },
+    {
+      "id": "1748",
+      "body": "HI ALL",
+      "imgBodyUrl": null,
+      "videoBodyUrl": null,
+      "link": "",
+      "title": "",
+      "style": {
+        "textAlign": "ltr"
+      },
+      "userId": "u0",
+      "createdAt": "2024-09-28T03:06:04.026Z"
+    },
+    {
+      "id": "ed2a",
+      "body": "HELLO",
+      "imgBodyUrl": null,
+      "videoBodyUrl": null,
+      "link": "",
+      "title": "",
+      "style": {
+        "textAlign": "ltr"
+      },
+      "userId": "u0",
+      "createdAt": "2024-09-28T03:06:22.247Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "u0",
+      "username": "guest123",
+      "password": "1234",
+      "name": "Guest User",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "Visitor",
+      "location": "Senegal, SN",
+      "connections": [
+        {
+          "id": "u1",
+          "name": "John Doe"
+        },
+        {
+          "id": "u2",
+          "name": "Jane Smith"
+        },
+        {
+          "id": "u3",
+          "name": "Bob Johnson"
+        }
+      ],
+      "posts": [],
+      "lastSeenActivity": 1727494604796
+    },
+    {
+      "id": "u1",
+      "username": "johndoe",
+      "password": "password1",
+      "name": "John Doe",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "Software Engineer",
+      "location": "San Francisco, CA",
+      "connections": [
+        {
+          "id": "u2",
+          "name": "Jane Smith"
+        },
+        {
+          "id": "u3",
+          "name": "Bob Johnson"
+        }
+      ],
+      "posts": [
+        {
+          "id": "p1",
+          "title": "Lancement de nouveau produit !"
+        },
+        {
+          "id": "p2",
+          "title": "Conférence Technologique 2024"
+        }
+      ]
+    },
+    {
+      "id": "u2",
+      "username": "janesmith",
+      "password": "password2",
+      "name": "Jane Smith",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "Product Manager",
+      "location": "New York, NY",
+      "connections": [
+        {
+          "id": "u1",
+          "name": "John Doe"
+        },
+        {
+          "id": "u3",
+          "name": "Bob Johnson"
+        }
+      ],
+      "posts": [
+        {
+          "id": "p3",
+          "title": "Mise à jour du projet"
+        }
+      ]
+    },
+    {
+      "id": "u3",
+      "username": "bobjohnson",
+      "password": "password3",
+      "name": "Bob Johnson",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "UX Designer",
+      "location": "Los Angeles, CA",
+      "connections": [
+        {
+          "id": "u1",
+          "name": "John Doe"
+        },
+        {
+          "id": "u2",
+          "name": "Jane Smith"
+        }
+      ],
+      "posts": [
+        {
+          "id": "p4",
+          "title": "Réunion d'équipe"
+        }
+      ]
+    },
+    {
+      "id": "u4",
+      "username": "alicecooper",
+      "password": "password4",
+      "name": "Alice Cooper",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "Data Scientist",
+      "location": "Boston, MA",
+      "connections": [
+        {
+          "id": "u1",
+          "name": "John Doe"
+        },
+        {
+          "id": "u3",
+          "name": "Bob Johnson"
+        }
+      ],
+      "posts": [
+        {
+          "id": "p5",
+          "title": "Transformation numérique dans la finance"
+        },
+        {
+          "id": "p6",
+          "title": "Conception pour l'accessibilité"
+        }
+      ]
+    },
+    {
+      "id": "u5",
+      "username": "charliebrown",
+      "password": "password5",
+      "name": "Charlie Brown",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "Graphic Designer",
+      "location": "Chicago, IL",
+      "connections": [
+        {
+          "id": "u6",
+          "name": "Emma Watson"
+        },
+        {
+          "id": "u7",
+          "name": "Michael Scott"
+        }
+      ],
+      "posts": [
+        {
+          "id": "p7",
+          "title": "Comprendre la théorie des couleurs"
+        },
+        {
+          "id": "p8",
+          "title": "Atelier sur le design réactif"
+        }
+      ]
+    },
+    {
+      "id": "u6",
+      "username": "emmawatson",
+      "password": "password6",
+      "name": "Emma Watson",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "Web Developer",
+      "location": "Austin, TX",
+      "connections": [
+        {
+          "id": "u5",
+          "name": "Charlie Brown"
+        },
+        {
+          "id": "u7",
+          "name": "Michael Scott"
+        }
+      ],
+      "posts": [
+        {
+          "id": "p9",
+          "title": "Comprendre la visualisation des données"
+        }
+      ]
+    },
+    {
+      "id": "u7",
+      "username": "michaelscott",
+      "password": "password7",
+      "name": "Michael Scott",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "Sales Manager",
+      "location": "Scranton, PA",
+      "connections": [
+        {
+          "id": "u5",
+          "name": "Charlie Brown"
+        },
+        {
+          "id": "u6",
+          "name": "Emma Watson"
+        }
+      ],
+      "posts": [
+        {
+          "id": "p10",
+          "title": "Techniques de vente"
+        },
+        {
+          "id": "p11",
+          "title": "Relations avec les clients"
+        }
+      ]
+    },
+    {
+      "id": "u8",
+      "username": "davidbecker",
+      "password": "password8",
+      "name": "David Becker",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "Data Analyst",
+      "location": "Seattle, WA",
+      "connections": [
+        {
+          "id": "u1",
+          "name": "John Doe"
+        },
+        {
+          "id": "u4",
+          "name": "Alice Cooper"
+        }
+      ],
+      "posts": [
+        {
+          "id": "p12",
+          "title": "Data Visualization Techniques"
+        },
+        {
+          "id": "p13",
+          "title": "Understanding Big Data"
+        }
+      ]
+    },
+    {
+      "id": "u9",
+      "username": "sarahconnor",
+      "password": "password9",
+      "name": "Sarah Connor",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "Cybersecurity Expert",
+      "location": "Detroit, MI",
+      "connections": [
+        {
+          "id": "u2",
+          "name": "Jane Smith"
+        },
+        {
+          "id": "u3",
+          "name": "Bob Johnson"
+        }
+      ],
+      "posts": [
+        {
+          "id": "p14",
+          "title": "L'avenir de la cybersécurité"
+        },
+        {
+          "id": "p15",
+          "title": "Protéger votre identité numérique"
+        }
+      ]
+    },
+    {
+      "id": "u10",
+      "username": "tonystark",
+      "password": "password10",
+      "name": "Tony Stark",
+      "imgUrl": "https://via.placeholder.com/150",
+      "profession": "Industrial Designer",
+      "location": "New York, NY",
+      "connections": [
+        {
+          "id": "u1",
+          "name": "John Doe"
+        },
+        {
+          "id": "u8",
+          "name": "David Becker"
+        }
+      ],
+      "posts": [
+        {
+          "id": "p16",
+          "title": "Innovations dans la technologie"
+        },
+        {
+          "id": "p17",
+          "title": "L'impact de l'IA sur le design"
+        }
+      ]
+    }
+  ]
+}

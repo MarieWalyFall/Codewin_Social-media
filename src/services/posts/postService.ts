@@ -1,7 +1,6 @@
 import { Post } from 'types';
 import { mockHttpService } from '../mock/mockHttpService';
 
-
 const ENDPOINT = 'post';
 
 export const postService = {
@@ -37,12 +36,12 @@ async function getById(id: string): Promise<Post> {
 
 // Remove a post by ID
 async function remove(id: string): Promise<void> {
-  await mockHttpService.delete("post",id);
+  await mockHttpService.delete(ENDPOINT, id);
 }
 
 // Save a post (create or update)
-async function save(post: Post): Promise<Post> {
+async function save(post: Partial<Post>): Promise<Post> {
   return post.id
-    ? await mockHttpService.put<Post>("post", post)
+    ? await mockHttpService.put<Post>(`${ENDPOINT}/${post.id}`, post)
     : await mockHttpService.post<Post>(ENDPOINT, post);
 }

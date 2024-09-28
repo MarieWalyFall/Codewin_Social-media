@@ -21,7 +21,7 @@ export function SocialDetails({
     <section className="social-details">
       <div className="likes-count">
         <span onClick={toggleLikes}>
-          {!post.reactions?.length
+          {!post?.reactions?.length
             ? ''
             : post.reactions?.length > 1
             ? `${post.reactions.length} likes`
@@ -62,7 +62,7 @@ export function SocialDetails({
               ev.stopPropagation();
             }}
           >
-            <LikeList reactions={post.reactions} toggleLikes={toggleLikes} />
+            <LikeList reactions={post?.reactions?? []} toggleLikes={toggleLikes} />
           </div>
         </div>
       )}

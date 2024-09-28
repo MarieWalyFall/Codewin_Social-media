@@ -28,7 +28,7 @@ export const ListMsg: React.FC<ListMsgProps> = ({
   const setFilter = (txt: string) => {
     const regex = new RegExp(txt, 'i');
     const filteredChats = [...chats].filter((chat) => {
-      return regex.test(chat.users[0]) || regex.test(chat.users[1]);
+      return regex.test(chat.users? chat.users[0] : '') || regex.test(chat.users? chat.users[1] : '');
     });
 
     setChatsToShow(filteredChats);

@@ -1,6 +1,12 @@
 import { userService } from 'services/user/userService';
 import { socketService } from 'services/socket.service';
-import { User, UserCredentials } from 'types'; 
+import { User, UserCredentials } from 'types';
+import { useSelector } from 'react-redux';
+import {
+  login as loginAction,
+  logout as logoutAction,
+  setUsers as setUsersAction,
+} from 'store/reducers/userReducer';
 
 // Action types are defined as strings or enums
 export function getUsers() {
@@ -8,7 +14,7 @@ export function getUsers() {
     try {
       const { filterByUsers } = getState().userModule;
       const users = await userService.getUsers(filterByUsers);
-      dispatch({ type: 'SET_USERS', users });
+      dispatch(setUsersAction(users));
     } catch (err) {
       console.log('cannot get users:', err);
     }
@@ -18,7 +24,7 @@ export function getUsers() {
 export function setUsers(users: User[]) {
   return async (dispatch: any) => {
     try {
-      dispatch({ type: 'SET_USERS', users });
+      dispatch(setUsersAction(users));
     } catch (err) {
       console.log('cannot set users:', err);
     }
@@ -34,14 +40,42 @@ export function setFilterByUsers(filterByUsers: any) {
 export function login(userCred: UserCredentials) {
   return async (dispatch: any) => {
     try {
-      const user = await userService.login(userCred);
-      dispatch({ type: 'LOGIN', user });
-
+      socketService.setup();
+      const session = localStorage.getItem('loggedInUser');
+      if (session) {
+        dispatch(loginAction(sessionStorage.loggedInUser));
+        console.log('yup');
+        return;
+      }
+      const user: User = await userService.login(userCred);
+      dispatch(loginAction(user));
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
       socketService.emit('setUserSocket', user.id);
-
       return user;
     } catch (err) {
-      console.log("can't do login:", err);
+      console.log("can't login:", err);
+      throw new Error(String(err));
+    }
+  };
+}
+
+export function refreshSession() {
+  return async (dispatch: any) => {
+    console.log('refreshing session');
+    try {
+      // Get the session data from localStorage or sessionStorage
+      const loggedInUser = JSON.parse(
+        localStorage.getItem('loggedInUser') || 'null'
+      );
+      if (loggedInUser) {
+        // Dispatch login action with the parsed user data
+        dispatch(loginAction(loggedInUser));
+        console.log('Session refreshed, user logged in');
+      } else {
+        console.log('No user found in session storage');
+      }
+    } catch (err) {
+      console.log('Error refreshing session:', err);
       throw new Error(String(err));
     }
   };
@@ -51,6 +85,7 @@ export function getLoggedinUser() {
   return async (dispatch: any) => {
     try {
       const user = await userService.getLoggedinUser();
+      if (user === null) throw new Error('user not found');
       dispatch({ type: 'GET_LOGGEDIN_USER', user });
       return user;
     } catch (err) {
@@ -75,7 +110,7 @@ export function logout() {
   return async (dispatch: any) => {
     try {
       await userService.logout();
-      dispatch({ type: 'LOGOUT' });
+      dispatch(logoutAction());
       return true;
     } catch (err) {
       console.log('cannot logout:', err);
@@ -83,7 +118,7 @@ export function logout() {
   };
 }
 
-export function updateUser(user: User) {
+export function updateUser(user: Partial<User>) {
   return async (dispatch: any, getState: any) => {
     const savedUser = await userService.update(user);
     const { loggedInUser } = getState().userModule;

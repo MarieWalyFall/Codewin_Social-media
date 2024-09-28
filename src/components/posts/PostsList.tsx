@@ -1,44 +1,51 @@
 import { PostPreview } from './post-preview/PostPreview';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { addPosts, addFilterByPosts, setNextPage } from '../../store/actions/postActions';
+import {
+  addPosts,
+  addFilterByPostsAction,
+  setNextPage,
+} from '../../store/actions/postActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Post } from 'types';
+import { FilterByPosts, Post } from 'types';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import Loader from 'pages/Loader';
 
-
-interface PostsList {
-  posts: Post[];
-  length: number;
+interface PostListProps {
+  postsList: Post[];
 }
 interface PostModuleState {
-  posts: PostsList;
+  posts: Post[];
   pageNumber: number;
   isPostsLoading: boolean;
   postsLength: number;
 }
 
-export const PostsList: React.FC<PostsList> = () => {
-  const dispatch = useDispatch();
+export const PostsList: React.FC<PostListProps> = ({ postsList }) => {
+  const dispatch = useAppDispatch();
   const params = useParams();
-  
-  const { posts, pageNumber, isPostsLoading, postsLength } = useSelector((state: { postModule: PostModuleState }) => state.postModule);
 
+  const { posts, pageNumber, isPostsLoading, postsLength } = useSelector(
+    (state: { postModule: PostModuleState }) => state.postModule
+  );
   const onLoadNextPage = () => {
-    const filterBy = {
-      pageNumber,
-      id,
+    const filterBy: FilterByPosts = {
+      page: 0,
     };
     if (!postsLength && !posts) return;
     if (postsLength === posts.length) return;
-    dispatch(addFilterByPosts(filterBy));
+    dispatch(addFilterByPostsAction(filterBy));
     dispatch(addPosts());
-    dispatch(setNextPage());
+    dispatch(setNextPage(String(filterBy.page) ?? 0));
   };
 
   const handleScroll = () => {
     if (posts.length >= postsLength) return;
-    if (window.scrollY + window.innerHeight + 0.9 >= document.documentElement.scrollHeight) {
+    if (
+      window.scrollY + window.innerHeight + 0.9 >=
+      document.documentElement.scrollHeight
+    ) {
       onLoadNextPage();
     }
   };
@@ -50,32 +57,21 @@ export const PostsList: React.FC<PostsList> = () => {
     };
   }, [postsLength]);
 
-  if (!posts)
-    return (
-      <div className="posts-list">
-        <span className="gif-container">
-         loading...
-        </span>
-      </div>
-    );
+  if (posts.length === 0) return <Loader />;
 
   return (
     <section className="posts-list">
-      {posts.posts.map((post) => (
+      {posts.map((post) => (
         <PostPreview key={post.id} post={post} />
       ))}
       <div onClick={onLoadNextPage} className="load-more">
         {!isPostsLoading && posts.length < postsLength && (
           <p className="load-btn">
-            <span>
-              Icon
-            </span>
+            <span>Icon</span>
           </p>
         )}
         {isPostsLoading && posts.length < postsLength && (
-          <span className="gif-container">
-           loading...
-          </span>
+          <span className="gif-container">loading...</span>
         )}
         {posts.length === postsLength && <p>This is the end..</p>}
       </div>

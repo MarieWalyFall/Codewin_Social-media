@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CreatePostModal } from './CreatePostModal';
 import { useState } from 'react';
 import { savePost } from '../../store/actions/postActions';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { FaCalendar, FaCamera, FaFilm, FaPen } from 'react-icons/fa';
 
 interface RootState {
   userModule: {
@@ -15,7 +17,7 @@ interface RootState {
 }
 
 export const AddPost: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { loggedInUser } = useSelector((state: RootState) => state.userModule);
 
   const [isShowCreatePost, setIsShowCreatePost] = useState<boolean>(false);
@@ -24,12 +26,14 @@ export const AddPost: React.FC = () => {
     setIsShowCreatePost((prev) => !prev);
   };
 
-  const onAddPost = (post: any) => { // Define a specific type instead of 'any' based on your post structure
+  const onAddPost = (post: any) => {
+    // Define a specific type instead of 'any' based on your post structure
     const postToAdd = {
       ...post,
       userId: loggedInUser.id,
       fullname: loggedInUser.fullname,
     };
+    console.log(postToAdd);
     dispatch(savePost(postToAdd)).then(() => toggleShowCreatePost());
   };
 
@@ -46,19 +50,19 @@ export const AddPost: React.FC = () => {
 
       <section className="btns-container">
         <button>
-          Icon
+          <FaCamera />
           <span>Photo</span>
         </button>
         <button>
-          Icon
+          <FaFilm />
           <span>Video</span>
         </button>
         <button>
-          Icon
+          <FaCalendar />
           <span>Event</span>
         </button>
         <button>
-         Icon
+          <FaPen />
           <span>Write article</span>
         </button>
       </section>

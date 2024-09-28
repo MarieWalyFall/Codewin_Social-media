@@ -1,8 +1,6 @@
-import posts from "data/posts.json"; // Import post data
-import { Post } from "types";
+import { Post } from 'types';
 
-
-let postsData: Post[] = [...posts]; // In-memory database for posts
+const API_URL = 'http://localhost:3030/posts'; // Adjust the port if necessary
 
 export const mockPostService = {
   getPosts,
@@ -13,41 +11,73 @@ export const mockPostService = {
 };
 
 // Get all posts
-function getPosts(): Promise<Post[]> {
-  return Promise.resolve(postsData);
+async function getPosts(): Promise<Post[]> {
+  const response = await fetch(API_URL);
+  if (!response.ok) {
+    throw new Error('Failed to fetch posts');
+  }
+  return response.json();
 }
 
 // Get a single post by ID
-function getPostById(postId: string): Promise<Post> {
-  const post = postsData.find((p) => p.id === postId);
-  return post ? Promise.resolve(post) : Promise.reject('Post not found');
+async function getPostById(postId: string): Promise<Post> {
+  const response = await fetch(`${API_URL}/${postId}`);
+  if (!response.ok) {
+    throw new Error('Post not found');
+  }
+  return response.json();
 }
 
 // Create a new post
-function createPost(post: Omit<Post, 'id' | 'createdAt'>): Promise<Post> {
-  const newPost: Post = {
-    ...post,
-    id: 'p' + (postsData.length + 1), // Generate new ID
-    createdAt: new Date().toISOString(),
-  };
-  postsData.push(newPost);
-  return Promise.resolve(newPost);
+async function createPost(post: Omit<Post, 'id' | 'createdAt'>): Promise<Post> {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      ...post,
+      createdAt: new Date().toISOString(),
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to create post');
+  }
+
+  return response.json();
 }
 
 // Update an existing post
-function updatePost(postId: string, post: Partial<Omit<Post, 'id' | 'createdAt' | 'updatedAt'>>): Promise<Post> {
-  const index = postsData.findIndex((p) => p.id === postId);
-  if (index === -1) return Promise.reject('Post not found');
+async function updatePost(
+  postId: string,
+  post: Partial<Omit<Post, 'id' | 'createdAt' | 'updatedAt'>>
+): Promise<Post> {
+  const response = await fetch(`${API_URL}/${postId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      ...post,
+      updatedAt: new Date().toISOString(),
+    }),
+  });
 
-  postsData[index] = { ...postsData[index], ...post, updatedAt: new Date().toISOString() };
-  return Promise.resolve(postsData[index]);
+  if (!response.ok) {
+    throw new Error('Post not found or failed to update');
+  }
+
+  return response.json();
 }
 
 // Delete a post
-function deletePost(postId: string): Promise<void> {
-  const index = postsData.findIndex((p) => p.id === postId);
-  if (index === -1) return Promise.reject('Post not found');
+async function deletePost(postId: string): Promise<void> {
+  const response = await fetch(`${API_URL}/${postId}`, {
+    method: 'DELETE',
+  });
 
-  postsData.splice(index, 1);
-  return Promise.resolve();
+  if (!response.ok) {
+    throw new Error('Post not found or failed to delete');
+  }
 }

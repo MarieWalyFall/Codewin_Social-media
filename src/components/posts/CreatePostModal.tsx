@@ -1,9 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-
 import { uploadImg, uploadVid } from '../../services/imgUpload.service';
+import { LoggedInUser } from 'types'; // Import your type definition
 
-export const CreatePostModal = ({
+interface CreatePostModalProps {
+  toggleShowCreatePost: () => void; // Function to toggle visibility
+  onAddPost: (post: any) => void; // Type this more specifically if possible
+  isShowCreatePost: boolean; // Indicates whether the modal is visible
+  loggedInUser: LoggedInUser | null; // Type based on your user definition
+}
+
+export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   toggleShowCreatePost,
   onAddPost,
   isShowCreatePost,
@@ -23,7 +30,7 @@ export const CreatePostModal = ({
   const [newPost, setNewPost] = useState(initPost);
   const [isUploading, setIsUploading] = useState(false);
 
-  const handleChange = async (e) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const field = e.target.name;
     let value = e.target.type === 'number' ? +e.target.value || '' : e.target.value;
     setNewPost((prevPost) => ({
@@ -44,11 +51,11 @@ export const CreatePostModal = ({
     }
   };
 
-  const inputRef = (elInput) => {
+  const inputRef = (elInput: HTMLTextAreaElement) => {
     if (elInput) elInput.focus();
   };
 
-  const onUploadImg = async (ev) => {
+  const onUploadImg = async (ev: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setIsUploading(true);
       const res = await uploadImg(ev);
@@ -63,7 +70,7 @@ export const CreatePostModal = ({
     }
   };
 
-  const onUploadVideo = async (ev) => {
+  const onUploadVideo = async (ev: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setIsUploading(true);
       const res = await uploadVid(ev);
@@ -99,7 +106,7 @@ export const CreatePostModal = ({
         <div className="title">
           <h1>Create a post</h1>
           <span className="close-icon" onClick={toggleShowCreatePost}>
-            <FontAwesomeIcon icon="fa-solid fa-x" />
+            Icon
           </span>
         </div>
 
@@ -138,7 +145,7 @@ export const CreatePostModal = ({
         <div className="is-loading-container">
           {isUploading && (
             <span>
-              <img src={LoadingGif} alt="Loading" />
+              <img src="LoadingGif" alt="Loading" /> {/* Replace with your loading GIF */}
             </span>
           )}
         </div>

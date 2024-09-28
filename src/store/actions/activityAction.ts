@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { activityService } from 'services/activity/activityService';
-import { Activity, ActivityAction, FilterByActivities } from 'types'; 
+import { Activity, ActivityAction, FilterByActivities, NewActivity} from 'types'; 
 
 export function loadActivities() {
   return async (dispatch: Dispatch<ActivityAction>, getState: () => any) => {
@@ -15,7 +15,7 @@ export function loadActivities() {
   };
 }
 
-export function saveActivity(activity: Activity) {
+export function saveActivity(activity: NewActivity) {
   return async (dispatch: Dispatch<ActivityAction>) => {
     try {
       const addedActivity = await activityService.save(activity);
@@ -68,14 +68,14 @@ export function setUnreadActivitiesIds() {
       if (loggedInUser.lastSeenActivity < activity.createdAt) {
         if (loggedInUser.id === activity.createdBy) return;
         if (activity.type !== 'private-message') {
-          unreadActivities.push(activity.id);
+          unreadActivities.push(activity.id?? '');
         }
       }
 
       if (loggedInUser.lastSeenMsgs < activity.createdAt) {
         if (loggedInUser.id === activity.createdBy) return;
         if (activity.type === 'private-message') {
-          unreadMessages.push(activity.chatId);
+          unreadMessages.push(activity.chatId?? '');
         }
       }
     });

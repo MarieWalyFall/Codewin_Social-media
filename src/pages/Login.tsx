@@ -1,11 +1,21 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from 'hooks/useAuth'; // Import useAuth hook for authentication
+import { useDispatch, useSelector } from 'react-redux';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { login } from 'store/actions/userActions'; // Ensure the correct path to your action
+import { AppDispatch } from '../store'; // Adjust this import based on your store structure
+import Button from 'components/Button';
+import { ReactComponent as Logo } from 'assets/imgs/Logo.svg';
+import styled from 'styled-components';
 
-export const Home: React.FC = () => {
-  const { login, auth } = useAuth(); // useAuth provides access to login function and auth state
+const LogoStyle = styled(Logo)`
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+`;
+export const Login: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>(); // Use AppDispatch if you have defined it
 
   // Local state for credentials and message
   const [creds, setCreds] = useState({
@@ -14,6 +24,7 @@ export const Home: React.FC = () => {
   });
   const [msg, setMsg] = useState<string>('');
   const [isLoggingLoading, setIsLoggingLoading] = useState<boolean>(false);
+  const { loggedInUser } = useSelector((state: any) => state.userModule);
 
   // Show message for 3 seconds
   const showMsg = (txt: string) => {
@@ -33,17 +44,20 @@ export const Home: React.FC = () => {
     setIsLoggingLoading(true);
 
     try {
-      // Here, login is called from useAuth
-      await login({
-        profile: { username: creds.username },
-        access_token: '',
-        refresh_token: '',
-        expiration_time: 0,
-      });
-      setCreds({ username: '', password: '' });
-      navigate('/main/feed');
-    } catch (err) {
-      showMsg('Something went wrong...');
+      // Dispatch the login action with correct username and password
+      const response = await dispatch(
+        login({
+          username: creds.username, // Send the username from creds
+          password: creds.password, // Placeholder values; adjust as necessary
+        })
+      );
+      // Assuming response can indicate success/failure
+      if (response) {
+        // Optionally handle successful login response here
+        navigate('/feed');
+      }
+    } catch (err: any) {
+      showMsg('Error: ' + err.message);
       console.error(err);
     } finally {
       setIsLoggingLoading(false);
@@ -54,17 +68,25 @@ export const Home: React.FC = () => {
     <section className="home-page">
       <header className="home-header">
         <div>
-          <div className="home-logo">T</div>
+          <div className="home-logo">
+            <LogoStyle />
+          </div>
         </div>
         <nav className="home-nav">
           <ul>
             <li>
-              <button className="join-now-btn" onClick={() => navigate(`/signup`)}>
+              <button
+                className="join-now-btn"
+                onClick={() => navigate(`/signup`)}
+              >
                 <span>Join now</span>
               </button>
             </li>
             <li>
-              <button className="sign-in-btn" onClick={() => navigate(`/signup`)}>
+              <button
+                className="sign-in-btn"
+                onClick={() => navigate(`/signup`)}
+              >
                 <span>Sign in</span>
               </button>
             </li>
@@ -74,9 +96,7 @@ export const Home: React.FC = () => {
 
       <div className="welcome-signin-container">
         <form onSubmit={handleLogin} className="form">
-          <h1 className="title">
-            Welcome to your <br /> traveler's community
-          </h1>
+          <h1 className="title">Connection</h1>
           <input
             onChange={handleChange}
             type="text"
@@ -99,17 +119,14 @@ export const Home: React.FC = () => {
           <div className="msg">
             <p>{msg}</p>
           </div>
-
-          <a onClick={() => navigate(`/signup`)}>Or sign-up</a>
           <div>
-            <button>Sign in</button>
+            <Button>Se connecter </Button>
           </div>
+          <a onClick={() => navigate(`/signup`)}>S'inscrire</a>
         </form>
       </div>
 
-      {isLoggingLoading && (
-       <LoadingIndicator/>
-      )}
+      {isLoggingLoading && <LoadingIndicator />}
     </section>
   );
 };

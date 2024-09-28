@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getUsers } from '../store/actions/userActions';
 import { User } from '../types'; // Adjust the import path based on your project structure
+import { useAppDispatch } from 'hooks/useAppDispatch';
 
 export const RightSideBar: React.FC = () => {
   const { users }: { users: User[] } = useSelector((state: any) => state.userModule); // Use any for simplicity
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {

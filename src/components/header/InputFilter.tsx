@@ -1,18 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   loadPosts,
-  addFilterByPosts,
+  addFilterByPostsAction,
   getPostsLength,
 } from '../../store/actions/postActions';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { FaSearch } from 'react-icons/fa';
 
 interface Field {
   [key: string]: any;
 }
 
 export const InputFilter = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { users } = useSelector((state: any) => state.userModule);
 
@@ -20,7 +22,9 @@ export const InputFilter = () => {
   const [usersAutoComplete, setUsersAutoComplete] = useState<string[]>([]);
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
-  const handleChange = async ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async ({
+    target,
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const field = target.name;
     let value = target.type === 'number' ? +target.value || '' : target.value;
     setFields({ [field]: value });
@@ -67,7 +71,9 @@ export const InputFilter = () => {
 
   const getUsersName = () => {
     if (!users) return;
-    const usersToReturn = users.map((user: { fullname: string }) => user.fullname);
+    const usersToReturn = users.map(
+      (user: { fullname: string }) => user.fullname
+    );
     setUsersAutoComplete(usersToReturn);
   };
 
@@ -75,7 +81,7 @@ export const InputFilter = () => {
     getUsersName();
     handleAutComplete();
     return () => {
-      dispatch(addFilterByPosts(null));
+      dispatch(addFilterByPostsAction({}));
     };
   }, [users]);
 
@@ -88,7 +94,7 @@ export const InputFilter = () => {
   }, [fields.txt]);
 
   const onLoadPosts = () => {
-    dispatch(addFilterByPosts(fields));
+    dispatch(addFilterByPostsAction(fields));
     dispatch(loadPosts());
     dispatch(getPostsLength());
   };
@@ -97,7 +103,7 @@ export const InputFilter = () => {
 
   return (
     <section className="input">
-      Icon
+      <FaSearch className="search-icon" />
       <input
         type="text"
         placeholder="Search..."

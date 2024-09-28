@@ -27,7 +27,6 @@ export const Messaging: React.FC<MessagingProps> = ({
           setMessagesToShow={setMessagesToShow}
           setChatWith={setChatWith}
           chatWith={chatWith}
-          setChooseenChatId={setChooseenChatId}
           chooseenChatId={chooseenChatId}
           getTheNotLoggedUserChat={getTheNotLoggedUserChat}
           setTheNotLoggedUserChat={setTheNotLoggedUserChat}

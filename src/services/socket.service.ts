@@ -20,11 +20,12 @@ function createSocketService(): SocketService {
 
   const socketService: SocketService = {
     async setup() {
+      console.log('socketService');
       if (!socket) {
         socket = io(baseUrl, {
           autoConnect: false, // Don't auto-connect until setup is called
         });
-        socket.connect(); // Explicitly connect after setup
+        socket = socket.connect();
       }
     },
 
