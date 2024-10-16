@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { SendMessageForm } from './SendMessageForm';
 import { Message, MessageThreadProps } from 'types';
+import { StyledMessageThread } from '../style/StyledMessage';
 
 export const MessageThread: React.FC<MessageThreadProps> = ({
   messagesToShow,
@@ -29,7 +30,7 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
   if (!chatWith) return null;
 
   return (
-    <section className="message-thread">
+    <StyledMessageThread className="message-thread">
       <header className="header-message-thread">
         <div>
           <div
@@ -53,6 +54,6 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
         onSendMsg={onSendMsg}
         messagesToShow={messagesToShow || []}
       />
-    </section>
+    </StyledMessageThread>
   );
 };

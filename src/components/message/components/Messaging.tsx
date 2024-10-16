@@ -2,6 +2,7 @@ import React from 'react';
 import { ListMsg } from './ListMsg';
 import { MessageThread } from './MessageThread';
 import { MessagingProps } from 'types';
+import { StyledMessaging } from '../style/StyledMessage';
 
 // Define the Messaging component with typed props
 export const Messaging: React.FC<MessagingProps> = ({
@@ -18,7 +19,7 @@ export const Messaging: React.FC<MessagingProps> = ({
   onSendMsg,
 }) => {
   return (
-    <section className="messaging">
+    <StyledMessaging className="messaging">
       <div className="container">
         <ListMsg
           chats={chats}
@@ -39,6 +40,6 @@ export const Messaging: React.FC<MessagingProps> = ({
           />
         )}
       </div>
-    </section>
+    </StyledMessaging>
   );
 };

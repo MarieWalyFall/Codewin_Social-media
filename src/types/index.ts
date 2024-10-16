@@ -383,13 +383,13 @@ export interface MessagingProps {
   chatWith: User | null;
   messagesToShow: Message[] | null;
   setMessagesToShow: (messages: Message[]) => void;
-  chosenChatId: string; // Change to number if id is a number
-  setChosenChatId: (id: string) => Promise<void>;
+  chosenChatId?: string; // Change to number if id is a number
+  setChosenChatId?: (id: string) => Promise<void>;
   setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
   getTheNotLoggedUserChat: (chat: Chat) => Promise<User | null>;
   setTheNotLoggedUserChat: React.Dispatch<React.SetStateAction<User | null>>;
   theNotLoggedUserChat: User | null;
-  onSendMsg: (message: NewMessage) => void; // Change 'any' to Message
+  onSendMsg?: (message: NewMessage) => void; // Change 'any' to Message
 }
 
 // Message Thread Props
@@ -397,7 +397,7 @@ export interface MessageThreadProps {
   messagesToShow: Message[] | null;
   setMessagesToShow: (messages: Message[]) => void;
   chatWith: User | null;
-  onSendMsg: (message: NewMessage) => void;
+  onSendMsg?: (message: NewMessage) => void;
 }
 
 // Msg Preview Props
@@ -407,7 +407,7 @@ export interface MsgPreviewProps {
   setMessagesToShow: (messages: Message[]) => void;
   setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
   chatWith: User | null;
-  chosenChatId: string; // Change to number if id is a number
+  chosenChatId?: string; // Change to number if id is a number
   setChosenChatId?: (id: string) => Promise<void>;
   getTheNotLoggedUserChat: (chat: Chat) => Promise<User | null>;
   setTheNotLoggedUserChat: React.Dispatch<React.SetStateAction<User | null>>;
@@ -421,14 +421,14 @@ export interface ListMsgProps {
   setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
   chatWith: User | null;
   setChosenChatId?: (id: string) => Promise<void>;
-  chosenChatId: string; // Change to number if id is a number
+  chosenChatId?: string; // Change to number if id is a number
   getTheNotLoggedUserChat: (chat: Chat) => Promise<User | null>;
   setTheNotLoggedUserChat: React.Dispatch<React.SetStateAction<User | null>>;
   theNotLoggedUserChat: User | null;
 }
 export interface NewMessage extends Partial<Message> {}
 export interface SendMessageFormProps {
-  onSendMsg: (message: NewMessage) => void;
+  onSendMsg?: (message: NewMessage) => void;
   messagesToShow: any[];
 }
 

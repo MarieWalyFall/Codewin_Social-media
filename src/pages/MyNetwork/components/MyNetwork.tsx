@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ConnectionList } from 'components/connections/ConnectionList';
-import { getUsers, setUsers } from '../store/actions/userActions';
-import { setCurrPageAction as setCurrPage } from '../store/actions/postActions';
+import { getUsers, setUsers } from '../../../store/actions/userActions';
+import { setCurrPageAction as setCurrPage } from '../../../store/actions/postActions';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import Loader from './Loader';
+import Loader from '../../Loader';
 import { FaUserFriends } from 'react-icons/fa';
-import Connections from './Connections/Connections';
+import Connections from './Connections';
+import { StyledMyNetwork } from '../style/StyledMyNetwork';
 
 const MyNetwork: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +30,7 @@ const MyNetwork: React.FC = () => {
   if (!users) return <Loader />;
 
   return (
-    <section className="my-network-page">
+    <StyledMyNetwork className="my-network-page">
       <div className="left">
         <div className="manage-network">
           <div>
@@ -57,7 +58,7 @@ const MyNetwork: React.FC = () => {
       <div className="right">
         <Connections />
       </div>
-    </section>
+    </StyledMyNetwork>
   );
 };
 

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { MyConnectionPreview } from '../../components/connections/MyConnectionPreview';
-import { RootState } from '../../store';
-import { User } from '../../types';
+import { MyConnectionPreview } from 'components/connections/MyConnectionPreview';
+
 import { FaSearch } from 'react-icons/fa';
 import { ConnectionList } from 'components/connections/ConnectionList';
+import { StyledConnections } from '../style/StyledMyNetwork';
 
 interface Field {
   [key: string]: any;
@@ -16,7 +16,7 @@ function Connections() {
   const [connections, setConnections] = useState<any[]>([]);
   const [field, setField] = useState<Field>({ fullname: '' });
 
-  const { loggedInUser } = useSelector((state: RootState) => state.userModule);
+  const { loggedInUser } = useSelector((state: any) => state.userModule);
 
   const handleChange = async ({
     target,
@@ -44,7 +44,7 @@ function Connections() {
   if (!loggedInUser) return null;
 
   return (
-    <section className="connections-page">
+    <StyledConnections className="connections-page">
       <div className="left main">
         <div className="container">
           <div className="filter-container">
@@ -82,7 +82,7 @@ function Connections() {
           <ConnectionList connections={users} />
         </div>
       </div>
-    </section>
+    </StyledConnections>
   );
 }
 

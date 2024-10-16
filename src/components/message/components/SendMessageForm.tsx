@@ -15,7 +15,7 @@ export const SendMessageForm: React.FC<SendMessageFormProps> = ({
 
   const doSubmit = () => {
     if (newMsg) {
-      onSendMsg(newMsg);
+      if (onSendMsg) onSendMsg(newMsg);
       setNewMsg({ content: '' });
     }
   };

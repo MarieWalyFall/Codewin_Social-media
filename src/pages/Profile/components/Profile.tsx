@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { userService } from '../services/user/userService';
+import { userService } from '../../../services/user/userService';
 import { PostsList } from 'components/posts/PostsList';
-import { ImgPreview } from '../components/profile/ImgPreview';
+import { ImgPreview } from '../../../components/profile/ImgPreview';
 import { EditModal } from 'components/profile/EditModal';
 import {
   getPostsLength,
   loadPosts,
   setCurrPageAction as setCurrPage,
   setFilterByPosts,
-} from '../store/actions/postActions';
-import { updateUser } from '../store/actions/userActions';
+} from '../../../store/actions/postActions';
+import { updateUser } from '../../../store/actions/userActions';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { FilterByPosts } from 'types';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { FaConnectdevelop } from 'react-icons/fa';
 import { FaMessage } from 'react-icons/fa6';
+import { StyledProfilePage } from '../style/StyledProfilePage';
 
 const Profile: React.FC = () => {
   const params = useParams<{ userId: string }>(); // specify parameter type
@@ -134,7 +135,7 @@ const Profile: React.FC = () => {
   const isLoggedInUserProfile = loggedInUser?.id === user?.id;
 
   return (
-    <section className="profile-page">
+    <StyledProfilePage className="profile-page">
       <div className="left">
         <div className="user-profile">
           <div className="bg" style={{ backgroundImage: `url(${user.bg})` }}>
@@ -200,7 +201,7 @@ const Profile: React.FC = () => {
       {isShowEditModal && (
         <EditModal toggleShowEditModal={toggleShowEditModal} user={user} />
       )}
-    </section>
+    </StyledProfilePage>
   );
 };
 

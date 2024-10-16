@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { userService } from '../../services/user/userService';
+import { userService } from '../../../services/user/userService';
 import TimeAgo from 'react-timeago';
 import { useNavigate } from 'react-router-dom';
 import { LoadingIndicator } from 'components/LoadingIndicator';

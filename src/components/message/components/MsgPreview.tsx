@@ -3,6 +3,7 @@ import { ReactSnip } from '@strg/react-snip';
 import { useEffect, useState } from 'react';
 import { Chat, Message, MsgPreviewProps, User } from 'types';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { StyledMessagePreview } from '../style/StyledMessage';
 
 export const MsgPreview: React.FC<MsgPreviewProps> = ({
   chat,
@@ -62,17 +63,10 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
   const isChatChosen = chosenChatId === chat.id ? 'chosen-chat' : '';
   const containerStyle = `container ${isChatChosen}`;
 
-  if (!theNotLoggedUserChat)
-    return (
-      <div className="msg-preview">
-        <span className="loading-circle">
-          <LoadingIndicator />
-        </span>
-      </div>
-    );
+  if (!theNotLoggedUserChat) return <LoadingIndicator />;
 
   return (
-    <section className="msg-preview" onClick={onClickChat}>
+    <StyledMessagePreview className="msg-preview" onClick={onClickChat}>
       <div className={containerStyle}>
         <div className="img-container">
           <img
@@ -98,6 +92,6 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
           </div>
         </div>
       </div>
-    </section>
+    </StyledMessagePreview>
   );
 };

@@ -1,24 +1,26 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { setCurrPageAction as setCurrPage } from '../store/actions/postActions';
-import { Messaging } from '../components/message/Messaging';
+import { setCurrPageAction as setCurrPage } from 'store/actions/postActions';
+import { Messaging } from 'components/message/components/Messaging';
 import {
   addTempChat,
   removeTempChat,
   loadChats,
   saveChat,
-} from '../store/actions/chatActions';
+} from 'store/actions/chatActions';
 import { useParams } from 'react-router-dom';
-import { userService } from '../services/user/userService';
-import { utilService } from '../services/utilService';
+import { userService } from 'services/user/userService';
+import { utilService } from 'services/utilService';
 import {
   saveActivity,
   setUnreadActivitiesIds,
-} from '../store/actions/activityAction';
-import { updateUser } from '../store/actions/userActions';
+} from 'store/actions/activityAction';
+import { updateUser } from 'store/actions/userActions';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { RootState } from '../store'; // Adjust this path based on your project structure
+
 import { Chat, Message as MessageType, NewActivity, User } from 'types'; // Define these types based on your application structure
+import { RootState } from 'store/index';
+import { StyledMessages } from '../style/StyledMessages';
 
 const Message: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -201,7 +203,7 @@ const Message: React.FC = () => {
   }
 
   return (
-    <section className="message-page">
+    <StyledMessages className="message-page">
       <Messaging
         chats={chats}
         messagesToShow={messagesToShow}
@@ -215,7 +217,7 @@ const Message: React.FC = () => {
       <div className="right-side-message">
         <p></p>
       </div>
-    </section>
+    </StyledMessages>
   );
 };
 

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { MsgPreview } from './MsgPreview';
 import { Chat, ListMsgProps } from 'types';
+import { StyledListMsg } from '../style/StyledMessage';
 
 export const ListMsg: React.FC<ListMsgProps> = ({
   chats,
@@ -43,7 +44,7 @@ export const ListMsg: React.FC<ListMsgProps> = ({
   }, [chats]);
 
   return (
-    <section className="list-msg">
+    <StyledListMsg className="list-msg">
       <div className="title-container">
         <p>Messaging</p>
 
@@ -82,6 +83,6 @@ export const ListMsg: React.FC<ListMsgProps> = ({
             />
           ))}
       </div>
-    </section>
+    </StyledListMsg>
   );
 };

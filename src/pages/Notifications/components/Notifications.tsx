@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { setCurrPageAction as setCurrPage } from '../store/actions/postActions';
-import { NotificationsList } from '../components/notifications/NotificationsList';
+import { setCurrPageAction as setCurrPage } from '../../../store/actions/postActions';
+import { NotificationsList } from 'components/notifications/components/NotificationsList';
 
 import {
   loadActivities,
   setFilterByActivities,
   setUnreadActivitiesIds,
-} from '../store/actions/activityAction';
-import { updateUser } from '../store/actions/userActions';
+} from '../../../store/actions/activityAction';
+import { updateUser } from '../../../store/actions/userActions';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { RootState } from '../store'; // Adjust this import based on your store setup
+import { RootState } from '../../../store'; // Adjust this import based on your store setup
 import { FilterByActivities } from 'types';
 
 function Notifications() {

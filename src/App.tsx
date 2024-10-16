@@ -31,11 +31,12 @@ import OpenRoute from 'components/OpenRoute';
 
 const Feed = lazy(() => import('./pages/Feed/components/Feed'));
 const SpecificPost = lazy(() => import('./pages/SpecificPost'));
-const Profile = lazy(() => import('./pages/Profile'));
-const MyNetwork = lazy(() => import('./pages/MyNetwork'));
-const Message = lazy(() => import('./pages/Message'));
-const Notifications = lazy(() => import('./pages/Notifications'));
-const Connections = lazy(() => import('./pages/Connections/Connections'));
+const Profile = lazy(() => import('./pages/Profile/components/Profile'));
+const MyNetwork = lazy(() => import('./pages/MyNetwork/components/MyNetwork'));
+const Message = lazy(() => import('./pages/Message/components/Message'));
+const Notifications = lazy(
+  () => import('./pages/Notifications/components/Notifications')
+);
 
 const Main = styled.main`
   width: 100%;
@@ -141,7 +142,6 @@ const App: React.FC = () => {
                 <Route path="mynetwork" element={<MyNetwork />} />
                 <Route path="message/:userId?" element={<Message />} />
                 <Route path="notifications" element={<Notifications />} />
-                <Route path="connections" element={<Connections />} />
               </Route>
 
               <Route element={<OpenRoute />}>

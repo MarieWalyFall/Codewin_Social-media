@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { userService } from '../../services/user/userService';
+import { userService } from 'services/user/userService';
 import TimeAgo from 'react-timeago';
 import { useNavigate } from 'react-router-dom';
-import { postService } from '../../services/posts/postService';
+import { postService } from 'services/posts/postService';
 import { Activity, User } from 'types';
-
-
-
+import { StyledNotificationPreview } from '../style/StyledNotifications';
 
 interface NotificaitonPreviewProps {
   activity: Activity;
 }
 
-export const NotificaitonPreview: React.FC<NotificaitonPreviewProps> = ({ activity }) => {
+export const NotificaitonPreview: React.FC<NotificaitonPreviewProps> = ({
+  activity,
+}) => {
   const navigate = useNavigate();
   const [theNotLoggedUser, setTheNotLoggedUser] = useState<User | null>(null);
   const [str, setStr] = useState<string | null>(null);
@@ -23,25 +23,34 @@ export const NotificaitonPreview: React.FC<NotificaitonPreviewProps> = ({ activi
   const [isActivityUnread, setIsActivityUnread] = useState<boolean>(false);
 
   const { loggedInUser } = useSelector((state: any) => state.userModule);
-  const { unreadActivities } = useSelector((state: any) => state.activityModule);
+  const { unreadActivities } = useSelector(
+    (state: any) => state.activityModule
+  );
 
   const checkIfActivityUnread = () => {
-    return unreadActivities.some((activityId: string) => activityId === activity.id);
+    return unreadActivities.some(
+      (activityId: string) => activityId === activity.id
+    );
   };
 
   const getTheNotLoggedInUser = async () => {
-    const userId = activity.createdBy === loggedInUser.id ? activity.createdTo : activity.createdBy;
+    const userId =
+      activity.createdBy === loggedInUser.id
+        ? activity.createdTo
+        : activity.createdBy;
     const user = await userService.getById(userId);
     setTheNotLoggedUser(user);
   };
 
   const getTheCreatedByUser = () => {
-    const user = activity.createdBy === loggedInUser.id ? loggedInUser : theNotLoggedUser;
+    const user =
+      activity.createdBy === loggedInUser.id ? loggedInUser : theNotLoggedUser;
     setCreatedByUser(user);
   };
 
   const getTheCreatedToUser = () => {
-    const user = activity.createdTo === loggedInUser.id ? loggedInUser : theNotLoggedUser;
+    const user =
+      activity.createdTo === loggedInUser.id ? loggedInUser : theNotLoggedUser;
     setCreatedToUser(user);
   };
 
@@ -92,7 +101,7 @@ export const NotificaitonPreview: React.FC<NotificaitonPreviewProps> = ({ activi
   }, [unreadActivities]);
 
   return (
-    <section
+    <StyledNotificationPreview
       className={`notificaiton-preview ${isActivityUnread ? 'unread' : ''}`}
       onClick={() => {
         if (link) navigate(link);
@@ -102,7 +111,7 @@ export const NotificaitonPreview: React.FC<NotificaitonPreviewProps> = ({ activi
         {createdByUser?.imgUrl ? (
           <img src={createdByUser.imgUrl} alt="" className="img" />
         ) : (
-         "loading..."
+          'loading...'
         )}
       </div>
 
@@ -114,6 +123,6 @@ export const NotificaitonPreview: React.FC<NotificaitonPreviewProps> = ({ activi
           <TimeAgo date={activity.createdAt} />
         </p>
       </div>
-    </section>
+    </StyledNotificationPreview>
   );
 };
