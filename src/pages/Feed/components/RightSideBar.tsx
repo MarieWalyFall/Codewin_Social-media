@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getUsers } from '../store/actions/userActions';
-import { User } from '../types'; // Adjust the import path based on your project structure
+import { getUsers } from '../../../store/actions/userActions';
+import { User } from '../../../types'; // Adjust the import path based on your project structure
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { StyledRightSideBar } from '../style/StyledRightSideBar';
 
 export const RightSideBar: React.FC = () => {
-  const { users }: { users: User[] } = useSelector((state: any) => state.userModule); // Use any for simplicity
+  const { users }: { users: User[] } = useSelector(
+    (state: any) => state.userModule
+  ); // Use any for simplicity
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -17,19 +20,19 @@ export const RightSideBar: React.FC = () => {
   const lengthConnections = [0, 1, 2]; // Renamed from "lengtConections" to "lengthConnections"
 
   return (
-    <section className="right-side-bar">
+    <StyledRightSideBar className="right-side-bar">
       <div className="container">
         <div className="title">
           <p>Add to your feed</p>
         </div>
         <br />
         <div className="list">
-          {users && 
+          {users &&
             lengthConnections.map((num, idx) => (
               <div
-                key={users[num]?.id || idx} // Use idx as fallback if id is undefined
+                key={users[num]?.id || idx}
                 className="preview"
-                onClick={() => navigate(`profile/${users[num]?.id}`)} // Use optional chaining for safety
+                onClick={() => navigate(`/profile/${users[num]?.id}`)}
               >
                 <div className="img-container">
                   <img src={users[num]?.imgUrl} className="img" alt="" />
@@ -66,6 +69,6 @@ export const RightSideBar: React.FC = () => {
           </a>
         </div>
       </div>
-    </section>
+    </StyledRightSideBar>
   );
 };

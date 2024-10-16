@@ -79,7 +79,7 @@ async function deleteUser(userId: string): Promise<void> {
 
 // Login a user
 async function loginUser(credentials: {
-  email: string;
+  username: string;
   password: string;
 }): Promise<User> {
   const response = await fetch(API_URL);
@@ -89,7 +89,8 @@ async function loginUser(credentials: {
 
   const users: User[] = await response.json();
   const user = users.find(
-    (u) => u.email === credentials.email && u.password === credentials.password
+    (u) =>
+      u.username === credentials.username && u.password === credentials.password
   );
 
   return user ? Promise.resolve(user) : Promise.reject('Invalid credentials');

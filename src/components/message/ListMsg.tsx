@@ -3,14 +3,13 @@ import { useEffect, useState } from 'react';
 import { MsgPreview } from './MsgPreview';
 import { Chat, ListMsgProps } from 'types';
 
-
 export const ListMsg: React.FC<ListMsgProps> = ({
   chats,
   setMessagesToShow,
   setChatWith,
   chatWith,
-  setChooseenChatId,
-  chooseenChatId,
+  setChosenChatId,
+  chosenChatId,
   getTheNotLoggedUserChat,
   setTheNotLoggedUserChat,
   theNotLoggedUserChat,
@@ -18,7 +17,9 @@ export const ListMsg: React.FC<ListMsgProps> = ({
   const [chatsToShow, setChatsToShow] = useState<Chat[] | null>(null);
   const [field, setField] = useState<{ [key: string]: any }>({ txt: '' });
 
-  const handleChange = async ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async ({
+    target,
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const fieldName = target.name;
     let value = target.type === 'number' ? +target.value || '' : target.value;
     setField({ [fieldName]: value });
@@ -28,7 +29,10 @@ export const ListMsg: React.FC<ListMsgProps> = ({
   const setFilter = (txt: string) => {
     const regex = new RegExp(txt, 'i');
     const filteredChats = [...chats].filter((chat) => {
-      return regex.test(chat.users? chat.users[0] : '') || regex.test(chat.users? chat.users[1] : '');
+      return (
+        regex.test(chat.users ? chat.users[0] : '') ||
+        regex.test(chat.users ? chat.users[1] : '')
+      );
     });
 
     setChatsToShow(filteredChats);
@@ -44,12 +48,8 @@ export const ListMsg: React.FC<ListMsgProps> = ({
         <p>Messaging</p>
 
         <div className="logos">
-          <span className="logo-menu">
-            Icon
-          </span>
-          <span className="logo-new-msg">
-            Icon
-          </span>
+          <span className="logo-menu">Icon</span>
+          <span className="logo-new-msg">Icon</span>
         </div>
       </div>
 
@@ -74,11 +74,11 @@ export const ListMsg: React.FC<ListMsgProps> = ({
               setMessagesToShow={setMessagesToShow}
               setChatWith={setChatWith}
               chatWith={chatWith}
-              setChooseenChatId={setChooseenChatId}
+              setChosenChatId={setChosenChatId}
               getTheNotLoggedUserChat={getTheNotLoggedUserChat}
               setTheNotLoggedUserChat={setTheNotLoggedUserChat}
               theNotLoggedUserChat={theNotLoggedUserChat}
-              chooseenChatId={chooseenChatId}
+              chosenChatId={chosenChatId}
             />
           ))}
       </div>

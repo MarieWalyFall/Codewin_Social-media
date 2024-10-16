@@ -103,7 +103,7 @@ const Profile: React.FC = () => {
   };
 
   const moveToChat = () => {
-    navigate(`/main/message/${user?.id}`);
+    navigate(`/message/${user?.id}`);
   };
 
   useEffect(() => {

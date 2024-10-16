@@ -3,8 +3,7 @@ import { ThreadMsgList } from './ThreadMsgList';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { SendMessageForm } from './SendMessageForm';
-import { Message, MessageThreadProps,  } from 'types';
-
+import { Message, MessageThreadProps } from 'types';
 
 export const MessageThread: React.FC<MessageThreadProps> = ({
   messagesToShow,
@@ -19,7 +18,9 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
   }, [messagesToShow]);
 
   const scrollToBottom = () => {
-    const msgsContainer = document.querySelector('.user-profile-details') as HTMLElement;
+    const msgsContainer = document.querySelector(
+      '.user-profile-details'
+    ) as HTMLElement;
     if (msgsContainer) {
       msgsContainer.scrollTop = msgsContainer.scrollHeight;
     }
@@ -33,16 +34,14 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
         <div>
           <div
             className="img-profile"
-            onClick={() => navigate(`/main/profile/${chatWith.id}`)}
+            onClick={() => navigate(`/profile/${chatWith.id}`)}
           >
             <img src={chatWith.imgUrl} alt={chatWith.name} className="img" />
           </div>
           <div className="fullname">{chatWith.name}</div>
         </div>
         <div className="container-logo">
-          <span className="logo-menu">
-            icon
-          </span>
+          <span className="logo-menu">icon</span>
         </div>
       </header>
 
@@ -50,7 +49,10 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
         <ThreadMsgList messagesToShow={messagesToShow || []} />
       </div>
 
-      <SendMessageForm onSendMsg={onSendMsg} messagesToShow={messagesToShow || []} />
+      <SendMessageForm
+        onSendMsg={onSendMsg}
+        messagesToShow={messagesToShow || []}
+      />
     </section>
   );
 };

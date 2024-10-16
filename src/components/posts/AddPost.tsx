@@ -1,10 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CreatePostModal } from './CreatePostModal';
 import { useState } from 'react';
 import { savePost } from '../../store/actions/postActions';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { FaCalendar, FaCamera, FaFilm, FaPen } from 'react-icons/fa';
+import { FaCalendarAlt, FaCamera, FaFilm, FaNewspaper } from 'react-icons/fa';
+import { StyledAddPosts } from './style/StyledPosts';
 
 interface RootState {
   userModule: {
@@ -38,7 +38,7 @@ export const AddPost: React.FC = () => {
   };
 
   return (
-    <section className="add-post" onClick={toggleShowCreatePost}>
+    <StyledAddPosts className="add-post" onClick={toggleShowCreatePost}>
       <section className="top">
         <div className="img-container">
           <img src={loggedInUser.imgUrl} alt="" className="icon" />
@@ -50,19 +50,19 @@ export const AddPost: React.FC = () => {
 
       <section className="btns-container">
         <button>
-          <FaCamera />
+          <FaCamera className="photo icon" />
           <span>Photo</span>
         </button>
         <button>
-          <FaFilm />
+          <FaFilm className="video icon" />
           <span>Video</span>
         </button>
         <button>
-          <FaCalendar />
+          <FaCalendarAlt className="calendar icon" />
           <span>Event</span>
         </button>
         <button>
-          <FaPen />
+          <FaNewspaper className="newspaper icon" />
           <span>Write article</span>
         </button>
       </section>
@@ -74,6 +74,6 @@ export const AddPost: React.FC = () => {
           loggedInUser={loggedInUser}
         />
       }
-    </section>
+    </StyledAddPosts>
   );
 };

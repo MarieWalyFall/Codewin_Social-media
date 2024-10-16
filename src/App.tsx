@@ -1,5 +1,3 @@
-import './assets/scss/global.scss';
-
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Login } from './pages/Login';
 import { About } from './pages/About';
@@ -10,7 +8,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { socketService } from 'services/socket.service';
-import { Header } from 'components/header/Header';
+import { Header } from 'components/header/components/Header';
 
 import {
   addConnectedUserForSocket,
@@ -31,7 +29,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import PrivateRoute from 'components/PrivateRoute';
 import OpenRoute from 'components/OpenRoute';
 
-const Feed = lazy(() => import('./pages/Feed'));
+const Feed = lazy(() => import('./pages/Feed/components/Feed'));
 const SpecificPost = lazy(() => import('./pages/SpecificPost'));
 const Profile = lazy(() => import('./pages/Profile'));
 const MyNetwork = lazy(() => import('./pages/MyNetwork'));
@@ -39,6 +37,18 @@ const Message = lazy(() => import('./pages/Message'));
 const Notifications = lazy(() => import('./pages/Notifications'));
 const Connections = lazy(() => import('./pages/Connections/Connections'));
 
+const Main = styled.main`
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 30px;
+`;
+
+const MainBody = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+`;
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const { loggedInUser } = useSelector((state: any) => state.userModule);
@@ -46,46 +56,10 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (loggedInUser?.id) {
-      // Initialize socket connection when the user logs in
-      // socketService.setup();
       const filterBy = { userId: loggedInUser.id };
 
       dispatch(setFilterByActivities(filterBy));
       dispatch(loadActivities());
-
-      // // Register socket event listeners
-      // socketService.on('add-post', handleAddPost);
-      // socketService.on('update-post', handleUpdatePost);
-      // socketService.on('remove-post', handleRemovePost);
-
-      // socketService.on('add-chat', handleAddChat);
-      // socketService.on('update-chat', handleUpdateChat);
-
-      // socketService.on('add-connected-users', handleAddConnectedUsers);
-      // socketService.on('add-connected-user', handleAddConnectedUser);
-
-      // socketService.on('update-comment', handleUpdateComment);
-      // socketService.on('add-comment', handleAddComment);
-      // socketService.on('remove-comment', handleRemoveComment);
-
-      // // Cleanup listeners when component unmounts or when user logs out
-      // return () => {
-      //   socketService.off('add-post', handleAddPost);
-      //   socketService.off('update-post', handleUpdatePost);
-      //   socketService.off('remove-post', handleRemovePost);
-
-      //   socketService.off('add-chat', handleAddChat);
-      //   socketService.off('update-chat', handleUpdateChat);
-
-      //   socketService.off('add-connected-users', handleAddConnectedUsers);
-      //   socketService.off('add-connected-user', handleAddConnectedUser);
-
-      //   socketService.off('update-comment', handleUpdateComment);
-      //   socketService.off('add-comment', handleAddComment);
-      //   socketService.off('remove-comment', handleRemoveComment);
-
-      //   socketService.terminate(); // Clean up the socket connection
-      // };
     }
   }, [loggedInUser?.id, dispatch]);
 
@@ -153,14 +127,13 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="app">
+      <Main>
         {loggedInUser && <Header />}
-        <main
+        <MainBody
           className={`main-page ${!loggedInUser ? 'app-container' : 'container'}`}
         >
           <Suspense fallback={<LoadingIndicator />}>
             <Routes>
-              {/* Protected Routes */}
               <Route element={<PrivateRoute />}>
                 <Route path="feed" element={<Feed />} />
                 <Route path="post/:userId/:postId" element={<SpecificPost />} />
@@ -170,7 +143,7 @@ const App: React.FC = () => {
                 <Route path="notifications" element={<Notifications />} />
                 <Route path="connections" element={<Connections />} />
               </Route>
-              {/* Public Routes */}
+
               <Route element={<OpenRoute />}>
                 <Route path="/about" element={<About />} />
                 <Route path="/signup" element={<Signup />} />
@@ -178,8 +151,8 @@ const App: React.FC = () => {
               </Route>
             </Routes>
           </Suspense>
-        </main>
-      </div>
+        </MainBody>
+      </Main>
     </Router>
   );
 };

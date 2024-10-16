@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { setCurrPageAction as setCurrPage } from '../store/actions/postActions';
 import { Messaging } from '../components/message/Messaging';
@@ -18,9 +18,9 @@ import {
 import { updateUser } from '../store/actions/userActions';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { RootState } from '../store'; // Adjust this path based on your project structure
-import { Chat, NewActivity, User } from 'types'; // Define these types based on your application structure
+import { Chat, Message as MessageType, NewActivity, User } from 'types'; // Define these types based on your application structure
 
-function Message() {
+const Message: React.FC = () => {
   const dispatch = useAppDispatch();
   const params = useParams<{ userId: string }>();
   const { loggedInUser } = useSelector((state: RootState) => state.userModule);
@@ -32,19 +32,19 @@ function Message() {
   const [messagesToShow, setMessagesToShow] = useState<Chat['messages'] | null>(
     null
   );
-
   const [isNewChat, setIsNewChat] = useState<boolean>(false);
   const [theNotLoggedUserChat, setTheNotLoggedUserChat] = useState<User | null>(
     null
   );
   const [chatWith, setChatWith] = useState<User | null>(null);
 
+  // Set the current page when component mounts
   useEffect(() => {
-    dispatch(setCurrPage(0));
-    const userId = loggedInUser?.id;
-    if (!userId) return;
+    dispatch(setCurrPage('message'));
 
-    dispatch(loadChats(userId)).then((chats) => {
+    if (!loggedInUser?.id) return;
+
+    dispatch(loadChats(loggedInUser.id)).then(() => {
       checkIfChatExist()
         .then((exists) => {
           if (params.userId === loggedInUser.id) return;
@@ -57,8 +57,9 @@ function Message() {
           openChat();
         });
     });
-  }, [loggedInUser, params.userId]);
+  }, [loggedInUser, params.userId, dispatch]);
 
+  // Update the last seen status and unread messages when component unmounts
   useEffect(() => {
     const updateLastSeen = async () => {
       await updateLastSeenLoggedUser();
@@ -66,17 +67,22 @@ function Message() {
     };
 
     return () => {
-      // Call the async function
       updateLastSeen();
     };
-  }, []);
+  }, [dispatch]);
 
-  const updateLastSeenLoggedUser = async () => {
-    const lastSeenMsgs = new Date().getTime();
-    await dispatch(updateUser({ ...loggedInUser }));
-  };
+  // Function to update the last seen message for the logged-in user
+  const updateLastSeenLoggedUser = useCallback(async () => {
+    await dispatch(
+      updateUser({
+        ...loggedInUser,
+        lastSeenMessages: String(new Date().getTime()),
+      })
+    );
+  }, [dispatch, loggedInUser]);
 
-  const checkIfChatExist = (): Promise<boolean> => {
+  // Check if a chat exists with the current user
+  const checkIfChatExist = useCallback((): Promise<boolean> => {
     return new Promise((resolve, reject) => {
       if (!chats) {
         reject(false);
@@ -89,16 +95,17 @@ function Message() {
         else reject(false);
       }
     });
-  };
+  }, [chats, params.userId]);
 
-  const openChat = async () => {
+  // Open chat based on whether the chat exists or is new
+  const openChat = useCallback(async () => {
     if (isUserChatExist) {
       const chatToShow = findChat(params.userId ?? '');
       if (chatToShow) {
         await loadNotLoggedUser(chatToShow);
         setMessagesToShow(chatToShow.messages);
       }
-    } else if (!isUserChatExist) {
+    } else {
       if (!params.userId || !chats) return;
       const newChat = createChat(params.userId);
       dispatch(addTempChat(newChat));
@@ -106,15 +113,15 @@ function Message() {
       await loadNotLoggedUser(newChat);
       setMessagesToShow(newChat.messages);
     }
-  };
+  }, [isUserChatExist, params.userId, chats, dispatch]);
 
-  const onSendMsg = (txt: string) => {
-    const newMsg = createNewMsg(txt);
-
-    const chatToUpdate = { ...chats[chatIdx] };
+  // Send a new message and save it to the chat
+  const onSendMsg = (content: string) => {
+    const newMsg = createNewMsg(content, loggedInUser!.id);
+    const chatToUpdate = { ...chats[findChatIndex()] };
     chatToUpdate.messages.push(newMsg);
-    chatToUpdate.users = [loggedInUser?.name, theNotLoggedUserChat?.name];
-    if (isNewChat) {
+
+    if (isNewChat && chatToUpdate.id) {
       dispatch(removeTempChat(chatToUpdate.id));
       delete chatToUpdate.id;
     }
@@ -132,48 +139,54 @@ function Message() {
               : savedChat.userId,
           chatId: savedChat.id,
           postId: '',
-          createdAt: undefined,
+          createdAt: Date.now(),
         };
         dispatch(saveActivity(newActivity));
       }
     });
   };
 
-  const createNewMsg = (txt: string) => {
-    return {
+  // Helper function to create a new message
+  const createNewMsg = (content: string, senderId: string) => {
+    const newMsg: MessageType = {
       id: utilService.makeId(24),
-      txt,
+      content,
       userId: loggedInUser?.id,
       createdAt: String(new Date().getTime()),
+      senderId,
     };
+    return newMsg;
   };
 
-  const createChat = (userId: string) => {
-    return {
-      id: utilService.makeId(7),
-      userId,
-      userId2: loggedInUser?.id,
-      messages: [],
-      createdAt: String(new Date().getTime()),
-    };
-  };
+  // Helper function to create a new chat
+  const createChat = (userId: string) => ({
+    id: utilService.makeId(7),
+    userId,
+    userId2: loggedInUser?.id,
+    messages: [],
+    createdAt: String(new Date().getTime()),
+  });
 
-  const loadNotLoggedUser = async (chat: Chat) => {
-    const user = (await getTheNotLoggedUserChat(chat)) || null;
+  // Load the not-logged-in user's data for the chat
+  const loadNotLoggedUser = useCallback(async (chat: Chat) => {
+    const user = await getTheNotLoggedUserChat(chat);
     setTheNotLoggedUserChat(user);
     setChatWith(user);
-  };
+  }, []);
 
-  const findChat = (userId: string) => {
-    return chats.find(
-      (chat) => chat.userId === userId || chat.userId2 === userId
+  // Find chat based on userId
+  const findChat = (userId: string) =>
+    chats.find((chat) => chat.userId === userId || chat.userId2 === userId);
+
+  const findChatIndex = () =>
+    chats.findIndex(
+      (chat) => chat.userId === params.userId || chat.userId2 === params.userId
     );
-  };
 
+  // Get the other user's chat details
   const getTheNotLoggedUserChat = async (chat: Chat) => {
-    let userId;
-    if (loggedInUser?.id !== chat?.userId) userId = chat.userId;
-    else if (loggedInUser?.id !== chat?.userId2) userId = chat.userId2;
+    const userId =
+      loggedInUser?.id !== chat?.userId ? chat.userId : chat.userId2;
     return userId ? await userService.getById(userId) : null;
   };
 
@@ -181,8 +194,7 @@ function Message() {
     return (
       <div className="message-page">
         <div className="gif-container">
-          <img className="loading-gif" src="loadingGif" alt="" />{' '}
-          {/* Replace with actual loading GIF source */}
+          <img className="loading-gif" src="loadingGif" alt="Loading..." />
         </div>
       </div>
     );
@@ -205,6 +217,6 @@ function Message() {
       </div>
     </section>
   );
-}
+};
 
 export default Message;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Comments } from '../../comments/Comments';
+
+import { Comments } from '../../../comments/Comments';
 import { PostActions } from './PostActions';
 import { PostBody } from './PostBody';
 import { PostHeader } from './PostHeader';
@@ -12,18 +12,16 @@ import { savePost, removePost } from 'store/actions/postActions';
 import { saveActivity } from 'store/actions/activityAction';
 import { ImgPreview } from 'components/profile/ImgPreview';
 import { useParams } from 'react-router-dom';
-import { Post, LoggedInUser, NewActivity } from 'types';
+import { PostPrewiewProps, LoggedInUser, NewActivity } from 'types';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { TiThMenu } from 'react-icons/ti';
-interface PostPreviewProps {
-  post: Partial<Post>;
-}
+import { FaEllipsis } from 'react-icons/fa6';
+import { StyledPostPreview } from '../style/StyledPostPreview';
 
 interface RootState {
   userModule: { loggedInUser: LoggedInUser };
 }
 
-export const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
+export const PostPreview: React.FC<PostPrewiewProps> = ({ post }) => {
   const dispatch = useAppDispatch();
   const params = useParams<{ postId?: string }>();
 
@@ -50,7 +48,6 @@ export const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
   const loadUserPost = async (id: string) => {
     if (!post) return;
     const userPost = await userService.getById(id);
-    console.log(userPost);
     setUserPost(userPost);
   };
 
@@ -62,7 +59,7 @@ export const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
     const shareData = {
       title: 'Post',
       text: 'A post from Travelsdin',
-      url: `/main/post/${post.userId}/${post.id}`,
+      url: `/post/${post.userId}/${post.id}`,
     };
 
     try {
@@ -74,11 +71,11 @@ export const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
 
   const onLikePost = () => {
     const isAlreadyLike = post?.reactions?.some(
-      (reaction) => reaction.userId === loggedInUser.id
+      (reaction: { userId: string }) => reaction.userId === loggedInUser.id
     );
     if (isAlreadyLike) {
       post.reactions = post?.reactions?.filter(
-        (reaction) => reaction.userId !== loggedInUser.id
+        (reaction: { userId: string }) => reaction.userId !== loggedInUser.id
       );
     } else {
       post?.reactions?.push({
@@ -107,16 +104,16 @@ export const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
   };
 
   const copyToClipBoard = () => {
-    const postUrl = `https://travelsdin-express-production.up.railway.app/#/main/post/${post.userId}/${post.id}`;
+    const postUrl = `http://localhost:3000/post/${post.userId}/${post.id}`;
     navigator.clipboard.writeText(postUrl);
     // Uncomment if you want an alert after copying
     // alert('Copied the text: ' + postUrl);
   };
 
   return (
-    <section className="post-preview">
+    <StyledPostPreview className="post-preview">
       <div className="menu" onClick={toggleMenu}>
-        <TiThMenu />
+        <FaEllipsis className="svg-inline--fa fa-ellipsis dots-icon" />
       </div>
       <PostHeader post={post} userPost={userPost} />
       <PostBody
@@ -165,6 +162,6 @@ export const PostPreview: React.FC<PostPreviewProps> = ({ post }) => {
           title="Image"
         />
       )}
-    </section>
+    </StyledPostPreview>
   );
 };

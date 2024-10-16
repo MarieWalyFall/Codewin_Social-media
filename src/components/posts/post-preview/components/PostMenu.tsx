@@ -44,7 +44,7 @@ export const PostMenu: React.FC<PostMenuProps> = ({
               className="delete-container"
               onClick={() => setIsAskAgain((prev) => !prev)}
             >
-              <FaTrash />
+              <FaTrash className="trash-icon" />
               <p>Delete post</p>
             </button>
           </div>

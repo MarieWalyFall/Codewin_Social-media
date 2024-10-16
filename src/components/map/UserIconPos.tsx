@@ -8,7 +8,12 @@ interface UserIconPosProps {
   isCloseUserIcon: boolean;
 }
 
-export const UserIconPos: React.FC<UserIconPosProps> = ({ url, userId, fullname, isCloseUserIcon }) => {
+export const UserIconPos: React.FC<UserIconPosProps> = ({
+  url,
+  userId,
+  fullname,
+  isCloseUserIcon,
+}) => {
   const [isUserIconOpen, setIsUserIconOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -41,13 +46,13 @@ export const UserIconPos: React.FC<UserIconPosProps> = ({ url, userId, fullname,
             </div>
             <div
               className="go-to-profile opt"
-              onClick={() => navigate(`/main/profile/${userId}`)}
+              onClick={() => navigate(`/profile/${userId}`)}
             >
               <p>Go to profile</p>
             </div>
             <div
               className="send-message opt"
-              onClick={() => navigate(`/main/message/${userId}`)}
+              onClick={() => navigate(`/message/${userId}`)}
             >
               <p>Send a message</p>
             </div>

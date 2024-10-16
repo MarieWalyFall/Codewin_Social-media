@@ -73,6 +73,7 @@ async function updatePost(
 
 // Delete a post
 async function deletePost(postId: string): Promise<void> {
+  console.log(postId);
   const response = await fetch(`${API_URL}/${postId}`, {
     method: 'DELETE',
   });

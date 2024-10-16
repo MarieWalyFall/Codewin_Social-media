@@ -11,6 +11,7 @@ import {
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { FilterByPosts, Post, SortByOptions } from 'types';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { StyledPosts } from './style/StyledPosts';
 
 export const Posts: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +24,7 @@ export const Posts: React.FC = () => {
 
   const onSetSort = (value: SortByOptions) => {
     const filterBy: FilterByPosts = {
-      sortBy: value,
+      sortBy: value ?? 'date-newest',
     };
     dispatch(addFilterByPostsAction(filterBy)); // Add filtering options
     dispatch(loadPosts());
@@ -32,16 +33,16 @@ export const Posts: React.FC = () => {
 
   if (!posts)
     return (
-      <section className="posts">
+      <StyledPosts className="posts">
         <LoadingIndicator />
-      </section>
+      </StyledPosts>
     );
 
   return (
-    <section className="posts">
+    <StyledPosts className="posts">
       <AddPost />
       <SortBy onSetSort={onSetSort} />
       <PostsList postsList={posts} />
-    </section>
+    </StyledPosts>
   );
 };

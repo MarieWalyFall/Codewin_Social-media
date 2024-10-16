@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { login, logout, getLoggedinUser } from 'store/actions/userActions';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { RootState } from '../../store'; // Adjust this import based on your project structure
+
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { CiLogout } from 'react-icons/ci';
+import { StyledFeedIdentityModule } from '../../style/StyledLeftSideBar';
 
 export const FeedIdentityModule: React.FC = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export const FeedIdentityModule: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   // Assuming your user state is in the Redux store, adjust the selector accordingly
-  const user = useSelector((state: RootState) => state.userModule.loggedInUser); // Change 'user' to the actual key in your Redux store
+  const user = useSelector((state: any) => state.userModule.loggedInUser); // Change 'user' to the actual key in your Redux store
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -55,7 +56,7 @@ export const FeedIdentityModule: React.FC = () => {
   const { name, imgUrl, profession, id, connections } = user;
 
   return (
-    <section className="feed-identity-module">
+    <StyledFeedIdentityModule className="feed-identity-module">
       <div>
         <div className="bg">
           <div
@@ -88,6 +89,6 @@ export const FeedIdentityModule: React.FC = () => {
           </div>
         </div>
       </div>
-    </section>
+    </StyledFeedIdentityModule>
   );
 };

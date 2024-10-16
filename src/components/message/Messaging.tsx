@@ -3,16 +3,14 @@ import { ListMsg } from './ListMsg';
 import { MessageThread } from './MessageThread';
 import { MessagingProps } from 'types';
 
-
-
 // Define the Messaging component with typed props
 export const Messaging: React.FC<MessagingProps> = ({
   chats,
   chatWith,
   messagesToShow,
   setMessagesToShow,
-  chooseenChatId,
-  setChooseenChatId,
+  chosenChatId,
+  setChosenChatId,
   setChatWith,
   getTheNotLoggedUserChat,
   setTheNotLoggedUserChat,
@@ -27,7 +25,7 @@ export const Messaging: React.FC<MessagingProps> = ({
           setMessagesToShow={setMessagesToShow}
           setChatWith={setChatWith}
           chatWith={chatWith}
-          chooseenChatId={chooseenChatId}
+          chosenChatId={chosenChatId}
           getTheNotLoggedUserChat={getTheNotLoggedUserChat}
           setTheNotLoggedUserChat={setTheNotLoggedUserChat}
           theNotLoggedUserChat={theNotLoggedUserChat}

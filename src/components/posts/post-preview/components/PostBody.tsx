@@ -1,7 +1,8 @@
 import React from 'react';
 import { Post } from 'types';
+import { StyledPostBody } from '../style/StyledPostPreview';
 
-interface PostBodyProps extends Partial<Post>{}
+interface PostBodyProps extends Partial<Post> {}
 
 export const PostBody: React.FC<PostBodyProps> = ({
   body,
@@ -12,7 +13,7 @@ export const PostBody: React.FC<PostBodyProps> = ({
   title,
 }) => {
   return (
-    <section className="post-body">
+    <StyledPostBody className="post-body">
       <div className="title">
         <h1>{title}</h1>
       </div>
@@ -36,6 +37,6 @@ export const PostBody: React.FC<PostBodyProps> = ({
           </video>
         )}
       </div>
-    </section>
+    </StyledPostBody>
   );
 };

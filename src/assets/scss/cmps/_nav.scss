@@ -1,5 +1,5 @@
 .nav {
-  width: 645px;
+  max-width: 645px;
   display: flex;
   height: 100%;
 
@@ -78,7 +78,8 @@
     }
 
     .me-btn {
-      border-right: 1px solid $border;
+      border-left: 1px solid $border;
+      margin-left: 10px;
 
       p {
         .profile-icon {

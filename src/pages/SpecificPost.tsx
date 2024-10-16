@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { PostPreview } from '../components/posts/post-preview/PostPreview';
+import { PostPreview } from '../components/posts/post-preview/components/PostPreview';
 import {
   getPostsLength,
   loadPosts,

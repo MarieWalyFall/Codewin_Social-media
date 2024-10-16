@@ -97,10 +97,6 @@ export function savePost(post: Partial<Post>) {
       const addedPost = await postService.save(post);
       post.id ? dispatch(updatePost(addedPost)) : dispatch(addPost(addedPost));
 
-      post.id
-        ? socketService.emit('post-updated', addedPost)
-        : socketService.emit('post-added', addedPost);
-
       return addedPost;
     } catch (err) {
       console.log('err:', err);
@@ -112,7 +108,7 @@ export function removePost(postId: string) {
   return async (dispatch: Dispatch<PostAction>) => {
     try {
       await postService.remove(postId);
-      socketService.emit('post-removed', postId);
+
       dispatch({ type: 'REMOVE_POST', payload: postId });
     } catch (err) {
       console.log('err:', err);

@@ -7,6 +7,8 @@ import { getUsers, setUsers } from '../store/actions/userActions';
 import { setCurrPageAction as setCurrPage } from '../store/actions/postActions';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import Loader from './Loader';
+import { FaUserFriends } from 'react-icons/fa';
+import Connections from './Connections/Connections';
 
 const MyNetwork: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -35,17 +37,17 @@ const MyNetwork: React.FC = () => {
           </div>
           <ul>
             <li>
-              <button onClick={() => navigate('/main/connections')}>
-                <div>
-                  <span className="logo">Icon</span>
-                  <span className="txt">
-                    <p>Connections</p>
-                  </span>
-                </div>
-                <span>
-                  <p>{loggedInUser.connections?.length || 0}</p>
+              <div>
+                <span className="logo">
+                  <FaUserFriends />
                 </span>
-              </button>
+                <span className="txt">
+                  <p>Connections</p>
+                </span>
+              </div>
+              <span>
+                <p>{loggedInUser.connections?.length || 0}</p>
+              </span>
             </li>
             <li></li>
           </ul>
@@ -53,13 +55,7 @@ const MyNetwork: React.FC = () => {
       </div>
 
       <div className="right">
-        <div className="recommended">
-          <div>
-            <h3>Recommended for you</h3>
-          </div>
-
-          <ConnectionList connections={users} />
-        </div>
+        <Connections />
       </div>
     </section>
   );

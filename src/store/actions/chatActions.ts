@@ -4,9 +4,9 @@ import { socketService } from '../../services/socket.service';
 import { Chat } from 'types'; // Adjust based on your Chat type definition
 import { AppDispatch } from '../../store';
 
-
 export function loadChats(userId: string) {
-  return async (dispatch: AppDispatch, getState: () => any) => { // Adjust getState type according to your root state type
+  return async (dispatch: AppDispatch, getState: () => any) => {
+    // Adjust getState type according to your root state type
     function onSuccess(chats: Chat[]) {
       dispatch({ type: 'SET_CHATS', chats });
       return chats;

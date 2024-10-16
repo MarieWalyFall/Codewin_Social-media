@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'; 
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { updateUser } from '../../store/actions/userActions';
@@ -33,9 +33,10 @@ export function ConnectionPreview({ user }: ConnectionPreviewProps) {
       const connectionToRemove = { ...user };
       const loggedInUserToUpdate = { ...loggedInUser };
 
-      loggedInUserToUpdate.connections = loggedInUserToUpdate.connections.filter(
-        (connection: Connection) => connection.id !== connectionToRemove.id
-      );
+      loggedInUserToUpdate.connections =
+        loggedInUserToUpdate.connections.filter(
+          (connection: Connection) => connection.id !== connectionToRemove.id
+        );
 
       connectionToRemove.connections = connectionToRemove.connections?.filter(
         (connection: Connection) => connection.id !== loggedInUserToUpdate.id
@@ -68,7 +69,7 @@ export function ConnectionPreview({ user }: ConnectionPreviewProps) {
 
   return (
     <li className="connection-preview">
-      <Link to={`/main/profile/${user.id}`}>
+      <Link to={`/profile/${user.id}`}>
         <div className="bg">
           {user.imgUrl ? (
             <img src={user.imgUrl} alt="" className="img-profile" />

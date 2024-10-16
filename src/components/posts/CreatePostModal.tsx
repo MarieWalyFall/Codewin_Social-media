@@ -1,7 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { uploadImg, uploadVid } from '../../services/imgUpload.service';
 import { LoggedInUser } from 'types'; // Import your type definition
+import { FaCamera, FaFilm } from 'react-icons/fa';
+import { IoIosClose } from 'react-icons/io';
+import { StyledCreatePostModal } from './style/StyledPosts';
 
 interface CreatePostModalProps {
   toggleShowCreatePost: () => void; // Function to toggle visibility
@@ -30,9 +32,12 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   const [newPost, setNewPost] = useState(initPost);
   const [isUploading, setIsUploading] = useState(false);
 
-  const handleChange = async (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleChange = async (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
     const field = e.target.name;
-    let value = e.target.type === 'number' ? +e.target.value || '' : e.target.value;
+    let value =
+      e.target.type === 'number' ? +e.target.value || '' : e.target.value;
     setNewPost((prevPost) => ({
       ...prevPost,
       [field]: value,
@@ -86,8 +91,10 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   };
 
   return (
-    <section
-      className={isShowCreatePost ? 'create-post-modal' : 'hide create-post-modal'}
+    <StyledCreatePostModal
+      className={
+        isShowCreatePost ? 'create-post-modal' : 'hide create-post-modal'
+      }
       onClick={(ev) => {
         ev.stopPropagation();
         toggleShowCreatePost();
@@ -106,7 +113,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
         <div className="title">
           <h1>Create a post</h1>
           <span className="close-icon" onClick={toggleShowCreatePost}>
-            Icon
+            <IoIosClose />
           </span>
         </div>
 
@@ -145,7 +152,8 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
         <div className="is-loading-container">
           {isUploading && (
             <span>
-              <img src="LoadingGif" alt="Loading" /> {/* Replace with your loading GIF */}
+              <img src="LoadingGif" alt="Loading" />{' '}
+              {/* Replace with your loading GIF */}
             </span>
           )}
         </div>
@@ -190,7 +198,9 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
                   accept="video/*"
                   hidden
                 />
-                <p className="add-video-body">Add video</p>
+                <p className="add-video-body">
+                  <FaFilm />
+                </p>
               </label>
             </div>
           )}
@@ -206,7 +216,9 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
                   accept="image/*"
                   hidden
                 />
-                <p className="add-img-body">Add photo</p>
+                <p className="add-img-body">
+                  <FaCamera />
+                </p>
               </label>
             </div>
           )}
@@ -216,6 +228,6 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
           </button>
         </div>
       </form>
-    </section>
+    </StyledCreatePostModal>
   );
 };

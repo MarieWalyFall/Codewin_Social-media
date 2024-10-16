@@ -10,6 +10,8 @@ import {
 } from 'types';
 import { mockPostService } from './mockPostService';
 import { mockUserService } from './mockUserService';
+import { mockChatService } from './mockChatService';
+import { mockActivityService } from './mockActivityService';
 
 export const mockHttpService = {
   get,
@@ -27,11 +29,15 @@ function get(endpoint: 'user'): Promise<User[]>;
 function get(endpoint: 'user', filterBy: any): Promise<User[]>;
 function get(endpoint: `user/${string}`): Promise<User>;
 function get(endpoint: 'chat', filterBy?: any): Promise<Chat[]>;
+function get(endpoint: `chat/${string}`, filterBy?: any): Promise<Chat>;
 function get(endpoint: 'comment', filterBy: any): Promise<Comment[]>;
 function get(endpoint: 'comment'): Promise<Comment[]>;
 function get(endpoint: `comment/${string}`): Promise<Comment>;
 function get(endpoint: 'activity', filterBy?: any): Promise<Activity[]>;
 function get(endpoint: `activity/${string}`, filterBy: any): Promise<number>;
+function get(endpoint: 'activity', filterBy?: any): Promise<Activity[]>;
+function get(endpoint: `activity/length`, filterBy?: any): Promise<number>;
+function get(endpoint: `activity/${string}`): Promise<Activity>;
 
 function get(endpoint: string, filterBy?: any): Promise<any> {
   if (endpoint === 'post') {
@@ -54,13 +60,6 @@ function get(endpoint: string, filterBy?: any): Promise<any> {
             return 0;
           });
         }
-
-        if (filterBy.filter) {
-          // Apply filtering based on some criteria
-          // posts = posts.filter((post: Post) => {
-          //   return post.category === filterBy.filter;
-          // });
-        }
       }
       return posts;
     });
@@ -70,7 +69,7 @@ function get(endpoint: string, filterBy?: any): Promise<any> {
     return mockPostService.getPosts().then((posts) => posts.length);
   }
 
-  if (endpoint.startsWith(`post/`)) {
+  if (endpoint.startsWith('post/')) {
     const postId = endpoint.split('/')[1];
     return mockPostService.getPostById(postId);
   }
@@ -84,17 +83,26 @@ function get(endpoint: string, filterBy?: any): Promise<any> {
     return mockUserService.getUserById(userId);
   }
 
-  // Handle missing cases
-  if (endpoint.startsWith('comment')) {
-    // Implement logic for comments
+  if (endpoint === 'chat') {
+    return mockChatService.getChats();
   }
 
-  if (endpoint.startsWith('chat')) {
-    // Implement logic for chat
+  if (endpoint.startsWith('chat/')) {
+    const chatId = endpoint.split('/')[1];
+    return mockChatService.getChatById(chatId);
   }
 
-  if (endpoint.startsWith('activity')) {
-    // Implement logic for activity
+  if (endpoint === 'activity') {
+    return mockActivityService.getActivities(filterBy);
+  }
+
+  if (endpoint === 'activity/length') {
+    return mockActivityService.getActivitiesLength(filterBy);
+  }
+
+  if (endpoint.startsWith('activity/')) {
+    const activityId = endpoint.split('/')[1];
+    return mockActivityService.getActivityById(activityId);
   }
 
   return Promise.reject('Invalid endpoint');
@@ -126,9 +134,12 @@ function post<T>(endpoint: string, data: any): Promise<T> {
     return mockUserService.loginUser(data) as Promise<T>;
   }
 
-  // Handle missing cases
-  if (endpoint.startsWith('auth/signup')) {
-    // Implement logic for signup
+  if (endpoint === 'auth/signup') {
+    return mockUserService.createUser(data) as Promise<T>;
+  }
+
+  if (endpoint === 'chat') {
+    return mockChatService.createChat(data) as Promise<T>;
   }
 
   return Promise.reject('Invalid endpoint');
@@ -170,19 +181,18 @@ function put<T>(endpoint: string, data: any): Promise<T> {
 }
 
 // DELETE method overloads
-function deleteRequest(endpoint: 'post', postId: string): Promise<void>;
-function deleteRequest(endpoint: 'user', userId: string): Promise<void>;
-function deleteRequest(endpoint: 'comment', commentId: string): Promise<void>;
+function deleteRequest(endpoint: 'post', id: string): Promise<void>;
+function deleteRequest(endpoint: 'user', id: string): Promise<void>;
+function deleteRequest(endpoint: 'chat', id: string): Promise<void>;
+function deleteRequest(endpoint: 'comment', id: string): Promise<void>;
 
-function deleteRequest(endpoint: string, data: any): Promise<any> {
-  if (endpoint.startsWith('post/')) {
-    const postId = endpoint.split('/')[1];
-    return mockPostService.deletePost(postId);
+function deleteRequest(endpoint: string, id: any): Promise<any> {
+  if (endpoint.startsWith('post')) {
+    return mockPostService.deletePost(id);
   }
 
-  if (endpoint.startsWith('user/')) {
-    const userId = endpoint.split('/')[1];
-    return mockUserService.deleteUser(userId);
+  if (endpoint.startsWith('user')) {
+    return mockUserService.deleteUser(id);
   }
 
   return Promise.reject('Invalid endpoint');

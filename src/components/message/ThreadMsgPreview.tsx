@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { Message, User } from 'types';
 
-
-
 interface ThreadMsgPreviewProps {
   msg: Message;
 }
@@ -22,7 +20,7 @@ export const ThreadMsgPreview: React.FC<ThreadMsgPreviewProps> = ({ msg }) => {
   };
 
   useEffect(() => {
-    loadUserMsg(msg.userId? msg.userId: '');
+    loadUserMsg(msg.userId ? msg.userId : '');
   }, [msg.userId]);
 
   return (
@@ -30,12 +28,12 @@ export const ThreadMsgPreview: React.FC<ThreadMsgPreviewProps> = ({ msg }) => {
       <div className="container-msg">
         <div
           className="img-container"
-          onClick={() => userMsg && navigate(`/main/profile/${userMsg.id}`)}
+          onClick={() => userMsg && navigate(`/profile/${userMsg.id}`)}
         >
           {userMsg?.imgUrl ? (
             <img src={userMsg.imgUrl} alt="" className="img" />
           ) : (
-            <LoadingIndicator/>
+            <LoadingIndicator />
           )}
         </div>
 
@@ -51,7 +49,7 @@ export const ThreadMsgPreview: React.FC<ThreadMsgPreviewProps> = ({ msg }) => {
         </div>
       </div>
       <div className="the-msg">
-        <p>{msg.txt? msg.txt: ''}</p>
+        <p>{msg.content ? msg.content : ''}</p>
       </div>
     </section>
   );

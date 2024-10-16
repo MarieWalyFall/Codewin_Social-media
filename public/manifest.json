@@ -3,8 +3,8 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "start_url": "/",
-  "name": "Travelsdin",
-  "short_name": "Travelsdin",
+  "name": "DoorWaar",
+  "short_name": "DoorWaar",
   "icons": [
     {
       "src": "/icon-192x192.png",

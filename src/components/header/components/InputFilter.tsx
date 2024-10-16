@@ -5,7 +5,7 @@ import {
   loadPosts,
   addFilterByPostsAction,
   getPostsLength,
-} from '../../store/actions/postActions';
+} from 'store/actions/postActions';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { FaSearch } from 'react-icons/fa';
 

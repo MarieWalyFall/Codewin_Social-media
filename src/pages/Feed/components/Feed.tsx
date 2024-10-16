@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Posts } from 'components/posts/Posts';
-import { RightSideBar } from 'components/RightSideBar';
-import { LeftSideBar } from 'components/LeftSideBar';
+import { RightSideBar } from './RightSideBar';
+import { LeftSideBar } from './LeftSideBar';
 import {
   setCurrPageAction as setCurrPage,
   setNextPage,
 } from 'store/actions/postActions';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import Loader from './Loader';
-import { refreshSession } from 'store/actions/userActions';
+import Loader from '../../Loader';
+import { FeedPage } from '../style/StyledFeed';
 
 const Feed: React.FC = () => {
   const { loggedInUser } = useSelector((state: any) => state.userModule);
@@ -25,11 +25,11 @@ const Feed: React.FC = () => {
   }
 
   return (
-    <section className="feed-page">
+    <FeedPage>
       <LeftSideBar />
       <Posts />
       <RightSideBar />
-    </section>
+    </FeedPage>
   );
 };
 

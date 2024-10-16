@@ -1,4 +1,4 @@
-import { PostPreview } from './post-preview/PostPreview';
+import { PostPreview } from './post-preview/components/PostPreview';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FilterByPosts, Post } from 'types';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import Loader from 'pages/Loader';
+import { StyledPostsList } from './style/StyledPosts';
 
 interface PostListProps {
   postsList: Post[];
@@ -60,7 +61,7 @@ export const PostsList: React.FC<PostListProps> = ({ postsList }) => {
   if (posts.length === 0) return <Loader />;
 
   return (
-    <section className="posts-list">
+    <StyledPostsList className="posts-list">
       {posts.map((post) => (
         <PostPreview key={post.id} post={post} />
       ))}
@@ -75,6 +76,6 @@ export const PostsList: React.FC<PostListProps> = ({ postsList }) => {
         )}
         {posts.length === postsLength && <p>This is the end..</p>}
       </div>
-    </section>
+    </StyledPostsList>
   );
 };

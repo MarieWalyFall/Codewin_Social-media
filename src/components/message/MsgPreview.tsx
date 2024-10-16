@@ -4,33 +4,34 @@ import { useEffect, useState } from 'react';
 import { Chat, Message, MsgPreviewProps, User } from 'types';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 
-
-
 export const MsgPreview: React.FC<MsgPreviewProps> = ({
   chat,
   chats,
   setMessagesToShow,
   setChatWith,
   chatWith,
-  chooseenChatId,
-  setChooseenChatId,
+  chosenChatId,
+  setChosenChatId,
   getTheNotLoggedUserChat,
- 
 }) => {
-  const [theNotLoggedUserChat, setTheNotLoggedUserChat] = useState<User | null>(null);
+  const [theNotLoggedUserChat, setTheNotLoggedUserChat] = useState<User | null>(
+    null
+  );
   const [unreadMsgsCount, setUnreadMsgsCount] = useState(0);
 
-  const { unreadMessages } = useSelector((state: any) => state.activityModule); // Adjust the state type
+  // Strongly type the Redux state using RootState
+  const { unreadMessages } = useSelector((state: any) => state.activityModule);
 
+  // Calculate unread messages count in a more efficient way
   const getUnreadCountMsgs = () => {
-    let countMsgs = 0;
-    unreadMessages.forEach((chatId: string) => {
-      if (chat.id === chatId) countMsgs++;
-    });
+    const countMsgs = unreadMessages.filter(
+      (chatId: string) => chat.id === chatId
+    ).length;
     setUnreadMsgsCount(countMsgs);
   };
 
-  const lastMsg = chat.messages[chat.messages?.length - 1]?.txt || 'No Messages yet..';
+  const lastMsg =
+    chat.messages[chat.messages?.length - 1]?.content || 'No Messages yet..';
   const dateToShow = new Date(chat.messages[0]?.createdAt || chat.createdAt);
   const slicedDate = dateToShow.toLocaleDateString().slice(0, -5);
 
@@ -42,29 +43,30 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
   const onClickChat = () => {
     setMessagesToShow(chat.messages);
     setChatWith(theNotLoggedUserChat);
-    setChooseenChatId(chat.id?? "");
+    if (chat.id && setChosenChatId) {
+      setChosenChatId(chat.id);
+    }
   };
 
   useEffect(() => {
     loadNotLoggedUser(chat);
     getUnreadCountMsgs();
-    return () => {};
-  }, [chat]);
+    // Add unreadMessages as a dependency for accurate updates when unread messages change
+  }, [chat, unreadMessages]);
 
   useEffect(() => {
     setMessagesToShow(chat.messages);
-    setChooseenChatId(chat.id?? "");
-    return () => {};
-  }, [chat, chats]);
+    setChosenChatId && setChosenChatId(chat.id ?? '');
+  }, [chat]);
 
-  const isChatChooseen = chooseenChatId === chat.id ? 'chooseen-chat' : '';
-  const containerStyle = `container ${isChatChooseen}`;
+  const isChatChosen = chosenChatId === chat.id ? 'chosen-chat' : '';
+  const containerStyle = `container ${isChatChosen}`;
 
   if (!theNotLoggedUserChat)
     return (
       <div className="msg-preview">
         <span className="loading-circle">
-         <LoadingIndicator/>
+          <LoadingIndicator />
         </span>
       </div>
     );
@@ -73,7 +75,11 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
     <section className="msg-preview" onClick={onClickChat}>
       <div className={containerStyle}>
         <div className="img-container">
-          <img src={theNotLoggedUserChat?.imgUrl} alt="" className="img" />
+          <img
+            src={theNotLoggedUserChat?.imgUrl}
+            alt={`${theNotLoggedUserChat?.name}'s profile picture`}
+            className="img"
+          />
           {unreadMsgsCount > 0 && (
             <span className="number">
               <p>{unreadMsgsCount}</p>
@@ -83,13 +89,12 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
         <div className="details">
           <div className="fullname">
             <h1>{theNotLoggedUserChat?.name}</h1>
-
             <span title={String(dateToShow)}>
-              <ReactSnip lines={1} method={'css'} ellipsis={slicedDate}/>
+              <ReactSnip lines={1} method={'css'} ellipsis={slicedDate} />
             </span>
           </div>
           <div className="last-msg">
-          <ReactSnip lines={1} method={'css'} ellipsis={lastMsg}/>
+            <ReactSnip lines={1} method={'css'} ellipsis={lastMsg} />
           </div>
         </div>
       </div>

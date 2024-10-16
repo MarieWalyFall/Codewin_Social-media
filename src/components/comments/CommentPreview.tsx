@@ -10,8 +10,10 @@ import { ReplyList } from 'components/replies/ReplyList';
 import TimeAgo from 'react-timeago';
 import { CommentPreviewProps, LoggedInUser, Reply } from 'types';
 
-
-export const CommentPreview: React.FC<CommentPreviewProps> = ({ comment, onSaveComment }) => {
+export const CommentPreview: React.FC<CommentPreviewProps> = ({
+  comment,
+  onSaveComment,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,15 +41,15 @@ export const CommentPreview: React.FC<CommentPreviewProps> = ({ comment, onSaveC
     if (!commentToSave.reactions) {
       commentToSave.reactions = [];
     }
-    const isAlreadyLike =commentToSave.reactions.some(
+    const isAlreadyLike = commentToSave.reactions.some(
       (reaction) => reaction.userId === loggedInUser.id
     );
     if (isAlreadyLike) {
       commentToSave.reactions = commentToSave.reactions.filter(
         (reaction) => reaction.userId !== loggedInUser.id
       );
-    } else{
-        commentToSave.reactions.push({
+    } else {
+      commentToSave.reactions.push({
         userId: loggedInUser.id,
         fullname: loggedInUser.fullname,
         reaction: 'like',
@@ -126,7 +128,7 @@ export const CommentPreview: React.FC<CommentPreviewProps> = ({ comment, onSaveC
     <section className="comment-preview">
       <div
         className="img-container"
-        onClick={() => navigate(`/main/profile/${userComment?.id}`)}
+        onClick={() => navigate(`/profile/${userComment?.id}`)}
       >
         <img src={imgUrl} alt="" className="img-profile" />
       </div>
@@ -138,10 +140,8 @@ export const CommentPreview: React.FC<CommentPreviewProps> = ({ comment, onSaveC
               <p>{profession}</p>
             </div>
             <div>
-              <span>
-                {/* <TimeAgo date={createdAt} /> */}
-              </span>
-             icon
+              <span>{/* <TimeAgo date={createdAt} /> */}</span>
+              icon
             </div>
           </div>
           <div className="comment-text">
@@ -199,7 +199,7 @@ export const CommentPreview: React.FC<CommentPreviewProps> = ({ comment, onSaveC
           <CommentMenu
             toggleMenu={toggleMenu}
             onRemoveComment={onRemoveComment}
-            commentUserId={comment.userId}
+            commentUserId={comment.userId ?? 'oop'}
           />
         )}
       </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { userService } from '../../services/user/userService';
+import { User } from 'types';
 
 interface ImgPreviewProps {
   toggleShowImg: () => void;
@@ -26,7 +27,7 @@ export function ImgPreview({
 }: ImgPreviewProps) {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<{ imgUrl: string; fullname: string } | null>(null);
+  const [user, setUser] = useState<Partial<User> | null>(null);
 
   const loadUser = async (userId: string) => {
     const userData = await userService.getById(userId);
@@ -45,7 +46,7 @@ export function ImgPreview({
           {user && post ? (
             <div
               className="user-details"
-              onClick={() => navigate(`/main/profile/${post.userId}`)}
+              onClick={() => navigate(`/profile/${post.userId}`)}
             >
               <img src={user.imgUrl} alt="" className="img" />
               <p className="fullname">{user.fullname}</p>
@@ -69,7 +70,7 @@ export function ImgPreview({
 
         {post && (
           <div className="see-post">
-            <p onClick={() => navigate(`/main/post/${post.userId}/${post.id}`)}>
+            <p onClick={() => navigate(`/post/${post.userId}/${post.id}`)}>
               See original post
             </p>
           </div>

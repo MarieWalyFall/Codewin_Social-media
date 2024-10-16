@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { MyConnectionPreview } from '../../components/connections/MyConnectionPreview';
-import { RootState } from '../../store'; // Adjust this import based on your store setup
-import { User } from '../../types'; // Adjust this import based on your type definitions
+import { RootState } from '../../store';
+import { User } from '../../types';
 import { FaSearch } from 'react-icons/fa';
+import { ConnectionList } from 'components/connections/ConnectionList';
 
 interface Field {
   [key: string]: any;
 }
 
 function Connections() {
-  const [connections, setConnections] = useState<any[]>([]); // Replace 'any' with the appropriate type if available
+  const { users } = useSelector((state: any) => state.userModule);
+  const [connections, setConnections] = useState<any[]>([]);
   const [field, setField] = useState<Field>({ fullname: '' });
 
   const { loggedInUser } = useSelector((state: RootState) => state.userModule);
@@ -45,13 +47,9 @@ function Connections() {
     <section className="connections-page">
       <div className="left main">
         <div className="container">
-          <div className="count">
-            <h3>{loggedInUser.connections?.length} Connections</h3>
-          </div>
-
           <div className="filter-container">
             <div className="search">
-              <FaSearch />
+              <FaSearch className="search-icon" />
               <input
                 type="text"
                 onChange={handleChange}
@@ -69,14 +67,20 @@ function Connections() {
               <MyConnectionPreview
                 key={connection.id}
                 connection={connection}
-              /> // Assuming each connection has a unique 'id'
+              />
             ))}
           </div>
         </div>
       </div>
 
       <div className="right aside">
-        <div></div>
+        <div className="recommended">
+          <div>
+            <h3>Recommendés</h3>
+          </div>
+
+          <ConnectionList connections={users} />
+        </div>
       </div>
     </section>
   );

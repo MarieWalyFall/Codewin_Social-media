@@ -36,6 +36,14 @@ export interface DefaultProps {
 }
 
 // Define types for the request data
+
+export interface PostPrewiewProps {
+  post: PostPreview;
+}
+export interface PostPreview extends Partial<Post> {
+  id: string; // Unique identifier for the post
+}
+
 export interface Post {
   id: string; // Unique identifier for the post
   body: string; // Content of the post
@@ -72,6 +80,7 @@ export interface User {
   connections: ConnectionsList;
   posts?: Partial<Post>[];
   lastSeenActivity?: string | number;
+  lastSeenMessages: string;
 }
 export type ConnectionsList = Connection[];
 
@@ -101,7 +110,7 @@ export interface Login {
 // Comments
 
 export interface CommentsListProps {
-  postId?: string;
+  postId: string;
   comments: Comment[];
   onSaveComment: (comment: CommentData) => void;
 }
@@ -120,15 +129,15 @@ export interface CommentMenuProps {
   commentUserId: string; // Assuming commentUserId is a string
 }
 export interface CommentsProps {
-  postId?: string;
+  postId: string;
   comments?: Comment[];
   userPostId?: string;
 }
 
 export interface Comment {
   id: string;
-  userId?: string;
-  postId?: string;
+  userId: string;
+  postId: string;
   createdAt?: number;
   txt?: string;
   reactions?: Reaction[];
@@ -356,7 +365,6 @@ export interface Message {
   senderId: string;
   createdAt: string;
   userId?: string;
-  txt?: string;
 }
 
 // Chat Interface
@@ -371,17 +379,17 @@ export interface Chat {
 
 // Messaging Props
 export interface MessagingProps {
-  chats?: Chat[];
-  chatWith?: User | null;
-  messagesToShow?: Message[] | null;
-  setMessagesToShow?: (messages: Message[]) => void;
-  chooseenChatId?: string; // Change to number if id is a number
-  setChooseenChatId?: (id: string) => Promise<void>;
-  setChatWith?: React.Dispatch<React.SetStateAction<User | null>>;
-  getTheNotLoggedUserChat?: (chat: Chat) => Promise<User | null>;
-  setTheNotLoggedUserChat?: React.Dispatch<React.SetStateAction<User | null>>;
-  theNotLoggedUserChat?: User | null;
-  onSendMsg?: (message: NewMessage) => void; // Change 'any' to Message
+  chats: Chat[];
+  chatWith: User | null;
+  messagesToShow: Message[] | null;
+  setMessagesToShow: (messages: Message[]) => void;
+  chosenChatId: string; // Change to number if id is a number
+  setChosenChatId: (id: string) => Promise<void>;
+  setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
+  getTheNotLoggedUserChat: (chat: Chat) => Promise<User | null>;
+  setTheNotLoggedUserChat: React.Dispatch<React.SetStateAction<User | null>>;
+  theNotLoggedUserChat: User | null;
+  onSendMsg: (message: NewMessage) => void; // Change 'any' to Message
 }
 
 // Message Thread Props
@@ -399,8 +407,8 @@ export interface MsgPreviewProps {
   setMessagesToShow: (messages: Message[]) => void;
   setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
   chatWith: User | null;
-  chooseenChatId: string; // Change to number if id is a number
-  setChooseenChatId?: (id: string) => Promise<void>;
+  chosenChatId: string; // Change to number if id is a number
+  setChosenChatId?: (id: string) => Promise<void>;
   getTheNotLoggedUserChat: (chat: Chat) => Promise<User | null>;
   setTheNotLoggedUserChat: React.Dispatch<React.SetStateAction<User | null>>;
   theNotLoggedUserChat: User | null;
@@ -412,8 +420,8 @@ export interface ListMsgProps {
   setMessagesToShow: (messages: Message[]) => void;
   setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
   chatWith: User | null;
-  setChooseenChatId?: (id: string) => Promise<void>;
-  chooseenChatId: string; // Change to number if id is a number
+  setChosenChatId?: (id: string) => Promise<void>;
+  chosenChatId: string; // Change to number if id is a number
   getTheNotLoggedUserChat: (chat: Chat) => Promise<User | null>;
   setTheNotLoggedUserChat: React.Dispatch<React.SetStateAction<User | null>>;
   theNotLoggedUserChat: User | null;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { userService } from 'services/user/userService';
 
 // Define the Reaction type
@@ -43,7 +43,7 @@ export function LikePreview({ reaction }: LikePreviewProps) {
     <section className="like-preview">
       <div
         className="container-name"
-        onClick={() => navigate(`/main/profile/${user.id}`)}
+        onClick={() => navigate(`/profile/${user.id}`)}
       >
         <div className="img-container">
           <img src={user.imgUrl} alt={user.fullname} className="img" />

@@ -1,8 +1,7 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FaComment, FaShare, FaThumbsUp } from 'react-icons/fa';
+import { FaComment, FaPaperPlane, FaShare, FaThumbsUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { LoggedInUser, Post } from 'types';
-import { IoIosSend } from 'react-icons/io';
+import { StyledPostActions } from '../style/StyledPostPreview';
 
 interface PostActionsProps {
   post: Partial<Post>;
@@ -30,29 +29,29 @@ export const PostActions: React.FC<PostActionsProps> = ({
   const likeBtnStyle = isLogedInUserLikePost ? 'liked' : '';
 
   return (
-    <section className="post-actions">
+    <StyledPostActions className="post-actions">
       <button className={'like ' + likeBtnStyle} onClick={onLikePost}>
-        <FaThumbsUp />
+        <FaThumbsUp className="icon like-icon" />
         <span>J'aime</span>
       </button>
 
       <button className="comment" onClick={onToggleShowComment}>
-        <FaComment />
+        <FaComment className="icon comment-icon" />
         <span>Commenter</span>
       </button>
 
       <button className="share" onClick={() => onSharePost()}>
-        <FaShare />
+        <FaShare className="icon share-icon" />
         <span>Partager</span>
       </button>
 
       <button
         className="send"
-        onClick={() => navigate(`/main/message/${post.userId}`)}
+        onClick={() => navigate(`/message/${post.userId}`)}
       >
-        <IoIosSend />
+        <FaPaperPlane className="icon share-icon" />
         <span>Envoyer</span>
       </button>
-    </section>
+    </StyledPostActions>
   );
 };

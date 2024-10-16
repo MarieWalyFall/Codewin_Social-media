@@ -5,8 +5,9 @@ import TimeAgo from 'react-timeago';
 import { Link, useNavigate } from 'react-router-dom';
 import { MyConnectionPreviewProps, User } from 'types';
 
-
-export const MyConnectionPreview: React.FC<MyConnectionPreviewProps> = ({ connection }) => {
+export const MyConnectionPreview: React.FC<MyConnectionPreviewProps> = ({
+  connection,
+}) => {
   const [user, setUser] = useState<User | null>(null); // State to hold the user or null
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ export const MyConnectionPreview: React.FC<MyConnectionPreviewProps> = ({ connec
           <img src={user.imgUrl} alt={user.name} className="img" />
         </div>
         <div className="fullname">
-          <Link to={`/main/profile/${user.id}`}>
+          <Link to={`/profile/${user.id}`}>
             <h3>{user.name}</h3>
             <p>{user.profession || ' '}</p>
             {connection.connected && (
@@ -39,7 +40,7 @@ export const MyConnectionPreview: React.FC<MyConnectionPreviewProps> = ({ connec
           </Link>
         </div>
         <div className="btns">
-          <button onClick={() => navigate(`/main/message/${user.id}`)}>
+          <button onClick={() => navigate(`/message/${user.id}`)}>
             Message
           </button>
           icon

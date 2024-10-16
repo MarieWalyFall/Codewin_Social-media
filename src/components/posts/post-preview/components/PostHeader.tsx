@@ -3,8 +3,9 @@ import TimeAgo from 'react-timeago';
 import { Link, useNavigate } from 'react-router-dom';
 import { Post, User } from 'types';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { FaLocationArrow } from 'react-icons/fa';
+
 import { FaLocationDot } from 'react-icons/fa6';
+import { StyledPostHeader } from '../style/StyledPostPreview';
 
 interface PostHeaderProps {
   post: Partial<Post>;
@@ -24,10 +25,10 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ post, userPost }) => {
   const { imgUrl, profession, name } = userPost;
 
   return (
-    <section className="post-header">
+    <StyledPostHeader className="post-header">
       <div
         className="img-actor"
-        onClick={() => navigate(`/main/profile/${userPost.id}`)}
+        onClick={() => navigate(`/profile/${userPost.id}`)}
       >
         <img src={imgUrl} className="img" alt="User Profile" />
       </div>
@@ -46,6 +47,7 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ post, userPost }) => {
             <p>{profession}</p>
           </div>
           <div className="time">
+            {post.createdAt && <TimeAgo date={new Date(post.createdAt)} />}
             <span></span>{' '}
             {post?.position?.lat && post?.position?.lng && (
               <span className="logo-location">
@@ -55,6 +57,6 @@ export const PostHeader: React.FC<PostHeaderProps> = ({ post, userPost }) => {
           </div>
         </div>
       </div>
-    </section>
+    </StyledPostHeader>
   );
 };

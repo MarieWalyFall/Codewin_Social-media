@@ -1,6 +1,8 @@
+import { StyledCommunityPanel } from '../style/StyledLeftSideBar';
+
 export function CommunityPanel() {
   return (
-    <section className="community-panel">
+    <StyledCommunityPanel className="community-panel">
       <div>
         <img
           src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1035&q=80"
@@ -12,6 +14,6 @@ export function CommunityPanel() {
           Explore topics you are interested in <br /> with Dorwar
         </p>
       </div>
-    </section>
+    </StyledCommunityPanel>
   );
 }

@@ -229,8 +229,8 @@
       "comments": []
     },
     {
-      "id": "1748",
-      "body": "HI ALL",
+      "id": "fe06",
+      "body": "hi",
       "imgBodyUrl": null,
       "videoBodyUrl": null,
       "link": "",
@@ -239,20 +239,8 @@
         "textAlign": "ltr"
       },
       "userId": "u0",
-      "createdAt": "2024-09-28T03:06:04.026Z"
-    },
-    {
-      "id": "ed2a",
-      "body": "HELLO",
-      "imgBodyUrl": null,
-      "videoBodyUrl": null,
-      "link": "",
-      "title": "",
-      "style": {
-        "textAlign": "ltr"
-      },
-      "userId": "u0",
-      "createdAt": "2024-09-28T03:06:22.247Z"
+      "createdAt": "2024-10-02T14:56:08.238Z",
+      "updatedAt": "2024-10-02T15:03:20.600Z"
     }
   ],
   "users": [
@@ -262,7 +250,7 @@
       "password": "1234",
       "name": "Guest User",
       "imgUrl": "https://via.placeholder.com/150",
-      "profession": "Visitor",
+      "profession": "Software",
       "location": "Senegal, SN",
       "connections": [
         {
@@ -279,7 +267,14 @@
         }
       ],
       "posts": [],
-      "lastSeenActivity": 1727494604796
+      "lastSeenActivity": 1729082879716,
+      "lastSeenMsgs": 1727562813373,
+      "lastSeenMessages": "1729083720342",
+      "age": 23,
+      "bg": "",
+      "email": "papeabdoucalloga98@gmail.com",
+      "fullname": "Papa Abdou Calloga",
+      "phone": "771871645"
     },
     {
       "id": "u1",
@@ -558,6 +553,64 @@
           "title": "L'impact de l'IA sur le design"
         }
       ]
+    }
+  ],
+  "chats": [
+    {
+      "id": "chat1",
+      "userId": "u1",
+      "userId2": "u2",
+      "messages": [
+        {
+          "id": "m1",
+          "txt": "Hey, how's it going?",
+          "userId": "u1",
+          "createdAt": "1689123456789",
+          "content": "hey",
+          "senderId": ""
+        },
+        {
+          "id": "m2",
+          "txt": "I'm doing well, thanks! What about you?",
+          "userId": "u2",
+          "createdAt": "1689123460000",
+          "content": "",
+          "senderId": ""
+        },
+        {
+          "id": "m3",
+          "txt": "I'm good too, just busy with some work.",
+          "userId": "u1",
+          "createdAt": "1689123470000",
+          "content": "",
+          "senderId": ""
+        }
+      ],
+      "createdAt": "1689123400000"
+    },
+    {
+      "id": "chat2",
+      "userId": "u1",
+      "userId2": "u3",
+      "messages": [
+        {
+          "id": "m4",
+          "txt": "Hey Bob, are you joining the meeting today?",
+          "userId": "u1",
+          "createdAt": "1689123600000",
+          "content": "",
+          "senderId": ""
+        },
+        {
+          "id": "m5",
+          "txt": "Yes, I’ll be there in 5 minutes!",
+          "userId": "u3",
+          "createdAt": "1689123650000",
+          "content": "",
+          "senderId": ""
+        }
+      ],
+      "createdAt": "1689123500000"
     }
   ]
 }
