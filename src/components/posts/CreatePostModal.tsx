@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react';
 import { uploadImg, uploadVid } from '../../services/imgUpload.service';
 import { LoggedInUser } from 'types'; // Import your type definition
-import { FaCamera, FaFilm } from 'react-icons/fa';
+import {
+  FaCamera,
+  FaFilm,
+  FaExternalLinkAlt,
+  FaCheckCircle,
+} from 'react-icons/fa';
 import { IoIosClose } from 'react-icons/io';
 import { StyledCreatePostModal } from './style/StyledPosts';
 
 interface CreatePostModalProps {
-  toggleShowCreatePost: () => void; // Function to toggle visibility
-  onAddPost: (post: any) => void; // Type this more specifically if possible
-  isShowCreatePost: boolean; // Indicates whether the modal is visible
-  loggedInUser: LoggedInUser | null; // Type based on your user definition
+  toggleShowCreatePost: (type?: any) => void;
+  onAddPost: (post: any) => void;
+  isShowCreatePost: boolean;
+  loggedInUser: LoggedInUser | null;
+  postContent?: string;
+  postType: 'default' | 'photo' | 'video' | 'event' | 'article';
+  setPostContent: (postContent: string) => void;
 }
 
 export const CreatePostModal: React.FC<CreatePostModalProps> = ({
@@ -17,13 +25,20 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   onAddPost,
   isShowCreatePost,
   loggedInUser,
+  postType,
+  postContent,
+  setPostContent,
 }) => {
   const initPost = {
-    body: '',
+    body: postContent,
     imgBodyUrl: null,
     videoBodyUrl: null,
     link: '',
     title: '',
+    location: '',
+    date: '',
+    description: '',
+    relatedLinks: '',
     style: {
       textAlign: 'ltr',
     },
@@ -32,16 +47,16 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   const [newPost, setNewPost] = useState(initPost);
   const [isUploading, setIsUploading] = useState(false);
 
-  const handleChange = async (
+  const handleChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     const field = e.target.name;
-    let value =
-      e.target.type === 'number' ? +e.target.value || '' : e.target.value;
+    const value = e.target.value;
     setNewPost((prevPost) => ({
       ...prevPost,
       [field]: value,
     }));
+    setPostContent(value);
   };
 
   useEffect(() => {
@@ -51,13 +66,8 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
   }, []);
 
   const doSubmit = () => {
-    if (newPost.body.trim() || newPost.imgBodyUrl || newPost.videoBodyUrl) {
-      onAddPost(newPost);
-    }
-  };
-
-  const inputRef = (elInput: HTMLTextAreaElement) => {
-    if (elInput) elInput.focus();
+    onAddPost(newPost);
+    toggleShowCreatePost();
   };
 
   const onUploadImg = async (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,6 +100,112 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
     }
   };
 
+  const renderDefaultContent = () => (
+    <>
+      <textarea
+        required
+        onChange={handleChange}
+        id="body"
+        name="body"
+        value={newPost.body}
+        placeholder="What do you want to talk about?"
+      />
+    </>
+  );
+
+  const renderEventContent = () => (
+    <>
+      <input
+        required
+        type="text"
+        name="location"
+        placeholder="Location"
+        value={newPost.location}
+        onChange={handleChange}
+      />
+      <input
+        required
+        type="date"
+        name="date"
+        placeholder="Date"
+        value={newPost.date}
+        onChange={handleChange}
+      />
+      <textarea
+        required
+        name="description"
+        placeholder="Description"
+        value={newPost.description}
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="relatedLinks"
+        placeholder="Related Links"
+        value={newPost.relatedLinks}
+        onChange={handleChange}
+      />
+    </>
+  );
+
+  const renderArticleContent = () => (
+    <>
+      <input
+        required
+        type="text"
+        name="title"
+        placeholder="Title"
+        value={newPost.title}
+        onChange={handleChange}
+      />
+      <div className="add-cover-btn btn">
+        <label htmlFor="cover" className="add-cover-container">
+          <input
+            onChange={onUploadImg}
+            id="cover"
+            type="file"
+            name="cover"
+            accept="image/*"
+            hidden
+          />
+          <p>Add Cover</p>
+        </label>
+      </div>
+      <textarea
+        required
+        name="body"
+        placeholder="Write your article..."
+        value={newPost.body}
+        onChange={handleChange}
+      />
+      <div className="additional-buttons">
+        <button type="button" className="btn">
+          <FaExternalLinkAlt /> Open in new tab
+        </button>
+        <button type="button" className="btn">
+          <FaCheckCircle /> Add validator
+        </button>
+      </div>
+    </>
+  );
+
+  const renderContent = () => {
+    switch (postType) {
+      case 'photo':
+        document.getElementById('imgUrl')?.click();
+        return null;
+      case 'video':
+        document.getElementById('videoUrl')?.click();
+        return null;
+      case 'event':
+        return renderEventContent();
+      case 'article':
+        return renderArticleContent();
+      default:
+        return renderDefaultContent();
+    }
+  };
+
   return (
     <StyledCreatePostModal
       className={
@@ -101,17 +217,17 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
       }}
     >
       <form
-        className="container"
+        className={`container ${postType === 'article' ? 'large-modal' : ''}`}
         onSubmit={(ev) => {
           ev.preventDefault();
           doSubmit();
         }}
-        onClick={(ev) => {
-          ev.stopPropagation();
-        }}
+        onClick={(ev) => ev.stopPropagation()}
       >
         <div className="title">
-          <h1>Create a post</h1>
+          <h1>
+            {postType === 'default' ? 'Create a post' : `Create a ${postType}`}
+          </h1>
           <span className="close-icon" onClick={toggleShowCreatePost}>
             <IoIosClose />
           </span>
@@ -126,105 +242,18 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
           </div>
         </div>
 
-        <div className="input-container">
-          <textarea
-            required
-            ref={inputRef}
-            onChange={handleChange}
-            id="body"
-            name="body"
-            value={newPost.body} // Fixed to use body instead of txt
-            placeholder="What do you want to talk about?"
-          ></textarea>
-        </div>
-
-        <div className="link-container">
-          <input
-            id="link"
-            name="link"
-            value={newPost.link}
-            onChange={handleChange}
-            type="text"
-            placeholder="Add a link here"
-          />
-        </div>
-
-        <div className="is-loading-container">
-          {isUploading && (
-            <span>
-              <img src="LoadingGif" alt="Loading" />{' '}
-              {/* Replace with your loading GIF */}
-            </span>
-          )}
-        </div>
-
-        <div className="container-video-body">
-          <div className="body-video">
-            {newPost.videoBodyUrl && (
-              <video width="100%" height="300" controls>
-                <source src={newPost.videoBodyUrl} type="video/mp4" />
-              </video>
-            )}
-          </div>
-        </div>
-
-        <div className="container-img-body">
-          <div className="body-img">
-            {newPost.imgBodyUrl && (
-              <img src={newPost.imgBodyUrl} alt="" className="img" />
-            )}
-          </div>
-        </div>
+        <div className="content-container">{renderContent()}</div>
 
         <div className="btns-add-container">
-          <div
+          <button
+            type="button"
             className="cancel-btn btn"
-            onClick={() => {
-              setNewPost(initPost);
-              toggleShowCreatePost();
-            }}
+            onClick={toggleShowCreatePost}
           >
             Cancel
-          </div>
-
-          {!newPost.videoBodyUrl && (
-            <div className="add-video-btn btn">
-              <label htmlFor="videoUrl" className="add-video-container">
-                <input
-                  onChange={onUploadVideo}
-                  id="videoUrl"
-                  type="file"
-                  name="videoUrl"
-                  accept="video/*"
-                  hidden
-                />
-                <p className="add-video-body">
-                  <FaFilm />
-                </p>
-              </label>
-            </div>
-          )}
-
-          {!newPost.imgBodyUrl && (
-            <div className="add-img-btn btn">
-              <label htmlFor="imgUrl" className="add-img-container">
-                <input
-                  onChange={onUploadImg}
-                  id="imgUrl"
-                  type="file"
-                  name="imgUrl"
-                  accept="image/*"
-                  hidden
-                />
-                <p className="add-img-body">
-                  <FaCamera />
-                </p>
-              </label>
-            </div>
-          )}
-
+          </button>
           <button className="post-btn btn" type="submit" disabled={isUploading}>
-            {isUploading ? 'Uploading...' : 'Done'}
+            {isUploading ? 'Uploading...' : 'Post'}
           </button>
         </div>
       </form>

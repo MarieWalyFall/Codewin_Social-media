@@ -19,10 +19,10 @@ const SpecificPost: React.FC = () => {
   useEffect(() => {
     dispatch(setCurrPage('feed'));
     const filterBy: FilterByPosts = {
-      authorId: params.postId,
+      userId: params.postId,
     };
     dispatch(setFilterByPosts(filterBy));
-    dispatch(loadPosts(filterBy));
+    dispatch(loadPosts());
     dispatch(getPostsLength());
 
     return () => {
