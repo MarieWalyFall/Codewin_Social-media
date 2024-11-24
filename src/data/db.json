@@ -299,6 +299,16 @@
       "photos": [],
       "videos": [],
       "createdAt": "2024-11-17T20:33:20.767Z"
+    },
+    {
+      "id": "d645",
+      "body": "gbgbbbzbrr",
+      "type": "default",
+      "userId": "u0",
+      "fullname": "Papa Abdou Calloga",
+      "photos": [],
+      "videos": [],
+      "createdAt": "2024-11-24T21:48:13.140Z"
     }
   ],
   "users": [
@@ -325,9 +335,9 @@
         }
       ],
       "posts": [],
-      "lastSeenActivity": 1731876507352,
+      "lastSeenActivity": 1732488138133,
       "lastSeenMsgs": 1727562813373,
-      "lastSeenMessages": "1729090338471",
+      "lastSeenMessages": "1732488115852",
       "age": 23,
       "bg": "",
       "email": "papeabdoucalloga98@gmail.com",

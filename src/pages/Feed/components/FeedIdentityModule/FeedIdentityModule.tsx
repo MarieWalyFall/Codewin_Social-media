@@ -10,18 +10,15 @@ import { StyledFeedIdentityModule } from '../../style/StyledLeftSideBar';
 
 export const FeedIdentityModule: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch(); // Dispatch for Redux actions
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
 
-  // Assuming your user state is in the Redux store, adjust the selector accordingly
-  const user = useSelector((state: any) => state.userModule.loggedInUser); // Change 'user' to the actual key in your Redux store
-
+  const user = useSelector((state: any) => state.userModule.loggedInUser);
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
       try {
-        const loggedInUser = await dispatch(getLoggedinUser()); // Fetch the user
-        // If getLoggedinUser directly sets the user in the Redux store, you may not need to set user state here
+        const loggedInUser = await dispatch(getLoggedinUser());
       } catch (error) {
         console.error('Error fetching user:', error);
       } finally {
@@ -29,12 +26,12 @@ export const FeedIdentityModule: React.FC = () => {
       }
     };
 
-    fetchUser(); // Call the function to fetch the user
+    fetchUser();
   }, [dispatch]);
 
   const handleLogout = async () => {
-    await dispatch(logout()); // Dispatch the logout action
-    navigate('/'); // Optionally navigate after logout
+    await dispatch(logout());
+    navigate('/');
   };
 
   if (loading) {

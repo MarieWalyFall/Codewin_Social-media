@@ -1,26 +1,25 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { setCurrPageAction as setCurrPage } from 'store/actions/postActions';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { Messaging } from 'components/message/components/Messaging';
+import { userService } from 'services/user/userService';
+import { utilService } from 'services/utilService';
+import { setCurrPageAction as setCurrPage } from 'store/actions/postActions';
 import {
   addTempChat,
   removeTempChat,
   loadChats,
   saveChat,
 } from 'store/actions/chatActions';
-import { useParams } from 'react-router-dom';
-import { userService } from 'services/user/userService';
-import { utilService } from 'services/utilService';
 import {
   saveActivity,
   setUnreadActivitiesIds,
 } from 'store/actions/activityAction';
 import { updateUser } from 'store/actions/userActions';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-
-import { Chat, Message as MessageType, NewActivity, User } from 'types'; // Define these types based on your application structure
+import { Chat, Message as MessageType, NewActivity, User } from 'types'; // Ensure types are properly defined
 import { RootState } from 'store/index';
-import { StyledMessages } from '../style/StyledMessages';
+import StyledMessages from '../style/StyledMessages';
 
 const Message: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -28,19 +27,16 @@ const Message: React.FC = () => {
   const { loggedInUser } = useSelector((state: RootState) => state.userModule);
   const { chats } = useSelector((state: RootState) => state.chatModule);
 
-  const [isUserChatExist, setIsUserChatExist] = useState<boolean | undefined>(
-    undefined
-  );
+  const [isUserChatExist, setIsUserChatExist] = useState<boolean | undefined>();
   const [messagesToShow, setMessagesToShow] = useState<Chat['messages'] | null>(
     null
   );
-  const [isNewChat, setIsNewChat] = useState<boolean>(false);
+  const [isNewChat, setIsNewChat] = useState(false);
   const [theNotLoggedUserChat, setTheNotLoggedUserChat] = useState<User | null>(
     null
   );
   const [chatWith, setChatWith] = useState<User | null>(null);
 
-  // Set the current page when component mounts
   useEffect(() => {
     dispatch(setCurrPage('message'));
 
@@ -61,7 +57,6 @@ const Message: React.FC = () => {
     });
   }, [loggedInUser, params.userId, dispatch]);
 
-  // Update the last seen status and unread messages when component unmounts
   useEffect(() => {
     const updateLastSeen = async () => {
       await updateLastSeenLoggedUser();
@@ -73,8 +68,8 @@ const Message: React.FC = () => {
     };
   }, [dispatch]);
 
-  // Function to update the last seen message for the logged-in user
   const updateLastSeenLoggedUser = useCallback(async () => {
+    if (!loggedInUser) return;
     await dispatch(
       updateUser({
         ...loggedInUser,
@@ -83,23 +78,20 @@ const Message: React.FC = () => {
     );
   }, [dispatch, loggedInUser]);
 
-  // Check if a chat exists with the current user
   const checkIfChatExist = useCallback((): Promise<boolean> => {
     return new Promise((resolve, reject) => {
       if (!chats) {
         reject(false);
       } else {
-        const isChatExist = chats.some(
+        const exists = chats.some(
           (chat) =>
             chat.userId === params.userId || chat.userId2 === params.userId
         );
-        if (isChatExist) resolve(true);
-        else reject(false);
+        exists ? resolve(true) : reject(false);
       }
     });
   }, [chats, params.userId]);
 
-  // Open chat based on whether the chat exists or is new
   const openChat = useCallback(async () => {
     if (isUserChatExist) {
       const chatToShow = findChat(params.userId ?? '');
@@ -117,9 +109,10 @@ const Message: React.FC = () => {
     }
   }, [isUserChatExist, params.userId, chats, dispatch]);
 
-  // Send a new message and save it to the chat
   const onSendMsg = (content: string) => {
-    const newMsg = createNewMsg(content, loggedInUser!.id);
+    if (!loggedInUser) return;
+
+    const newMsg = createNewMsg(content, loggedInUser.id);
     const chatToUpdate = { ...chats[findChatIndex()] };
     chatToUpdate.messages.push(newMsg);
 
@@ -134,9 +127,9 @@ const Message: React.FC = () => {
       if (savedChat) {
         const newActivity: NewActivity = {
           type: 'private-message',
-          createdBy: loggedInUser?.id ?? '',
+          createdBy: loggedInUser.id,
           createdTo:
-            loggedInUser?.id === savedChat.userId
+            loggedInUser.id === savedChat.userId
               ? savedChat.userId2
               : savedChat.userId,
           chatId: savedChat.id,
@@ -148,35 +141,28 @@ const Message: React.FC = () => {
     });
   };
 
-  // Helper function to create a new message
-  const createNewMsg = (content: string, senderId: string) => {
-    const newMsg: MessageType = {
-      id: utilService.makeId(24),
-      content,
-      userId: loggedInUser?.id,
-      createdAt: String(new Date().getTime()),
-      senderId,
-    };
-    return newMsg;
-  };
+  const createNewMsg = (content: string, senderId: string): MessageType => ({
+    id: utilService.makeId(24),
+    content,
+    userId: loggedInUser?.id ?? '',
+    createdAt: String(new Date().getTime()),
+    senderId,
+  });
 
-  // Helper function to create a new chat
-  const createChat = (userId: string) => ({
+  const createChat = (userId: string): Chat => ({
     id: utilService.makeId(7),
     userId,
-    userId2: loggedInUser?.id,
+    userId2: loggedInUser?.id ?? '',
     messages: [],
     createdAt: String(new Date().getTime()),
   });
 
-  // Load the not-logged-in user's data for the chat
   const loadNotLoggedUser = useCallback(async (chat: Chat) => {
     const user = await getTheNotLoggedUserChat(chat);
     setTheNotLoggedUserChat(user);
     setChatWith(user);
   }, []);
 
-  // Find chat based on userId
   const findChat = (userId: string) =>
     chats.find((chat) => chat.userId === userId || chat.userId2 === userId);
 
@@ -185,7 +171,6 @@ const Message: React.FC = () => {
       (chat) => chat.userId === params.userId || chat.userId2 === params.userId
     );
 
-  // Get the other user's chat details
   const getTheNotLoggedUserChat = async (chat: Chat) => {
     const userId =
       loggedInUser?.id !== chat?.userId ? chat.userId : chat.userId2;
@@ -194,29 +179,60 @@ const Message: React.FC = () => {
 
   if (!chats) {
     return (
-      <div className="message-page">
+      <StyledMessages>
         <div className="gif-container">
           <img className="loading-gif" src="loadingGif" alt="Loading..." />
         </div>
-      </div>
+      </StyledMessages>
     );
   }
 
   return (
-    <StyledMessages className="message-page">
-      <Messaging
-        chats={chats}
-        messagesToShow={messagesToShow}
-        setMessagesToShow={setMessagesToShow}
-        chatWith={chatWith}
-        setChatWith={setChatWith}
-        getTheNotLoggedUserChat={getTheNotLoggedUserChat}
-        setTheNotLoggedUserChat={setTheNotLoggedUserChat}
-        theNotLoggedUserChat={theNotLoggedUserChat}
-      />
-      <div className="right-side-message">
-        <p></p>
-      </div>
+    <StyledMessages>
+      {!chats ? (
+        <div className="gif-container">
+          <img className="loading-gif" src="loadingGif" alt="Loading..." />
+        </div>
+      ) : (
+        <div className="message-page">
+          {/* Chat Header */}
+          <div className="chat-header">
+            <span className="back-button">&larr;</span>
+            <div className="user-info">
+              <span className="user-name">
+                {chatWith?.username || 'Select a User'}
+              </span>
+              <span className="status">
+                {chatWith ? 'Online' : 'No active conversation'}
+              </span>
+            </div>
+          </div>
+
+          {/* Messaging Area */}
+          <Messaging
+            chats={chats}
+            messagesToShow={messagesToShow}
+            setMessagesToShow={setMessagesToShow}
+            chatWith={chatWith}
+            setChatWith={setChatWith}
+            getTheNotLoggedUserChat={getTheNotLoggedUserChat}
+            setTheNotLoggedUserChat={setTheNotLoggedUserChat}
+            theNotLoggedUserChat={theNotLoggedUserChat}
+          />
+
+          {/* Input Area */}
+          <div className="chat-input-container">
+            <input
+              type="text"
+              placeholder="Type a message..."
+              onKeyPress={(e) =>
+                e.key === 'Enter' ? onSendMsg(e.currentTarget.value) : null
+              }
+            />
+            <button onClick={() => onSendMsg('Hello!')}>Send</button>
+          </div>
+        </div>
+      )}
     </StyledMessages>
   );
 };
