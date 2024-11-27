@@ -19,15 +19,16 @@ import {
 import { updateUser } from 'store/actions/userActions';
 import { Chat, Message as MessageType, NewActivity, User } from 'types'; // Ensure types are properly defined
 import { RootState } from 'store/index';
-import StyledMessages from '../style/StyledMessages';
+import { StyledMessagesPage, StyledMessages } from '../style/StyledMessages';
+import Loader from 'pages/Loader';
 
-const Message: React.FC = () => {
+const Messages: React.FC = () => {
   const dispatch = useAppDispatch();
   const params = useParams<{ userId: string }>();
   const { loggedInUser } = useSelector((state: RootState) => state.userModule);
   const { chats } = useSelector((state: RootState) => state.chatModule);
 
-  const [isUserChatExist, setIsUserChatExist] = useState<boolean | undefined>();
+  const [UserChatExists, setUserChatExists] = useState<boolean | undefined>();
   const [messagesToShow, setMessagesToShow] = useState<Chat['messages'] | null>(
     null
   );
@@ -46,12 +47,12 @@ const Message: React.FC = () => {
       checkIfChatExist()
         .then((exists) => {
           if (params.userId === loggedInUser.id) return;
-          setIsUserChatExist(exists);
+          setUserChatExists(exists);
           openChat();
         })
         .catch(() => {
           if (params.userId === loggedInUser.id) return;
-          setIsUserChatExist(false);
+          setUserChatExists(false);
           openChat();
         });
     });
@@ -93,7 +94,7 @@ const Message: React.FC = () => {
   }, [chats, params.userId]);
 
   const openChat = useCallback(async () => {
-    if (isUserChatExist) {
+    if (UserChatExists) {
       const chatToShow = findChat(params.userId ?? '');
       if (chatToShow) {
         await loadNotLoggedUser(chatToShow);
@@ -107,7 +108,7 @@ const Message: React.FC = () => {
       await loadNotLoggedUser(newChat);
       setMessagesToShow(newChat.messages);
     }
-  }, [isUserChatExist, params.userId, chats, dispatch]);
+  }, [UserChatExists, params.userId, chats, dispatch]);
 
   const onSendMsg = (content: string) => {
     if (!loggedInUser) return;
@@ -180,61 +181,50 @@ const Message: React.FC = () => {
   if (!chats) {
     return (
       <StyledMessages>
-        <div className="gif-container">
-          <img className="loading-gif" src="loadingGif" alt="Loading..." />
-        </div>
+        <Loader />
       </StyledMessages>
     );
   }
 
-  return (
-    <StyledMessages>
-      {!chats ? (
-        <div className="gif-container">
-          <img className="loading-gif" src="loadingGif" alt="Loading..." />
+  return;
+  <StyledMessages>
+    <div className="my-conversations"></div>
+    <StyledMessagesPage className="messages">
+      <div className="chat-header">
+        <span className="back-button">&larr;</span>
+        <div className="user-info">
+          <span className="user-name">
+            {chatWith?.username || 'Select a User'}
+          </span>
+          <span className="status">
+            {chatWith ? 'Online' : 'No active conversation'}
+          </span>
         </div>
-      ) : (
-        <div className="message-page">
-          {/* Chat Header */}
-          <div className="chat-header">
-            <span className="back-button">&larr;</span>
-            <div className="user-info">
-              <span className="user-name">
-                {chatWith?.username || 'Select a User'}
-              </span>
-              <span className="status">
-                {chatWith ? 'Online' : 'No active conversation'}
-              </span>
-            </div>
-          </div>
+      </div>
+      <Messaging
+        chats={chats}
+        messagesToShow={messagesToShow}
+        setMessagesToShow={setMessagesToShow}
+        chatWith={chatWith}
+        setChatWith={setChatWith}
+        getTheNotLoggedUserChat={getTheNotLoggedUserChat}
+        setTheNotLoggedUserChat={setTheNotLoggedUserChat}
+        theNotLoggedUserChat={theNotLoggedUserChat}
+      />
 
-          {/* Messaging Area */}
-          <Messaging
-            chats={chats}
-            messagesToShow={messagesToShow}
-            setMessagesToShow={setMessagesToShow}
-            chatWith={chatWith}
-            setChatWith={setChatWith}
-            getTheNotLoggedUserChat={getTheNotLoggedUserChat}
-            setTheNotLoggedUserChat={setTheNotLoggedUserChat}
-            theNotLoggedUserChat={theNotLoggedUserChat}
-          />
-
-          {/* Input Area */}
-          <div className="chat-input-container">
-            <input
-              type="text"
-              placeholder="Type a message..."
-              onKeyPress={(e) =>
-                e.key === 'Enter' ? onSendMsg(e.currentTarget.value) : null
-              }
-            />
-            <button onClick={() => onSendMsg('Hello!')}>Send</button>
-          </div>
-        </div>
-      )}
-    </StyledMessages>
-  );
+      {/* Input Area */}
+      <div className="chat-input-container">
+        <input
+          type="text"
+          placeholder="Type a message..."
+          onKeyPress={(e) =>
+            e.key === 'Enter' ? onSendMsg(e.currentTarget.value) : null
+          }
+        />
+        <button onClick={() => onSendMsg('Hello!')}>Send</button>
+      </div>
+    </StyledMessagesPage>
+  </StyledMessages>;
 };
 
-export default Message;
+export default Messages;

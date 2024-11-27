@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { MsgPreview } from './MsgPreview';
-import { Chat, ListMsgProps } from 'types';
-import { StyledListMsg } from '../style/StyledMessage';
+import { Chat, ConversationsProps } from 'types';
+import { StyledConversations } from '../style/StyledMessage';
 
-export const ListMsg: React.FC<ListMsgProps> = ({
+export const Conversations: React.FC<ConversationsProps> = ({
   chats,
   setMessagesToShow,
   setChatWith,
@@ -44,9 +44,9 @@ export const ListMsg: React.FC<ListMsgProps> = ({
   }, [chats]);
 
   return (
-    <StyledListMsg className="list-msg">
+    <StyledConversations>
       <div className="title-container">
-        <p>Messaging</p>
+        <p>Mes Conversations</p>
 
         <div className="logos">
           <span className="logo-menu">Icon</span>
@@ -83,6 +83,6 @@ export const ListMsg: React.FC<ListMsgProps> = ({
             />
           ))}
       </div>
-    </StyledListMsg>
+    </StyledConversations>
   );
 };

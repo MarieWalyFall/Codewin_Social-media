@@ -1,38 +1,10 @@
 import styled from 'styled-components';
 
-const StyledMessages = styled.div`
+export const StyledMessages = styled.div`
   display: flex;
   flex-direction: row;
   height: 100vh;
-  background-color: #f2f5f9;
 
-  /* Loading GIF Container */
-  .gif-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    background-color: #fff;
-
-    img {
-      width: 120px;
-      height: auto;
-      opacity: 0.8;
-    }
-  }
-
-  /* Messaging Layout */
-  .message-page {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-  }
-
-  /* Chat Area */
   .right-side-message {
     flex-grow: 1;
     display: flex;
@@ -159,4 +131,12 @@ const StyledMessages = styled.div`
   }
 `;
 
-export default StyledMessages;
+export const StyledMessagesPage = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+`;

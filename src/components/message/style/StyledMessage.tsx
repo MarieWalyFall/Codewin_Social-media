@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-export const StyledListMsg = styled.section`
+export const StyledConversations = styled.section`
   .messaging {
     .container {
       display: flex;
@@ -218,7 +218,7 @@ export const StyledMessageThread = styled.section`
 `;
 
 export const StyledMessaging = styled.section`
-  .message-page {
+  
     .messaging {
       height: 100%;
       grid-area: messaging;
@@ -227,8 +227,7 @@ export const StyledMessaging = styled.section`
       .container {
         border-radius: 1px solid black;
       }
-    }
-  }
+   
   @media (max-width: 630px) {
     .messaging {
       .container {
@@ -244,8 +243,6 @@ export const StyledMessaging = styled.section`
       }
     }
 
-    // .messaging .container .message-thread .user-profile-details {
-    // }
   }
 `;
 

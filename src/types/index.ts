@@ -415,7 +415,7 @@ export interface MsgPreviewProps {
 }
 
 // List Msg Props
-export interface ListMsgProps {
+export interface ConversationsProps {
   chats: Chat[];
   setMessagesToShow: (messages: Message[]) => void;
   setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
