@@ -18,7 +18,7 @@ export const InputFilter = () => {
 
   const { users } = useSelector((state: any) => state.userModule);
 
-  const [fields, setFields] = useState<Field>({ txt: '' });
+  const [fields, setFields] = useState<Field>({ body: '' });
   const [usersAutoComplete, setUsersAutoComplete] = useState<string[]>([]);
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
@@ -64,16 +64,14 @@ export const InputFilter = () => {
       if ((target as HTMLElement).tagName === 'LI') {
         inputField.value = (target as HTMLElement).textContent || '';
         ulField.innerHTML = ``;
-        setFields({ txt: inputField.value });
+        setFields({ body: inputField.value });
       }
     }
   };
 
   const getUsersName = () => {
     if (!users) return;
-    const usersToReturn = users.map(
-      (user: { fullname: string }) => user.fullname
-    );
+    const usersToReturn = users.map((user: { name: string }) => user.name);
     setUsersAutoComplete(usersToReturn);
   };
 
@@ -91,7 +89,7 @@ export const InputFilter = () => {
 
   useEffect(() => {
     onLoadPosts();
-  }, [fields.txt]);
+  }, [fields.body]);
 
   const onLoadPosts = () => {
     dispatch(addFilterByPostsAction(fields));
@@ -117,9 +115,9 @@ export const InputFilter = () => {
         onBlur={() => {
           setIsFocus(false);
         }}
-        id="txt"
-        name="txt"
-        value={fields.txt}
+        id="body"
+        name="body"
+        value={fields.body}
       />
       <ul className={'suggestions ' + focusStyle}></ul>
     </section>

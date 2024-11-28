@@ -11,7 +11,7 @@ interface NotificaitonPreviewProps {
   activity: Activity;
 }
 
-export const NotificaitonPreview: React.FC<NotificaitonPreviewProps> = ({
+export const NotificationPreview: React.FC<NotificaitonPreviewProps> = ({
   activity,
 }) => {
   const navigate = useNavigate();
@@ -57,25 +57,28 @@ export const NotificaitonPreview: React.FC<NotificaitonPreviewProps> = ({
   const buildActivityStr = async () => {
     if (!createdByUser || !createdToUser) return;
 
-    if (activity.type === 'add-like' || activity.type === 'remove-like') {
+    if (
+      activity.type === 'add-like' ||
+      activity.type === 'remove-like' ||
+      activity.type === 'like'
+    ) {
       const post = await postService.getById(activity.postId || '');
       const action = activity.type === 'add-like' ? 'liked' : 'unliked';
-      const str = `${createdByUser.id === loggedInUser.id ? 'You' : createdByUser.fullname} ${action} post of ${
-        createdToUser.id === loggedInUser.id ? 'you' : createdToUser.fullname
+      const str = `${createdByUser.id === loggedInUser.id ? 'You' : createdByUser.name} ${action} post of ${
+        createdToUser.id === loggedInUser.id ? 'you' : createdToUser.name
       }`;
-
       const linkToPost = `post/${post?.userId}/${activity.postId}`;
       setLink(linkToPost);
       setStr(str);
-    } else if (activity.type === 'add-comment') {
+    } else if (activity.type === 'add-comment' || 'comment') {
       const post = await postService.getById(activity.postId || '');
-      const str = `${createdByUser.id === loggedInUser.id ? 'You' : createdByUser.fullname} added a comment in your post`;
+      const str = `${createdByUser.id === loggedInUser.id ? 'You' : createdByUser.name} added a comment in your post`;
 
       const linkToPost = `post/${post?.userId}/${activity.postId}`;
       setLink(linkToPost);
       setStr(str);
     } else if (activity.type === 'private-message') {
-      const str = `${createdByUser.fullname} sent you a private message`;
+      const str = `${createdByUser.name} sent you a private message`;
       const linkToPost = `message/`;
       setLink(linkToPost);
       setStr(str);
@@ -99,7 +102,6 @@ export const NotificaitonPreview: React.FC<NotificaitonPreviewProps> = ({
     const isUnread = checkIfActivityUnread();
     setIsActivityUnread(isUnread);
   }, [unreadActivities]);
-
   return (
     <StyledNotificationPreview
       className={`notificaiton-preview ${isActivityUnread ? 'unread' : ''}`}
@@ -115,7 +117,7 @@ export const NotificaitonPreview: React.FC<NotificaitonPreviewProps> = ({
         )}
       </div>
 
-      <div className="content">
+      <div className="body">
         <p>{str}</p>
       </div>
       <div className="menu">

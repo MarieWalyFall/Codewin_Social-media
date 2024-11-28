@@ -7,11 +7,11 @@ import { ReplyPreviewProps, User } from 'types';
 
 // Define interfaces for props and state
 
-
-
 export const ReplyPreview: FC<ReplyPreviewProps> = ({ reply, updateReply }) => {
   const { userId } = reply;
-  const loggedInUser = useSelector((state: any) => state.userModule.loggedInUser) as User;
+  const loggedInUser = useSelector(
+    (state: any) => state.userModule.loggedInUser
+  ) as User;
   const [userReply, setUserReply] = useState<User | null>(null);
 
   const onLikeReply = () => {
@@ -26,7 +26,7 @@ export const ReplyPreview: FC<ReplyPreviewProps> = ({ reply, updateReply }) => {
     } else {
       replyToUpdate.reactions.push({
         userId: loggedInUser.id,
-        fullname: loggedInUser.name,
+        name: loggedInUser.name,
         reaction: 'like',
       });
     }
@@ -64,19 +64,14 @@ export const ReplyPreview: FC<ReplyPreviewProps> = ({ reply, updateReply }) => {
             </div>
             <div>
               <TimeAgo date={reply.createdAt}></TimeAgo>
-              <span className="logo-dots">
-                icon
-              </span>
+              <span className="logo-dots">icon</span>
             </div>
           </div>
-          <p className="reply-txt">{reply.txt}</p>
+          <p className="reply-txt">{reply.body}</p>
         </div>
         <div className="reply-actions">
           <span>{reply.reactions?.length || ''}</span>
-          <button
-            className={'like ' + likeBtnStyle}
-            onClick={onLikeReply}
-          >
+          <button className={'like ' + likeBtnStyle} onClick={onLikeReply}>
             Like
           </button>
         </div>

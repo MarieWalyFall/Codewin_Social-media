@@ -11,7 +11,9 @@
   transition: box-shadow 0.2s;
 
   &:hover {
-    box-shadow: 0 0 0 1px rgb(0 0 0 / 15%), 0 4px 6px rgb(0 0 0 / 20%);
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 15%),
+      0 4px 6px rgb(0 0 0 / 20%);
   }
 
   .bg {
@@ -33,7 +35,7 @@
       object-fit: cover;
     }
   }
-  .fullname {
+  .name {
     padding: 0 10px;
     margin: 35px 0 0 0;
     p {
@@ -86,7 +88,7 @@
       .img-profile {
       }
     }
-    .fullname {
+    .name {
       a {
         margin-left: 15px;
       }

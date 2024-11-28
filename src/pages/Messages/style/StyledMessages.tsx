@@ -1,9 +1,29 @@
 import styled from 'styled-components';
 
+export const StyledMyConversations = styled.div`
+  height: 100%;
+  display: flex;
+  flex-grow: 0.5;
+
+  background-color: white;
+`;
+
+export const StyledMessagesPage = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  background: #fff;
+
+  overflow: hidden;
+`;
+
 export const StyledMessages = styled.div`
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  margin-top: ${(props) => props.theme.spacing.big};
+  border-radius: 10px;
+  overflow: hidden;
+  gap: 10px;
 
   .right-side-message {
     flex-grow: 1;
@@ -21,7 +41,6 @@ export const StyledMessages = styled.div`
     }
   }
 
-  /* Chat Bubble Styles */
   .message-bubble {
     display: inline-block;
     max-width: 70%;
@@ -129,14 +148,4 @@ export const StyledMessages = styled.div`
       }
     }
   }
-`;
-
-export const StyledMessagesPage = styled.div`
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
 `;

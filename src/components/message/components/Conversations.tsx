@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { MsgPreview } from './MsgPreview';
+import { MessagePreview } from './MessagePreview';
 import { Chat, ConversationsProps } from 'types';
 import { StyledConversations } from '../style/StyledMessage';
 
 export const Conversations: React.FC<ConversationsProps> = ({
   chats,
-  setMessagesToShow,
+  setchats,
   setChatWith,
   chatWith,
   setChosenChatId,
@@ -16,7 +16,7 @@ export const Conversations: React.FC<ConversationsProps> = ({
   theNotLoggedUserChat,
 }) => {
   const [chatsToShow, setChatsToShow] = useState<Chat[] | null>(null);
-  const [field, setField] = useState<{ [key: string]: any }>({ txt: '' });
+  const [field, setField] = useState<{ [key: string]: any }>({ body: '' });
 
   const handleChange = async ({
     target,
@@ -27,8 +27,8 @@ export const Conversations: React.FC<ConversationsProps> = ({
     setFilter(String(value));
   };
 
-  const setFilter = (txt: string) => {
-    const regex = new RegExp(txt, 'i');
+  const setFilter = (body: string) => {
+    const regex = new RegExp(body, 'i');
     const filteredChats = [...chats].filter((chat) => {
       return (
         regex.test(chat.users ? chat.users[0] : '') ||
@@ -47,20 +47,15 @@ export const Conversations: React.FC<ConversationsProps> = ({
     <StyledConversations>
       <div className="title-container">
         <p>Mes Conversations</p>
-
-        <div className="logos">
-          <span className="logo-menu">Icon</span>
-          <span className="logo-new-msg">Icon</span>
-        </div>
       </div>
 
       <div className="filter-container">
         <input
           onChange={handleChange}
           type="text"
-          id="txt"
-          name="txt"
-          value={field.txt}
+          id="body"
+          name="body"
+          value={field.body}
           placeholder="Search messages"
         />
       </div>
@@ -68,11 +63,11 @@ export const Conversations: React.FC<ConversationsProps> = ({
       <div className="list">
         {chatsToShow &&
           chatsToShow.map((chat) => (
-            <MsgPreview
+            <MessagePreview
               key={chat.id}
               chat={chat}
               chats={chats}
-              setMessagesToShow={setMessagesToShow}
+              setchats={setchats}
               setChatWith={setChatWith}
               chatWith={chatWith}
               setChosenChatId={setChosenChatId}

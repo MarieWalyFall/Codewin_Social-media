@@ -3,19 +3,21 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { Comment, InputCommentProps, CommentData } from 'types';
 
-
-
-export const InputComment: React.FC<InputCommentProps> = ({ onSaveComment }) => {
+export const InputComment: React.FC<InputCommentProps> = ({
+  onSaveComment,
+}) => {
   const { loggedInUser } = useSelector((state: any) => state.userModule); // Adjust typing if necessary
   const { imgUrl, id } = loggedInUser;
-  
+
   const [isFirstFocus, setIsFirstFocus] = useState(true);
   const [newComment, setNewComment] = useState<CommentData>({
-    txt: '',
+    body: '',
     userId: id,
   });
 
-  const handleChange = async ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async ({
+    target,
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const field = target.name;
     let value = target.type === 'number' ? +target.value || '' : target.value;
     setNewComment((prevCred) => ({ ...prevCred, [field]: value }));
@@ -23,7 +25,7 @@ export const InputComment: React.FC<InputCommentProps> = ({ onSaveComment }) => 
 
   const doSubmit = () => {
     onSaveComment(newComment);
-    setNewComment({ txt: '', userId: id });
+    setNewComment({ body: '', userId: id });
   };
 
   const inputRef = (elInput: HTMLInputElement) => {
@@ -46,20 +48,16 @@ export const InputComment: React.FC<InputCommentProps> = ({ onSaveComment }) => 
               placeholder="Add a Comment..."
               required
               onChange={handleChange}
-              id="txt"
-              name="txt"
-              value={newComment.txt}
+              id="body"
+              name="body"
+              value={newComment.body}
             />
-            <span>
-              icon
-            </span>
-            <span>
-             icon 
-            </span>
+            <span>icon</span>
+            <span>icon</span>
           </div>
         </div>
         <div className="post-btn-container">
-          {newComment.txt && (
+          {newComment.body && (
             <button
               onClick={(ev) => {
                 ev.preventDefault();

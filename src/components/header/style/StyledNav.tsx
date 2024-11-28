@@ -96,7 +96,7 @@ export const Li = styled.li`
     &.me-btn {
       a {
         p {
-          .txt {
+          .body {
             display: none;
           }
         }
@@ -164,7 +164,7 @@ export const MeBtn = styled(Li)`
   @media (max-width: 545px) {
     a {
       p {
-        .txt {
+        .body {
           display: none;
         }
       }

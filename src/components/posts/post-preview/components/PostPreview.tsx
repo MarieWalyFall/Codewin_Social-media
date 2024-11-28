@@ -80,7 +80,7 @@ export const PostPreview: React.FC<PostPrewiewProps> = ({ post }) => {
     } else {
       post?.reactions?.push({
         userId: loggedInUser.id,
-        fullname: loggedInUser.fullname,
+        name: loggedInUser.name,
         reaction: 'like',
       });
     }

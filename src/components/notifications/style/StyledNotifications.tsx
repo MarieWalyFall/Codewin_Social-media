@@ -47,7 +47,7 @@ export const StyledNotificationPreview = styled.section`
       }
     }
 
-    .content {
+    .body {
       width: 65%;
       padding: 5px;
       p {
@@ -98,7 +98,7 @@ export const StyledNotificationPreview = styled.section`
         }
       }
 
-      .content {
+      .body {
         width: 60%;
         p {
         }

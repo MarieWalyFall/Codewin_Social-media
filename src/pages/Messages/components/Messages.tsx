@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { Messaging } from 'components/message/components/Messaging';
+import { Conversations } from 'components/message/components/Conversations';
 import { userService } from 'services/user/userService';
 import { utilService } from 'services/utilService';
 import { setCurrPageAction as setCurrPage } from 'store/actions/postActions';
@@ -17,9 +18,13 @@ import {
   setUnreadActivitiesIds,
 } from 'store/actions/activityAction';
 import { updateUser } from 'store/actions/userActions';
-import { Chat, Message as MessageType, NewActivity, User } from 'types'; // Ensure types are properly defined
+import { Chat, Message as MessageType, NewActivity, User } from 'types';
 import { RootState } from 'store/index';
-import { StyledMessagesPage, StyledMessages } from '../style/StyledMessages';
+import {
+  StyledMessagesPage,
+  StyledMessages,
+  StyledMyConversations,
+} from '../style/StyledMessages';
 import Loader from 'pages/Loader';
 
 const Messages: React.FC = () => {
@@ -29,9 +34,7 @@ const Messages: React.FC = () => {
   const { chats } = useSelector((state: RootState) => state.chatModule);
 
   const [UserChatExists, setUserChatExists] = useState<boolean | undefined>();
-  const [messagesToShow, setMessagesToShow] = useState<Chat['messages'] | null>(
-    null
-  );
+  const [messagesToShow, setchats] = useState<Chat['messages'] | null>(null);
   const [isNewChat, setIsNewChat] = useState(false);
   const [theNotLoggedUserChat, setTheNotLoggedUserChat] = useState<User | null>(
     null
@@ -98,7 +101,7 @@ const Messages: React.FC = () => {
       const chatToShow = findChat(params.userId ?? '');
       if (chatToShow) {
         await loadNotLoggedUser(chatToShow);
-        setMessagesToShow(chatToShow.messages);
+        setchats(chatToShow.messages);
       }
     } else {
       if (!params.userId || !chats) return;
@@ -106,16 +109,16 @@ const Messages: React.FC = () => {
       dispatch(addTempChat(newChat));
       setIsNewChat(true);
       await loadNotLoggedUser(newChat);
-      setMessagesToShow(newChat.messages);
+      setchats(newChat.messages);
     }
   }, [UserChatExists, params.userId, chats, dispatch]);
 
-  const onSendMsg = (content: string) => {
+  const onSendMessage = (content: string) => {
     if (!loggedInUser) return;
 
-    const newMsg = createNewMsg(content, loggedInUser.id);
+    const newMessage = createNewMessage(content, loggedInUser.id);
     const chatToUpdate = { ...chats[findChatIndex()] };
-    chatToUpdate.messages.push(newMsg);
+    chatToUpdate.messages.push(newMessage);
 
     if (isNewChat && chatToUpdate.id) {
       dispatch(removeTempChat(chatToUpdate.id));
@@ -124,7 +127,7 @@ const Messages: React.FC = () => {
     setIsNewChat(false);
 
     dispatch(saveChat(chatToUpdate)).then((savedChat) => {
-      setMessagesToShow(savedChat.messages);
+      setchats(savedChat.messages);
       if (savedChat) {
         const newActivity: NewActivity = {
           type: 'private-message',
@@ -142,7 +145,10 @@ const Messages: React.FC = () => {
     });
   };
 
-  const createNewMsg = (content: string, senderId: string): MessageType => ({
+  const createNewMessage = (
+    content: string,
+    senderId: string
+  ): MessageType => ({
     id: utilService.makeId(24),
     content,
     userId: loggedInUser?.id ?? '',
@@ -186,45 +192,56 @@ const Messages: React.FC = () => {
     );
   }
 
-  return;
-  <StyledMessages>
-    <div className="my-conversations"></div>
-    <StyledMessagesPage className="messages">
-      <div className="chat-header">
-        <span className="back-button">&larr;</span>
-        <div className="user-info">
-          <span className="user-name">
-            {chatWith?.username || 'Select a User'}
-          </span>
-          <span className="status">
-            {chatWith ? 'Online' : 'No active conversation'}
-          </span>
-        </div>
-      </div>
-      <Messaging
-        chats={chats}
-        messagesToShow={messagesToShow}
-        setMessagesToShow={setMessagesToShow}
-        chatWith={chatWith}
-        setChatWith={setChatWith}
-        getTheNotLoggedUserChat={getTheNotLoggedUserChat}
-        setTheNotLoggedUserChat={setTheNotLoggedUserChat}
-        theNotLoggedUserChat={theNotLoggedUserChat}
-      />
-
-      {/* Input Area */}
-      <div className="chat-input-container">
-        <input
-          type="text"
-          placeholder="Type a message..."
-          onKeyPress={(e) =>
-            e.key === 'Enter' ? onSendMsg(e.currentTarget.value) : null
-          }
+  return (
+    <StyledMessages>
+      <StyledMyConversations className="my-conversations">
+        <Conversations
+          chats={chats}
+          setchats={setchats}
+          setChatWith={setChatWith}
+          chatWith={chatWith}
+          getTheNotLoggedUserChat={getTheNotLoggedUserChat}
+          setTheNotLoggedUserChat={setTheNotLoggedUserChat}
+          theNotLoggedUserChat={theNotLoggedUserChat}
         />
-        <button onClick={() => onSendMsg('Hello!')}>Send</button>
-      </div>
-    </StyledMessagesPage>
-  </StyledMessages>;
+      </StyledMyConversations>
+      <StyledMessagesPage className="messages">
+        <div className="chat-header">
+          <span className="back-button">&larr;</span>
+          <div className="user-info">
+            <span className="user-name">
+              {chatWith?.username || 'Select a User'}
+            </span>
+            <span className="status">
+              {chatWith ? 'Online' : 'No active conversation'}
+            </span>
+          </div>
+        </div>
+        <Messaging
+          chats={chats}
+          messagesToShow={messagesToShow}
+          setchats={setchats}
+          chatWith={chatWith}
+          setChatWith={setChatWith}
+          getTheNotLoggedUserChat={getTheNotLoggedUserChat}
+          setTheNotLoggedUserChat={setTheNotLoggedUserChat}
+          theNotLoggedUserChat={theNotLoggedUserChat}
+        />
+
+        {/* Input Area */}
+        <div className="chat-input-container">
+          <input
+            type="text"
+            placeholder="Type a message..."
+            onKeyPress={(e) =>
+              e.key === 'Enter' ? onSendMessage(e.currentTarget.value) : null
+            }
+          />
+          <button onClick={() => onSendMessage('Hello!')}>Send</button>
+        </div>
+      </StyledMessagesPage>
+    </StyledMessages>
+  );
 };
 
 export default Messages;

@@ -89,12 +89,12 @@ const Profile: React.FC = () => {
 
       connectionToAdd.connections.unshift({
         userId: loggedInUserToUpdate.id,
-        fullname: loggedInUserToUpdate.fullname,
+        name: loggedInUserToUpdate.name,
       });
 
       loggedInUserToUpdate.connections.push({
         userId: connectionToAdd.id,
-        fullname: connectionToAdd.fullname,
+        name: connectionToAdd.name,
       });
 
       dispatch(updateUser(loggedInUserToUpdate));
@@ -147,7 +147,7 @@ const Profile: React.FC = () => {
           <div className="user-details">
             <div>
               <div className="name">
-                <h1>{user.fullname}</h1>
+                <h1>{user.name}</h1>
               </div>
               <div className="profession">
                 <p>{user.profession}</p>
@@ -181,7 +181,7 @@ const Profile: React.FC = () => {
             <PostsList postsList={posts} />
           ) : (
             <div>
-              <p>{user.fullname} has not published any posts yet.</p>
+              <p>{user.name} has not published any posts yet.</p>
             </div>
           )}
         </div>

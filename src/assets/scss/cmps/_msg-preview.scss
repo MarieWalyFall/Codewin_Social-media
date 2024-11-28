@@ -49,7 +49,7 @@
       flex-direction: column;
       width: 100%;
 
-      .fullname {
+      .name {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
@@ -85,7 +85,7 @@
       }
 
       .details {
-        .fullname {
+        .name {
           width: 100%;
           justify-content: space-between;
           h1 {

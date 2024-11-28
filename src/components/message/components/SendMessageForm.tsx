@@ -2,26 +2,26 @@ import { useEffect, useState, useRef, ChangeEvent, FormEvent } from 'react';
 import { Message, NewMessage, SendMessageFormProps } from 'types';
 
 export const SendMessageForm: React.FC<SendMessageFormProps> = ({
-  onSendMsg,
+  onSendMessage,
   messagesToShow,
 }) => {
-  const [newMsg, setNewMsg] = useState<NewMessage>({ content: '' });
+  const [newMessage, setNewMessage] = useState<NewMessage>({ content: '' });
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setNewMsg((prevMsg) => ({ ...prevMsg, [name]: value }));
+    setNewMessage((prevMessage) => ({ ...prevMessage, [name]: value }));
   };
 
   const doSubmit = () => {
-    if (newMsg) {
-      if (onSendMsg) onSendMsg(newMsg);
-      setNewMsg({ content: '' });
+    if (newMessage) {
+      if (onSendMessage) onSendMessage(newMessage);
+      setNewMessage({ content: '' });
     }
   };
 
   useEffect(() => {
-    setNewMsg({ content: '' });
+    setNewMessage({ content: '' });
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -41,9 +41,9 @@ export const SendMessageForm: React.FC<SendMessageFormProps> = ({
           required
           onChange={handleChange}
           placeholder="Write a message..."
-          id="content"
-          name="content"
-          value={newMsg.content}
+          id="body"
+          name="body"
+          value={newMessage.body}
         />
       </div>
 

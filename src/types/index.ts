@@ -46,7 +46,7 @@ export interface PostPreview extends Partial<Post> {
 
 export interface Post {
   id: string; // Unique identifier for the post
-  body: string; // Content of the post
+  body: string; // Body of the post
   imgBodyUrl: string | null; // URL of the image associated with the post
   videoBodyUrl: string | null; // URL of the video associated with the post, can be null
   link: string; // Link associated with the post
@@ -54,7 +54,7 @@ export interface Post {
   createdAt: string; // Timestamp when the post was created in ISO format
   updatedAt?: string; // Timestamp when the post was created in ISO format
   userId: string; // Unique identifier for the user who created the post
-  fullname: string; // Full name of the user who created the post
+  name: string; // Full name of the user who created the post
   userProfilePic: string;
   reactions: Reaction[];
   toggleShowImgPreview?: () => void;
@@ -65,7 +65,6 @@ export interface Post {
 export interface User {
   bg?: string;
   phone?: string;
-  fullname?: any;
   id: string;
   username: string;
   password: string;
@@ -139,7 +138,7 @@ export interface Comment {
   userId: string;
   postId: string;
   createdAt?: number;
-  txt?: string;
+  body?: string;
   reactions?: Reaction[];
   replies?: Reply[];
 }
@@ -157,7 +156,7 @@ export interface SocialDetailsProps {
 }
 export interface Reaction {
   userId: string;
-  fullname: string;
+  name: string;
   reaction: string;
 }
 
@@ -170,7 +169,7 @@ export interface Reply {
   userId: string;
   postId: string;
   commentId: string;
-  txt: string;
+  body: string;
   reactions: Reaction[];
   createdAt: number;
 }
@@ -191,16 +190,15 @@ export interface Activity {
   createdTo: any;
   postId: string;
   createdAt: any;
-  id?: string;
+  id: string;
   createdBy: string;
   type: string;
   chatId?: string;
-  description?: string;
+  description: string;
   commentId?: string;
-  // Add other activity properties as needed
 }
 
-export interface NewActivity extends Activity {}
+export interface NewActivity extends Partial<Activity> {}
 
 export interface FilterByActivities {
   type?: string;
@@ -361,7 +359,7 @@ export interface FilterByPosts {
 export type SortByOptions = 'date-newest' | 'date-oldest' | 'likes';
 export interface Message {
   id: string;
-  content: string;
+  body: string;
   senderId: string;
   createdAt: string;
   userId?: string;
@@ -382,29 +380,27 @@ export interface MessagingProps {
   chats: Chat[];
   chatWith: User | null;
   messagesToShow: Message[] | null;
-  setMessagesToShow: (messages: Message[]) => void;
-  chosenChatId?: string; // Change to number if id is a number
-  setChosenChatId?: (id: string) => Promise<void>;
+  setchats: (messages: Message[]) => void;
   setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
   getTheNotLoggedUserChat: (chat: Chat) => Promise<User | null>;
   setTheNotLoggedUserChat: React.Dispatch<React.SetStateAction<User | null>>;
   theNotLoggedUserChat: User | null;
-  onSendMsg?: (message: NewMessage) => void; // Change 'any' to Message
+  onSendMessage?: (message: NewMessage) => void; // Change 'any' to Message
 }
 
 // Message Thread Props
 export interface MessageThreadProps {
   messagesToShow: Message[] | null;
-  setMessagesToShow: (messages: Message[]) => void;
+  setchats: (messages: Message[]) => void;
   chatWith: User | null;
-  onSendMsg?: (message: NewMessage) => void;
+  onSendMessage?: (message: NewMessage) => void;
 }
 
-// Msg Preview Props
-export interface MsgPreviewProps {
+// Message Preview Props
+export interface MessagePreviewProps {
   chat: Chat;
   chats: Chat[];
-  setMessagesToShow: (messages: Message[]) => void;
+  setchats: (messages: Message[]) => void;
   setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
   chatWith: User | null;
   chosenChatId?: string; // Change to number if id is a number
@@ -414,10 +410,10 @@ export interface MsgPreviewProps {
   theNotLoggedUserChat: User | null;
 }
 
-// List Msg Props
+// List Message Props
 export interface ConversationsProps {
   chats: Chat[];
-  setMessagesToShow: (messages: Message[]) => void;
+  setchats: (messages: Message[]) => void;
   setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
   chatWith: User | null;
   setChosenChatId?: (id: string) => Promise<void>;
@@ -428,9 +424,9 @@ export interface ConversationsProps {
 }
 export interface NewMessage extends Partial<Message> {}
 export interface SendMessageFormProps {
-  onSendMsg?: (message: NewMessage) => void;
+  onSendMessage?: (message: NewMessage) => void;
   messagesToShow: any[];
 }
 
 // Thread Message List Props
-export interface ThreadMsgListProps extends Partial<MessageThreadProps> {}
+export interface ThreadMessageListProps extends Partial<MessageThreadProps> {}

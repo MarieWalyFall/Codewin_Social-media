@@ -23,7 +23,7 @@ export const CommentPreview: React.FC<CommentPreviewProps> = ({
   const [isShowreplyList, setIsShowReplyList] = useState<boolean>(false);
   const [isShowMenu, setIsShowMenu] = useState<boolean>(false);
   const [isFirstFocus, setIsFirstFocus] = useState<boolean>(true);
-  const [replyField, setReplyField] = useState<{ txt: string }>({ txt: '' });
+  const [replyField, setReplyField] = useState<{ body: string }>({ body: '' });
   const { loggedInUser } = useSelector((state: any) => state.userModule); // Adjust the state type if you have a specific type
 
   const toggleMenu = () => {
@@ -51,7 +51,7 @@ export const CommentPreview: React.FC<CommentPreviewProps> = ({
     } else {
       commentToSave.reactions.push({
         userId: loggedInUser.id,
-        fullname: loggedInUser.fullname,
+        name: loggedInUser.name,
         reaction: 'like',
       });
     }
@@ -63,7 +63,7 @@ export const CommentPreview: React.FC<CommentPreviewProps> = ({
   };
 
   const addReply = () => {
-    if (!replyField.txt.trim()) return; // Check for empty reply text
+    if (!replyField.body.trim()) return; // Check for empty reply text
     const commentToSave = { ...comment };
     if (!commentToSave.replies) {
       commentToSave.replies = [];
@@ -74,13 +74,13 @@ export const CommentPreview: React.FC<CommentPreviewProps> = ({
       userId: loggedInUser.id,
       postId: postId,
       commentId: comment.id,
-      txt: replyField.txt,
+      body: replyField.body,
       reactions: [],
       createdAt: Date.now(),
     };
     commentToSave.replies.unshift(newReply);
     onSaveComment(commentToSave);
-    setReplyField({ txt: '' });
+    setReplyField({ body: '' });
   };
 
   const updateReply = (replyToUpdate: Reply) => {
@@ -145,7 +145,7 @@ export const CommentPreview: React.FC<CommentPreviewProps> = ({
             </div>
           </div>
           <div className="comment-text">
-            <p>{comment.txt}</p>
+            <p>{comment.body}</p>
           </div>
         </div>
         <div className="comment-action">
@@ -178,14 +178,14 @@ export const CommentPreview: React.FC<CommentPreviewProps> = ({
                 type="text"
                 placeholder="Add a reply..."
                 onChange={handleChange}
-                name="txt"
-                value={replyField.txt}
+                name="body"
+                value={replyField.body}
               />
             </div>
           </div>
         )}
 
-        {replyField.txt && (
+        {replyField.body && (
           <button className="reply-btn" onClick={addReply}>
             Reply
           </button>

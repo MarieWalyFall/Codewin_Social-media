@@ -13,7 +13,7 @@ interface RootState {
   userModule: {
     loggedInUser: {
       id: string;
-      fullname: string;
+      name: string;
       imgUrl: string;
     };
   };
@@ -73,7 +73,7 @@ export const AddPost: React.FC = () => {
       body: typeof postContent === 'string' ? postContent : postContent.body,
       type: postType,
       userId: loggedInUser.id,
-      fullname: loggedInUser.fullname,
+      name: loggedInUser.name,
       photos: photoImports,
       videos: videoImports,
     };

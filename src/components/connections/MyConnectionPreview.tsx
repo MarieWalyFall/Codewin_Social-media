@@ -28,7 +28,7 @@ export const MyConnectionPreview: React.FC<MyConnectionPreviewProps> = ({
         <div className="img-profile">
           <img src={user.imgUrl} alt={user.name} className="img" />
         </div>
-        <div className="fullname">
+        <div className="name">
           <Link to={`/profile/${user.id}`}>
             <h3>{user.name}</h3>
             <p>{user.profession || ' '}</p>

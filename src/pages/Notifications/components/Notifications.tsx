@@ -13,6 +13,7 @@ import { updateUser } from '../../../store/actions/userActions';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { RootState } from '../../../store'; // Adjust this import based on your store setup
 import { FilterByActivities } from 'types';
+import Loader from 'pages/Loader';
 
 function Notifications() {
   const dispatch = useAppDispatch();
@@ -34,37 +35,30 @@ function Notifications() {
       dispatch(loadActivities());
     }
 
-    const updateLastSeen = async () => {
-      await updateLastSeenLoggedUser();
+    const updateLastSeen = () => {
+      updateLastSeenLoggedUser(); // Call async function without `await`
       dispatch(setUnreadActivitiesIds());
     };
 
     return () => {
-      updateLastSeen();
+      updateLastSeen(); // Cleanup function remains synchronous
     };
   }, [dispatch, loggedInUser]); // Add dependencies for better linting
 
   const updateLastSeenLoggedUser = async () => {
-    const lastSeenActivity = new Date().getTime();
+    try {
+      const lastSeenActivity = new Date().getTime();
 
-    if (loggedInUser) {
-      // Check if loggedInUser exists before spreading it
-      await dispatch(updateUser({ ...loggedInUser, lastSeenActivity }));
+      if (loggedInUser) {
+        // Check if loggedInUser exists before spreading it
+        await dispatch(updateUser({ ...loggedInUser, lastSeenActivity }));
+      }
+    } catch (err) {
+      console.error('Failed to update last seen:', err);
     }
   };
 
-  if (!activities)
-    return (
-      <div className="message-page">
-        <div className="gif-container">
-          <img
-            className="loading-gif"
-            src="loadingGifPathHere"
-            alt="Loading..."
-          />
-        </div>
-      </div>
-    );
+  if (!activities) return <Loader />;
 
   return (
     <div className="notifications-page">

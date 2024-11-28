@@ -19,7 +19,7 @@ export const Signup = () => {
   const [cred, setCred] = useState({
     username: '',
     password: '',
-    fullname: '',
+    name: '',
   });
 
   const { loggedInUser } = useSelector((state: any) => state.userModule);
@@ -33,7 +33,7 @@ export const Signup = () => {
   };
 
   const cleanFields = () =>
-    setCred(() => ({ username: '', password: '', fullname: '' }));
+    setCred(() => ({ username: '', password: '', name: '' }));
 
   const doLogin = async () => {
     dispatch(login(cred)).then((user) => {
@@ -72,7 +72,7 @@ export const Signup = () => {
           <div className="img-container">
             <img src={loggedInUser.imgUrl} alt="" className="img" />
           </div>
-          <p>{loggedInUser.fullname}</p>
+          <p>{loggedInUser.name}</p>
           <button onClick={doLogout}>Logout</button>
         </div>
       </section>
@@ -104,9 +104,9 @@ export const Signup = () => {
               onChange={handleChange}
               type="text"
               placeholder="Fullname"
-              id="fullname"
-              name="fullname"
-              value={cred.fullname}
+              id="name"
+              name="name"
+              value={cred.name}
             />
           )}
           <input

@@ -14,27 +14,24 @@ const INITIAL_STATE: ChatState = {
       messages: [
         {
           id: 'm1',
-          txt: "Hey, how's it going?",
+          body: "Hey, how's it going?",
           userId: 'u1',
           createdAt: '1689123456789',
-          content: 'hey',
-          senderId: ''
+          senderId: '',
         },
         {
           id: 'm2',
-          txt: "I'm doing well, thanks! What about you?",
+          body: "I'm doing well, thanks! What about you?",
           userId: 'u2',
           createdAt: '1689123460000',
-          content: '',
-          senderId: ''
+          senderId: '',
         },
         {
           id: 'm3',
-          txt: "I'm good too, just busy with some work.",
+          body: "I'm good too, just busy with some work.",
           userId: 'u1',
           createdAt: '1689123470000',
-          content: '',
-          senderId: ''
+          senderId: '',
         },
       ],
       createdAt: String(new Date(1689123400000)),
@@ -46,19 +43,17 @@ const INITIAL_STATE: ChatState = {
       messages: [
         {
           id: 'm4',
-          txt: 'Hey Bob, are you joining the meeting today?',
+          body: 'Hey Bob, are you joining the meeting today?',
           userId: 'u1',
           createdAt: '1689123600000',
-          content: '',
-          senderId: ''
+          senderId: '',
         },
         {
           id: 'm5',
-          txt: 'Yes, I’ll be there in 5 minutes!',
+          body: 'Yes, I’ll be there in 5 minutes!',
           userId: 'u3',
           createdAt: '1689123650000',
-          content: '',
-          senderId: ''
+          senderId: '',
         },
       ],
       createdAt: String(new Date(1689123500000)),

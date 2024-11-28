@@ -20,14 +20,14 @@ export const Login: React.FC = () => {
     username: 'guest123',
     password: '1234',
   });
-  const [msg, setMsg] = useState<string>('');
+  const [msg, setMessage] = useState<string>('');
   const [isLoggingLoading, setIsLoggingLoading] = useState<boolean>(false);
 
   const { loggedInUser } = useSelector((state: any) => state.userModule);
 
-  const showMsg = (txt: string) => {
-    setMsg(txt);
-    setTimeout(() => setMsg(''), 3000);
+  const showMessage = (body: string) => {
+    setMessage(txt);
+    setTimeout(() => setMessage(''), 3000);
   };
 
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +51,7 @@ export const Login: React.FC = () => {
         navigate('/feed');
       }
     } catch (err: any) {
-      showMsg('Error: ' + err.message);
+      showMessage('Error: ' + err.message);
       console.error(err);
     } finally {
       setIsLoggingLoading(false);

@@ -10,7 +10,7 @@
       "createdAt": "2024-01-15T12:45:00.000Z",
       "updatedAt": "2024-01-15T12:45:00.000Z",
       "userId": "u1",
-      "fullname": "John Doe",
+      "name": "John Doe",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -29,7 +29,7 @@
       "createdAt": "2023-01-14T09:30:00.000Z",
       "updatedAt": "2023-01-14T09:30:00.000Z",
       "userId": "u2",
-      "fullname": "Jane Smith",
+      "name": "Jane Smith",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -48,7 +48,7 @@
       "createdAt": "2024-02-13T16:00:00.000Z",
       "updatedAt": "2024-02-13T16:00:00.000Z",
       "userId": "u3",
-      "fullname": "Alice Cooper",
+      "name": "Alice Cooper",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -67,7 +67,7 @@
       "userId": "u1",
       "createdAt": "2024-01-12T14:45:00.000Z",
       "updatedAt": "2024-01-12T14:45:00.000Z",
-      "fullname": "Bob Johnson",
+      "name": "Bob Johnson",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -86,7 +86,7 @@
       "createdAt": "2024-04-11T11:15:00.000Z",
       "updatedAt": "2024-04-11T11:15:00.000Z",
       "userId": "u3",
-      "fullname": "Emily Davis",
+      "name": "Emily Davis",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -105,7 +105,7 @@
       "createdAt": "2024-02-25T10:00:00.000Z",
       "updatedAt": "2024-02-25T10:00:00.000Z",
       "userId": "u5",
-      "fullname": "Charlie Brown",
+      "name": "Charlie Brown",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -124,7 +124,7 @@
       "createdAt": "2024-03-05T14:30:00.000Z",
       "updatedAt": "2024-03-05T14:30:00.000Z",
       "userId": "u5",
-      "fullname": "Charlie Brown",
+      "name": "Charlie Brown",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -143,7 +143,7 @@
       "createdAt": "2024-03-12T08:45:00.000Z",
       "updatedAt": "2024-03-12T08:45:00.000Z",
       "userId": "u6",
-      "fullname": "Emma Watson",
+      "name": "Emma Watson",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -162,7 +162,7 @@
       "createdAt": "2024-03-20T11:00:00.000Z",
       "updatedAt": "2024-03-20T11:00:00.000Z",
       "userId": "u7",
-      "fullname": "Michael Scott",
+      "name": "Michael Scott",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -181,7 +181,7 @@
       "createdAt": "2024-04-02T09:15:00.000Z",
       "updatedAt": "2024-04-02T09:15:00.000Z",
       "userId": "u7",
-      "fullname": "Michael Scott",
+      "name": "Michael Scott",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -200,7 +200,7 @@
       "createdAt": "2024-04-05T15:00:00.000Z",
       "updatedAt": "2024-04-05T15:00:00.000Z",
       "userId": "u6",
-      "fullname": "Emma Watson",
+      "name": "Emma Watson",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -219,7 +219,7 @@
       "createdAt": "2024-04-08T10:30:00.000Z",
       "updatedAt": "2024-04-08T10:30:00.000Z",
       "userId": "u4",
-      "fullname": "Harry Potter",
+      "name": "Harry Potter",
       "userProfilePic": "https://via.placeholder.com/150",
       "reactions": [],
       "position": {
@@ -247,7 +247,7 @@
       "body": "fffff",
       "type": "default",
       "userId": "u0",
-      "fullname": "Papa Abdou Calloga",
+      "name": "Papa Abdou Calloga",
       "createdAt": "2024-11-17T18:23:37.880Z"
     },
     {
@@ -255,7 +255,7 @@
       "body": "ffff",
       "type": "default",
       "userId": "u0",
-      "fullname": "Papa Abdou Calloga",
+      "name": "Papa Abdou Calloga",
       "createdAt": "2024-11-17T18:24:25.399Z"
     },
     {
@@ -263,7 +263,7 @@
       "body": "fe",
       "type": "default",
       "userId": "u0",
-      "fullname": "Papa Abdou Calloga",
+      "name": "Papa Abdou Calloga",
       "createdAt": "2024-11-17T18:26:21.519Z"
     },
     {
@@ -271,7 +271,7 @@
       "body": "",
       "type": "default",
       "userId": "u0",
-      "fullname": "Papa Abdou Calloga",
+      "name": "Papa Abdou Calloga",
       "createdAt": "2024-11-17T18:30:09.173Z"
     },
     {
@@ -279,7 +279,7 @@
       "body": "bbbgbd",
       "type": "default",
       "userId": "u0",
-      "fullname": "Papa Abdou Calloga",
+      "name": "Papa Abdou Calloga",
       "createdAt": "2024-11-17T18:33:59.444Z"
     },
     {
@@ -287,7 +287,7 @@
       "body": "dgbdgnndgbngd",
       "type": "default",
       "userId": "u0",
-      "fullname": "Papa Abdou Calloga",
+      "name": "Papa Abdou Calloga",
       "createdAt": "2024-11-17T18:34:06.604Z"
     },
     {
@@ -295,7 +295,7 @@
       "body": "Hello",
       "type": "default",
       "userId": "u0",
-      "fullname": "Papa Abdou Calloga",
+      "name": "Papa Abdou Calloga",
       "photos": [],
       "videos": [],
       "createdAt": "2024-11-17T20:33:20.767Z"
@@ -305,7 +305,7 @@
       "body": "gbgbbbzbrr",
       "type": "default",
       "userId": "u0",
-      "fullname": "Papa Abdou Calloga",
+      "name": "Papa Abdou Calloga",
       "photos": [],
       "videos": [],
       "createdAt": "2024-11-24T21:48:13.140Z"
@@ -335,9 +335,9 @@
         }
       ],
       "posts": [],
-      "lastSeenActivity": 1732488222185,
+      "lastSeenActivity": 1732811060412,
       "lastSeenMsgs": 1727562813373,
-      "lastSeenMessages": "1732703190299",
+      "lastSeenMessages": "1732808059112",
       "age": 23,
       "bg": "",
       "email": "papeabdoucalloga98@gmail.com",
@@ -631,26 +631,23 @@
       "messages": [
         {
           "id": "m1",
-          "txt": "Hey, how's it going?",
+          "body": "Hey, how's it going?",
           "userId": "u1",
           "createdAt": "1689123456789",
-          "content": "hey",
           "senderId": ""
         },
         {
           "id": "m2",
-          "txt": "I'm doing well, thanks! What about you?",
+          "body": "I'm doing well, thanks! What about you?",
           "userId": "u2",
           "createdAt": "1689123460000",
-          "content": "",
           "senderId": ""
         },
         {
           "id": "m3",
-          "txt": "I'm good too, just busy with some work.",
+          "body": "I'm good too, just busy with some work.",
           "userId": "u1",
           "createdAt": "1689123470000",
-          "content": "",
           "senderId": ""
         }
       ],
@@ -663,18 +660,16 @@
       "messages": [
         {
           "id": "m4",
-          "txt": "Hey Bob, are you joining the meeting today?",
+          "body": "Hey Bob, are you joining the meeting today?",
           "userId": "u1",
           "createdAt": "1689123600000",
-          "content": "",
           "senderId": ""
         },
         {
           "id": "m5",
-          "txt": "Yes, I’ll be there in 5 minutes!",
+          "body": "Yes, I’ll be there in 5 minutes!",
           "userId": "u3",
           "createdAt": "1689123650000",
-          "content": "",
           "senderId": ""
         }
       ],

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { NotificaitonPreview } from './NotificaitonPreview';
+import { NotificationPreview } from './NotificationPreview';
 import { Activity } from 'types';
 import { StyledNotificationsList } from '../style/StyledNotifications';
 
@@ -25,7 +25,7 @@ export function NotificationsList() {
   return (
     <section className="notifications-list">
       {activities.map((activity: Activity) => (
-        <NotificaitonPreview key={activity?.id} activity={activity} />
+        <NotificationPreview key={activity.id} activity={activity} />
       ))}
     </section>
   );

@@ -42,7 +42,7 @@ const MyNetwork: React.FC = () => {
                 <span className="logo">
                   <FaUserFriends />
                 </span>
-                <span className="txt">
+                <span className="body">
                   <p>Connections</p>
                 </span>
               </div>

@@ -11,7 +11,7 @@ interface Reaction {
 interface User {
   id: string;
   imgUrl: string;
-  fullname: string;
+  name: string;
   profession: string;
 }
 
@@ -46,10 +46,10 @@ export function LikePreview({ reaction }: LikePreviewProps) {
         onClick={() => navigate(`/profile/${user.id}`)}
       >
         <div className="img-container">
-          <img src={user.imgUrl} alt={user.fullname} className="img" />
+          <img src={user.imgUrl} alt={user.name} className="img" />
         </div>
-        <div className="fullname">
-          <p>{user.fullname}</p>
+        <div className="name">
+          <p>{user.name}</p>
           <p>{user.profession}</p>
         </div>
       </div>

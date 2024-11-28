@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 interface UserIconPosProps {
   url: string;
   userId: string; // Change to number if userId is a number
-  fullname: string;
+  name: string;
   isCloseUserIcon: boolean;
 }
 
 export const UserIconPos: React.FC<UserIconPosProps> = ({
   url,
   userId,
-  fullname,
+  name,
   isCloseUserIcon,
 }) => {
   const [isUserIconOpen, setIsUserIconOpen] = useState<boolean>(false);
@@ -32,17 +32,12 @@ export const UserIconPos: React.FC<UserIconPosProps> = ({
         setIsUserIconOpen((prev) => !prev);
       }}
     >
-      <img
-        className="user-icon-pos"
-        src={url}
-        alt={fullname}
-        title={fullname}
-      />
+      <img className="user-icon-pos" src={url} alt={name} title={name} />
       {isUserIconOpen && (
         <div className="menu-container">
           <div className="opts-btns">
-            <div className="fullname">
-              <p>{fullname}</p>
+            <div className="name">
+              <p>{name}</p>
             </div>
             <div
               className="go-to-profile opt"

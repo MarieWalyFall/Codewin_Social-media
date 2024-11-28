@@ -1,8 +1,8 @@
-import { Message, ThreadMsgListProps } from 'types';
-import { ThreadMsgPreview } from './ThreadMsgPreview';
+import { Message, ThreadMessageListProps } from 'types';
+import { ThreadMessagePreview } from './ThreadMessagePreview';
 import { StyledThreadMessageList } from '../style/StyledMessage';
 
-export const ThreadMsgList: React.FC<ThreadMsgListProps> = ({
+export const ThreadMessageList: React.FC<ThreadMessageListProps> = ({
   messagesToShow,
 }) => {
   if (!messagesToShow || !messagesToShow.length) {
@@ -13,7 +13,7 @@ export const ThreadMsgList: React.FC<ThreadMsgListProps> = ({
     <StyledThreadMessageList className="thread-msg-list">
       <div className="list">
         {messagesToShow.map((msg) => (
-          <ThreadMsgPreview key={msg.id} msg={msg} />
+          <ThreadMessagePreview key={msg.id} msg={msg} />
         ))}
       </div>
     </StyledThreadMessageList>

@@ -1,6 +1,11 @@
 import { Dispatch } from 'redux';
 import { activityService } from 'services/activity/activityService';
-import { Activity, ActivityAction, FilterByActivities, NewActivity} from 'types'; 
+import {
+  Activity,
+  ActivityAction,
+  FilterByActivities,
+  NewActivity,
+} from 'types';
 
 export function loadActivities() {
   return async (dispatch: Dispatch<ActivityAction>, getState: () => any) => {
@@ -32,9 +37,8 @@ export function getActivitiesLength() {
   return async (dispatch: Dispatch<ActivityAction>, getState: () => any) => {
     try {
       const { filterByActivities } = getState().activityModule;
-      const activitiesLength = await activityService.getActivitiesLength(
-        filterByActivities
-      );
+      const activitiesLength =
+        await activityService.getActivitiesLength(filterByActivities);
       dispatch({ type: 'SET_ACTIVITIES_LENGTH', activitiesLength });
     } catch (err) {
       console.log('err:', err);
@@ -68,14 +72,14 @@ export function setUnreadActivitiesIds() {
       if (loggedInUser.lastSeenActivity < activity.createdAt) {
         if (loggedInUser.id === activity.createdBy) return;
         if (activity.type !== 'private-message') {
-          unreadActivities.push(activity.id?? '');
+          unreadActivities.push(activity.id ?? '');
         }
       }
 
-      if (loggedInUser.lastSeenMsgs < activity.createdAt) {
+      if (loggedInUser.lastSeenMessages < activity.createdAt) {
         if (loggedInUser.id === activity.createdBy) return;
         if (activity.type === 'private-message') {
-          unreadMessages.push(activity.chatId?? '');
+          unreadMessages.push(activity.chatId ?? '');
         }
       }
     });

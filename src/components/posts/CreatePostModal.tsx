@@ -238,7 +238,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
             <img src={loggedInUser?.imgUrl} alt="" className="img-profile" />
           </div>
           <div className="name">
-            <h2>{loggedInUser?.fullname}</h2>
+            <h2>{loggedInUser?.name}</h2>
           </div>
         </div>
 

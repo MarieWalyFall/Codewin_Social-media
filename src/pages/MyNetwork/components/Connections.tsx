@@ -14,7 +14,7 @@ interface Field {
 function Connections() {
   const { users } = useSelector((state: any) => state.userModule);
   const [connections, setConnections] = useState<any[]>([]);
-  const [field, setField] = useState<Field>({ fullname: '' });
+  const [field, setField] = useState<Field>({ name: '' });
 
   const { loggedInUser } = useSelector((state: any) => state.userModule);
 
@@ -33,7 +33,7 @@ function Connections() {
     }
   }, [loggedInUser]);
 
-  const setFilter = (txt: string) => {
+  const setFilter = (body: string) => {
     const regex = new RegExp(txt, 'i');
     const filteredConnections = [...(loggedInUser?.connections || [])].filter(
       (connection) => regex.test(connection.name)
@@ -53,9 +53,9 @@ function Connections() {
               <input
                 type="text"
                 onChange={handleChange}
-                id="fullname"
-                name="fullname"
-                value={field.fullname}
+                id="name"
+                name="name"
+                value={field.name}
                 placeholder="Search by name"
                 className="connections-input"
               />

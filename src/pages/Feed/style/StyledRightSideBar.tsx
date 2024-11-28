@@ -46,7 +46,7 @@ export const StyledRightSideBar = styled.section`
 
         div {
           margin-left: 10px;
-          .fullname {
+          .name {
             margin-bottom: 3px;
             p {
             }

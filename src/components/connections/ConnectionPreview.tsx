@@ -27,7 +27,7 @@ export function ConnectionPreview({ user }: ConnectionPreviewProps) {
   };
 
   const connectProfile = async () => {
-    if (!user || !user.fullname) return; // Ensure fullname is present
+    if (!user || !user.name) return; // Ensure name is present
     if (isConnected) {
       // Remove connection logic
       const connectionToRemove = { ...user };
@@ -52,12 +52,12 @@ export function ConnectionPreview({ user }: ConnectionPreviewProps) {
       connectionToAdd.connections = connectionToAdd.connections || [];
       connectionToAdd.connections.unshift({
         id: loggedInUserToUpdate.id,
-        name: loggedInUserToUpdate.fullname,
+        name: loggedInUserToUpdate.name,
       });
 
       loggedInUserToUpdate.connections.push({
         id: connectionToAdd.id, // Ensure you use the correct properties
-        fullname: connectionToAdd.fullname, // This should be available
+        name: connectionToAdd.name, // This should be available
       });
 
       dispatch(updateUser(loggedInUserToUpdate));
@@ -77,8 +77,8 @@ export function ConnectionPreview({ user }: ConnectionPreviewProps) {
             <img src="loadingCircle" alt="Loading" /> // Replace with actual loading image
           )}
         </div>
-        <div className="fullname">
-          <p>{user.fullname}</p>
+        <div className="name">
+          <p>{user.name}</p>
         </div>
         <div className="profession">
           <p>{user.profession}</p>

@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux';
 import { ReactSnip } from '@strg/react-snip';
 import { useEffect, useState } from 'react';
-import { Chat, Message, MsgPreviewProps, User } from 'types';
+import { Chat, Message, MessagePreviewProps, User } from 'types';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { StyledMessagePreview } from '../style/StyledMessage';
 
-export const MsgPreview: React.FC<MsgPreviewProps> = ({
+export const MessagePreview: React.FC<MessagePreviewProps> = ({
   chat,
   chats,
-  setMessagesToShow,
+  setchats,
   setChatWith,
   chatWith,
   chosenChatId,
@@ -18,21 +18,21 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
   const [theNotLoggedUserChat, setTheNotLoggedUserChat] = useState<User | null>(
     null
   );
-  const [unreadMsgsCount, setUnreadMsgsCount] = useState(0);
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
 
   // Strongly type the Redux state using RootState
   const { unreadMessages } = useSelector((state: any) => state.activityModule);
 
   // Calculate unread messages count in a more efficient way
-  const getUnreadCountMsgs = () => {
-    const countMsgs = unreadMessages.filter(
+  const getUnreadCountMessages = () => {
+    const countMessages = unreadMessages.filter(
       (chatId: string) => chat.id === chatId
     ).length;
-    setUnreadMsgsCount(countMsgs);
+    setUnreadMessagesCount(countMessages);
   };
 
-  const lastMsg =
-    chat.messages[chat.messages?.length - 1]?.content || 'No Messages yet..';
+  const lastMessage =
+    chat.messages[chat.messages?.length - 1]?.body || 'No Messages yet..';
   const dateToShow = new Date(chat.messages[0]?.createdAt || chat.createdAt);
   const slicedDate = dateToShow.toLocaleDateString().slice(0, -5);
 
@@ -42,7 +42,7 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
   };
 
   const onClickChat = () => {
-    setMessagesToShow(chat.messages);
+    setchats(chat.messages);
     setChatWith(theNotLoggedUserChat);
     if (chat.id && setChosenChatId) {
       setChosenChatId(chat.id);
@@ -51,12 +51,12 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
 
   useEffect(() => {
     loadNotLoggedUser(chat);
-    getUnreadCountMsgs();
+    getUnreadCountMessages();
     // Add unreadMessages as a dependency for accurate updates when unread messages change
   }, [chat, unreadMessages]);
 
   useEffect(() => {
-    setMessagesToShow(chat.messages);
+    setchats(chat.messages);
     setChosenChatId && setChosenChatId(chat.id ?? '');
   }, [chat]);
 
@@ -74,21 +74,21 @@ export const MsgPreview: React.FC<MsgPreviewProps> = ({
             alt={`${theNotLoggedUserChat?.name}'s profile picture`}
             className="img"
           />
-          {unreadMsgsCount > 0 && (
+          {unreadMessagesCount > 0 && (
             <span className="number">
-              <p>{unreadMsgsCount}</p>
+              <p>{unreadMessagesCount}</p>
             </span>
           )}
         </div>
         <div className="details">
-          <div className="fullname">
+          <div className="name">
             <h1>{theNotLoggedUserChat?.name}</h1>
             <span title={String(dateToShow)}>
               <ReactSnip lines={1} method={'css'} ellipsis={slicedDate} />
             </span>
           </div>
           <div className="last-msg">
-            <ReactSnip lines={1} method={'css'} ellipsis={lastMsg} />
+            <ReactSnip lines={1} method={'css'} ellipsis={lastMessage} />
           </div>
         </div>
       </div>

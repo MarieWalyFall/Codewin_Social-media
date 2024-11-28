@@ -38,7 +38,7 @@ export const RightSideBar: React.FC = () => {
                   <img src={users[num]?.imgUrl} className="img" alt="" />
                 </div>
                 <div>
-                  <div className="fullname">
+                  <div className="name">
                     <p>{users[num]?.name}</p>
                   </div>
                   <div className="profession">

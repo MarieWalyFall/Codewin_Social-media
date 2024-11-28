@@ -114,7 +114,7 @@ export const StyledMessageThread = styled.section`
                 object-fit: cover;
               }
             }
-            .fullname {
+            .name {
               margin-left: 15px;
             }
           }
@@ -188,7 +188,7 @@ export const StyledMessageThread = styled.section`
                 .img {
                 }
               }
-              .fullname {
+              .name {
               }
             }
 
@@ -297,7 +297,7 @@ export const StyledMessagePreview = styled.section`
       flex-direction: column;
       width: 100%;
 
-      .fullname {
+      .name {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
@@ -333,7 +333,7 @@ export const StyledMessagePreview = styled.section`
       }
 
       .details {
-        .fullname {
+        .name {
           width: 100%;
           justify-content: space-between;
           h1 {
@@ -378,7 +378,7 @@ export const StyledThreadMessageList = styled.section`
         margin-left: 7px;
         width: 100%;
         justify-content: space-between;
-        .fullname {
+        .name {
           margin-left: 7px;
           p {
           }
@@ -410,7 +410,7 @@ export const StyledThreadMessageList = styled.section`
         }
 
         .name-time-container {
-          .fullname {
+          .name {
             p {
             }
           }

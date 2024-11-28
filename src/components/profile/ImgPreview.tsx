@@ -49,7 +49,7 @@ export function ImgPreview({
               onClick={() => navigate(`/profile/${post.userId}`)}
             >
               <img src={user.imgUrl} alt="" className="img" />
-              <p className="fullname">{user.fullname}</p>
+              <p className="name">{user.name}</p>
             </div>
           ) : (
             post && <p className="user-details">Loading user...</p>
