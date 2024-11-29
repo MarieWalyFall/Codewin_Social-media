@@ -362,7 +362,7 @@ export interface Message {
   body: string;
   senderId: string;
   createdAt: string;
-  userId?: string;
+  userId: string;
 }
 
 // Chat Interface
@@ -382,10 +382,10 @@ export interface MessagingProps {
   messagesToShow: Message[] | null;
   setchats: (messages: Message[]) => void;
   setChatWith: React.Dispatch<React.SetStateAction<User | null>>;
-  getTheNotLoggedUserChat: (chat: Chat) => Promise<User | null>;
-  setTheNotLoggedUserChat: React.Dispatch<React.SetStateAction<User | null>>;
-  theNotLoggedUserChat: User | null;
-  onSendMessage?: (message: NewMessage) => void; // Change 'any' to Message
+  getTheNotLoggedUserChat?: (chat: Chat) => Promise<User | null>;
+  setTheNotLoggedUserChat?: React.Dispatch<React.SetStateAction<User | null>>;
+  theNotLoggedUserChat?: User | null;
+  onSendMessage: (body: string) => void; // Change 'any' to Message
 }
 
 // Message Thread Props
@@ -393,7 +393,7 @@ export interface MessageThreadProps {
   messagesToShow: Message[] | null;
   setchats: (messages: Message[]) => void;
   chatWith: User | null;
-  onSendMessage?: (message: NewMessage) => void;
+  onSendMessage: (body: string) => void;
 }
 
 // Message Preview Props
@@ -422,9 +422,14 @@ export interface ConversationsProps {
   setTheNotLoggedUserChat: React.Dispatch<React.SetStateAction<User | null>>;
   theNotLoggedUserChat: User | null;
 }
-export interface NewMessage extends Partial<Message> {}
+export interface NewMessage extends Partial<Message> {
+  body: string;
+  senderId: string;
+  createdAt: string;
+  userId: string;
+}
 export interface SendMessageFormProps {
-  onSendMessage?: (message: NewMessage) => void;
+  onSendMessage: (body: string) => void;
   messagesToShow: any[];
 }
 

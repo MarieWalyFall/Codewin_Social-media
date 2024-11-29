@@ -27,7 +27,6 @@ export const MessageThread: React.FC<MessageThreadProps> = ({
   };
 
   if (!chatWith) return null;
-  console.log(messagesToShow);
   return (
     <StyledMessageThread className="message-thread">
       <header className="header-message-thread">

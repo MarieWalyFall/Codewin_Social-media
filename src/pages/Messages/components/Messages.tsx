@@ -18,7 +18,7 @@ import {
   setUnreadActivitiesIds,
 } from 'store/actions/activityAction';
 import { updateUser } from 'store/actions/userActions';
-import { Chat, Message as MessageType, NewActivity, User } from 'types';
+import { Chat, Message, NewActivity, NewMessage, User } from 'types';
 import { RootState } from 'store/index';
 import {
   StyledMessagesPage,
@@ -112,12 +112,18 @@ const Messages: React.FC = () => {
       setchats(newChat.messages);
     }
   }, [UserChatExists, params.userId, chats, dispatch]);
-
-  const onSendMessage = (content: string) => {
+  const onSendMessage = (body: string) => {
     if (!loggedInUser) return;
 
-    const newMessage = createNewMessage(content, loggedInUser.id);
-    const chatToUpdate = { ...chats[findChatIndex()] };
+    const newMessage = createNewMessage(body, loggedInUser.id);
+    const chatIndex = findChatIndex();
+
+    if (chatIndex === -1) {
+      console.error('Chat not found.');
+      return;
+    }
+
+    const chatToUpdate = { ...chats[chatIndex] };
     chatToUpdate.messages.push(newMessage);
 
     if (isNewChat && chatToUpdate.id) {
@@ -127,7 +133,8 @@ const Messages: React.FC = () => {
     setIsNewChat(false);
 
     dispatch(saveChat(chatToUpdate)).then((savedChat) => {
-      setchats(savedChat.messages);
+      setchats(savedChat.messages); // Update the chat messages in state
+      setchats(savedChat.messages); // Add this to update messagesToShow
       if (savedChat) {
         const newActivity: NewActivity = {
           type: 'private-message',
@@ -145,12 +152,9 @@ const Messages: React.FC = () => {
     });
   };
 
-  const createNewMessage = (
-    content: string,
-    senderId: string
-  ): MessageType => ({
+  const createNewMessage = (body: string, senderId: string): Message => ({
     id: utilService.makeId(24),
-    content,
+    body,
     userId: loggedInUser?.id ?? '',
     createdAt: String(new Date().getTime()),
     senderId,
@@ -173,10 +177,11 @@ const Messages: React.FC = () => {
   const findChat = (userId: string) =>
     chats.find((chat) => chat.userId === userId || chat.userId2 === userId);
 
-  const findChatIndex = () =>
-    chats.findIndex(
+  const findChatIndex = () => {
+    return chats.findIndex(
       (chat) => chat.userId === params.userId || chat.userId2 === params.userId
     );
+  };
 
   const getTheNotLoggedUserChat = async (chat: Chat) => {
     const userId =
@@ -185,11 +190,7 @@ const Messages: React.FC = () => {
   };
 
   if (!chats) {
-    return (
-      <StyledMessages>
-        <Loader />
-      </StyledMessages>
-    );
+    return <Loader />;
   }
 
   return (
@@ -223,22 +224,11 @@ const Messages: React.FC = () => {
           setchats={setchats}
           chatWith={chatWith}
           setChatWith={setChatWith}
-          getTheNotLoggedUserChat={getTheNotLoggedUserChat}
-          setTheNotLoggedUserChat={setTheNotLoggedUserChat}
-          theNotLoggedUserChat={theNotLoggedUserChat}
+          onSendMessage={onSendMessage}
+          // getTheNotLoggedUserChat={getTheNotLoggedUserChat}
+          // setTheNotLoggedUserChat={setTheNotLoggedUserChat}
+          // theNotLoggedUserChat={theNotLoggedUserChat}
         />
-
-        {/* Input Area */}
-        <div className="chat-input-container">
-          <input
-            type="text"
-            placeholder="Type a message..."
-            onKeyPress={(e) =>
-              e.key === 'Enter' ? onSendMessage(e.currentTarget.value) : null
-            }
-          />
-          <button onClick={() => onSendMessage('Hello!')}>Send</button>
-        </div>
       </StyledMessagesPage>
     </StyledMessages>
   );

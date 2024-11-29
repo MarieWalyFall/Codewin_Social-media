@@ -1,38 +1,38 @@
 import { useEffect, useState, useRef, ChangeEvent, FormEvent } from 'react';
-import { Message, NewMessage, SendMessageFormProps } from 'types';
+import { SendMessageFormProps } from 'types';
 
 export const SendMessageForm: React.FC<SendMessageFormProps> = ({
   onSendMessage,
   messagesToShow,
 }) => {
-  const [newMessage, setNewMessage] = useState<NewMessage>({ content: '' });
+  const [newMessage, setNewMessage] = useState<string>('');
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setNewMessage((prevMessage) => ({ ...prevMessage, [name]: value }));
+    setNewMessage(e.target.value); // Update state directly with input value
   };
 
   const doSubmit = () => {
-    if (newMessage) {
-      if (onSendMessage) onSendMessage(newMessage);
-      setNewMessage({ content: '' });
+    if (newMessage.trim()) {
+      // Only send if message is non-empty
+      onSendMessage(newMessage); // Send the message
+      setNewMessage(''); // Clear the input field
     }
   };
 
   useEffect(() => {
-    setNewMessage({ content: '' });
+    setNewMessage(''); // Clear the message input
     if (inputRef.current) {
-      inputRef.current.focus();
+      inputRef.current.focus(); // Focus the input field
     }
-  }, [messagesToShow]);
+  }, [messagesToShow]); // Trigger this effect when messagesToShow changes
 
   return (
     <form
       className="send-msg-container"
       onSubmit={(ev: FormEvent<HTMLFormElement>) => {
-        ev.preventDefault();
-        doSubmit();
+        ev.preventDefault(); // Prevent default form submission
+        doSubmit(); // Handle form submission
       }}
     >
       <div className="input-container">
@@ -43,7 +43,7 @@ export const SendMessageForm: React.FC<SendMessageFormProps> = ({
           placeholder="Write a message..."
           id="body"
           name="body"
-          value={newMessage.body}
+          value={newMessage} // Bind state to textarea value
         />
       </div>
 

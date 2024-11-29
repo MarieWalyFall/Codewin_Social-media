@@ -62,7 +62,6 @@ const App: React.FC = () => {
   }, []);
   useEffect(() => {
     if (activities) {
-      console.log(activities);
       dispatch(setUnreadActivitiesIds());
     }
 
